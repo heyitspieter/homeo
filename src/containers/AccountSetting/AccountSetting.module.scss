@@ -33,6 +33,10 @@
             column-gap: 2.5rem;
             grid-template-rows: min-content;
             grid-template-columns: repeat(auto-fit, minmax(35rem, 1fr));
+
+            @media screen and (max-width: 37.5em) {
+                grid-template-columns: 1fr;
+            }
         }
 
         &:nth-of-type(2) {

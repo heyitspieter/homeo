@@ -39,6 +39,7 @@
             }
 
             @media screen and (max-width: 37.5em) {
+                grid-template-columns: 1fr;
                 grid-column: 1 / -1;
                 grid-row: 2 / -1;
             }

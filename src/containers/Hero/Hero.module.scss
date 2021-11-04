@@ -96,7 +96,6 @@
 
     &__group {
         display: flex;
-        position: relative;
         align-items: center;
         border-radius: 5rem;
         background-color: #ffffff;
@@ -104,19 +103,6 @@
     }
 
     &__label {
-        opacity: 1;
-        z-index: 1;
-        top: 1.6rem;
-        left: 4.5rem;
-        font-size: 1.4rem;
-        position: absolute;
-        visibility: visible;
-        color: #9e9b9b !important;
-        transition: all 0.2s ease-in-out;
-
-        @media screen and (max-width: 27.5em) {
-            white-space: nowrap;
-        }
     }
 
     &__input {
@@ -130,6 +116,10 @@
         font-size: 1.5rem;
         font-family: inherit;
         border: 0 !important;
+
+        &::-webkit-input-placeholder {
+            color: #9e9b9b;
+        }
     }
 
     &__input:focus + &__label,

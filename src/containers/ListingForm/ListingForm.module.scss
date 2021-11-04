@@ -53,6 +53,10 @@
         row-gap: 2rem;
     }
 
+    @media screen and (max-width: 37.5em) {
+        grid-template-columns: 1fr;
+    }
+
     &__group {
         display: flex;
         flex-direction: column;

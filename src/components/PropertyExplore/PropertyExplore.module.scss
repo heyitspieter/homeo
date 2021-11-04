@@ -55,7 +55,7 @@
     }
 
     @media screen and (max-width: 44em) {
-        grid-template-columns: repeat(2, minmax(17rem, 1fr));
+        grid-template-columns: repeat(2, minmax(14rem, 1fr));
 
         & > *:last-child {
             grid-column: 1/ -1;

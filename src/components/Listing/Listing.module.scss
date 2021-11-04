@@ -321,6 +321,10 @@
         margin-top: 1rem;
         line-height: 1.6;
         font-size: 1.3rem;
+
+        @media screen and (max-width: 37em) {
+            line-height: 1.7;
+        }
     }
 
     &__map {
@@ -340,6 +344,11 @@
         @media screen and (max-width: 44.3em) {
             column-gap: 2rem;
             grid-template-columns: repeat(2, minmax(min-content, 1fr));
+        }
+
+        @media screen and (max-width: 37em) {
+            grid-template-columns: 1fr;
+            column-gap: 2rem;
         }
 
         h3 {

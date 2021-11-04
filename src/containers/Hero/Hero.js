@@ -11,7 +11,7 @@ function Hero() {
   const [formControls, setFormControls] = useState({
     search: {
       label: {
-        title: "Enter an address, neighborhood, city or ZIP code",
+        title: "",
         htmlFor: "search",
         classes: [styles.form__label],
       },
@@ -20,7 +20,7 @@ function Hero() {
         type: "text",
         id: "search",
         required: true,
-        placeholder: "",
+        placeholder: "Enter an address, neighborhood, city or ZIP code",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
