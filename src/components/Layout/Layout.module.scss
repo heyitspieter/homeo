@@ -1,0 +1,6 @@
+.container {
+    display: grid;
+    position: relative;
+    grid-template-rows: repeat(3, min-content) 1fr;
+    grid-template-columns: 1fr repeat(8, minmax(min-content, 14.25rem)) 1fr;
+}

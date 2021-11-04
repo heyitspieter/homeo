@@ -1,0 +1,90 @@
+.tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3.5rem 1.4rem 3.5rem 1.4rem;
+
+    & > *:not(:last-child) {
+        // margin-right: 1rem;
+    }
+
+    a {
+        &:link,
+        &:visited {
+            cursor: pointer;
+            color: #afafaf;
+            font-weight: 600;
+            font-size: 1.19rem;
+            font-family: inherit;
+            text-decoration: none;
+            text-transform: uppercase;
+            background-color: #f6f7f8;
+            transition: all 0.2s ease-in-out;
+        }
+    }
+}
+
+.activeTab {
+    &:link,
+    &:visited {
+        color: #0c75ec !important;
+        background-color: #e8f0fe !important;
+    }
+}
+
+.tabLogin {
+    &:link,
+    &:visited {
+        padding: 1.2rem 2.09rem;
+        border-radius: 0.35rem 0 0 0.35rem;
+    }
+}
+
+.tabRegister {
+    &:link,
+    &:visited {
+        padding: 1.2rem 1.2rem;
+        border-radius: 0 0.35rem 0.35rem 0;
+    }
+}
+
+.dialog__width {
+    @media screen and (min-width: 48em) {
+        max-width: 43rem;
+    }
+}
+
+.formSlider {
+    display: flex;
+    overflow: hidden;
+    overflow-x: auto;
+    list-style-type: none;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+        width: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: transparent;
+    }
+
+    &__item {
+        flex: 0 0 100%;
+        align-self: flex-start;
+        scroll-snap-align: start;
+        background-color: #ffffff;
+        transform-origin: center center;
+        transition: transform 0.35s ease;
+    }
+}
+
+.no_height {
+    max-height: 0;
+}

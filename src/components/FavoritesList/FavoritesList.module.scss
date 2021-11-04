@@ -1,0 +1,122 @@
+.container {
+    padding: 2.5rem 0;
+    grid-column: 2 / 10;
+
+    @media screen and (max-width: 72.2em) {
+        grid-column: 1 / -1;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+    @media screen and (max-width: 44.5em) {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+
+    h2 {
+        color: #2f3f5f;
+        font-weight: 600;
+        font-size: 2.1rem;
+    }
+
+    p {
+        color: #777777;
+        margin-top: 0.2rem;
+        font-size: 1.3rem;
+    }
+}
+
+.list {
+    display: flex;
+    margin-top: 2.5rem;
+    flex-direction: column;
+
+    & > *:not(:last-child) {
+        margin-bottom: 3rem;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .item {
+        display: block;
+
+        &__image {
+            height: 10rem;
+            width: 12rem;
+            overflow: hidden;
+            border-radius: 0.2rem;
+            display: inline-block;
+
+            div {
+                height: 100%;
+            }
+        }
+
+        &__col {
+            display: grid;
+            grid-template-columns: 1fr min-content;
+
+            button {
+                border: 0;
+                display: flex;
+                cursor: pointer;
+                background: none;
+            }
+
+            div {
+                display: flex;
+                margin-left: 1.2rem;
+                flex-direction: column;
+
+                h3 {
+                    width: 40rem;
+                    color: #2f3f5f;
+                    font-weight: 600;
+                    overflow: hidden;
+                    font-size: 1.35rem;
+                    text-overflow: ellipsis;
+
+                    @media screen and (max-width: 37.5em) {
+                        width: 18rem;
+                    }
+                }
+
+                p {
+                    width: 35rem;
+                    color: #777777;
+                    margin-top: 0.2rem;
+                    font-size: 1.23rem;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+
+                    @media screen and (max-width: 37.5em) {
+                        width: 18rem;
+                    }
+                }
+
+                p + p {
+                    color: #2f3f5f;
+                    font-weight: 600;
+                    font-size: 1.45rem;
+                    letter-spacing: 0.2px;
+                }
+            }
+        }
+    }
+}
+
+.iconTrash {
+    width: 2.3rem;
+    height: 2.3rem;
+    stroke: #393939;
+    stroke-width: 1.1;
+}

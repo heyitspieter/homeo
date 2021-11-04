@@ -1,0 +1,80 @@
+.container {
+    left: 0;
+    bottom: 0;
+    z-index: 4;
+    width: 100%;
+    position: fixed;
+    background-color: #ffffff;
+    box-shadow: 0.5rem 0 1.5rem rgb(0 0 0 / 8%);
+
+    @media screen and (min-width: 37.5em) {
+        display: none;
+    }
+}
+
+.grid {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+        border: 0;
+        display: flex;
+        cursor: pointer;
+        background: none;
+        font-family: inherit;
+        padding: 0.9rem 1.5rem;
+        flex-direction: column;
+        transition: all 0.3s ease-in-out;
+
+        &:hover,
+        &:focus {
+            background-color: #f1f1f1;
+        }
+
+        figure {
+            width: 3rem;
+            height: 3rem;
+            overflow: hidden;
+            border-radius: 50%;
+            align-self: center;
+            border: 1.6px solid #777777;
+        }
+
+        svg {
+            align-self: center;
+        }
+
+        span {
+            color: #777777;
+            margin-top: 0.4rem;
+            font-size: 1.36rem;
+        }
+    }
+}
+
+.activeTab {
+    button {
+        figure {
+            border: 1.7px solid #0c75ec;
+        }
+
+        svg {
+            fill: #0c75ec;
+            stroke: #0c75ec;
+        }
+
+        span {
+            color: #0c75ec;
+        }
+    }
+}
+
+.iconHome,
+.iconSearch,
+.iconCreate,
+.iconFavorite {
+    width: 3rem;
+    height: 3rem;
+    fill: #ffffff;
+    stroke: #777777;
+}

@@ -1,0 +1,193 @@
+.overlay {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 101;
+    display: flex;
+    overflow: auto;
+    position: fixed;
+    align-items: center;
+    flex-direction: column;
+    padding: 10vh 1.5rem 0;
+
+    &::-webkit-scrollbar {
+        width: 0.8rem;
+        height: 0.8rem;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        border: 3px solid transparent;
+    }
+
+    &__hidden {
+        display: none;
+    }
+}
+
+.backdrop {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    position: fixed;
+    pointer-events: all;
+}
+
+.dialog {
+    width: 100%;
+    outline: none;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    background: #ffffff;
+    border-radius: 0.4rem;
+    flex-direction: column;
+    box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.25);
+
+    @media screen and (min-width: 36em) {
+        box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.25);
+    }
+}
+
+.content {
+    height: 100%;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.4rem;
+        justify-content: space-between;
+        border-bottom: 1px solid #ebebeb;
+
+        h2 {
+            font-size: 1.7rem;
+            font-weight: 800;
+        }
+
+        button {
+            display: flex;
+            color: #232323;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    &__body {
+        font-weight: 400;
+        padding: 1.5rem 1.4rem 1.5rem 1.4rem;
+    }
+}
+
+.open {
+    animation: openModal 0.4s ease-out forwards;
+}
+
+.close {
+    animation: closeModal 0.4s ease-out forwards;
+}
+
+.no__border {
+    border: 0;
+}
+
+.no__padding {
+    padding: 0;
+}
+
+.no__padding__t {
+    padding-top: 0;
+}
+
+.no__padding__tb {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.no__padding__lr {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.flex__column {
+    @media screen and (max-width: 37.5em) {
+        flex-direction: column;
+
+        & > * {
+            align-self: flex-start;
+        }
+
+        & > *:last-child {
+            margin-top: 1.2rem;
+        }
+    }
+}
+
+.btnClose {
+    border: 0;
+    top: 1.5rem;
+    display: flex;
+    right: 1.5rem;
+    cursor: pointer;
+    background: none;
+    position: absolute;
+    align-items: center;
+    font-family: inherit;
+    border-radius: 0.4rem;
+    padding: 0.2rem 1.5rem;
+    border: 2px solid #ffffff;
+
+    span {
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 1.4rem;
+    }
+
+    &:focus {
+        outline: 5px auto -webkit-focus-ring-color;
+    }
+}
+
+/** MODAL ANIMATION START **/
+
+@keyframes openModal {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes closeModal {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    10% {
+        opacity: 0.8;
+        transform: scale(0.9);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+
+/** MODAL ANIMATION END **/

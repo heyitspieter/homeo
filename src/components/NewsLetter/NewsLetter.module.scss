@@ -1,0 +1,90 @@
+.container {
+    display: grid;
+    padding: 5rem 0;
+    grid-column: 1 / -1;
+    background-color: #272727;
+    grid-template-rows: min-content;
+    grid-template-columns: 1fr repeat(8, minmax(min-content, 14.25rem)) 1fr;
+}
+
+.wrapper {
+    display: flex;
+    grid-column: 2 / 10;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title {
+    h3 {
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 2.1rem;
+    }
+
+    p {
+        color: #ffffff;
+        font-size: 1.3rem;
+        margin-top: 0.7rem;
+    }
+}
+
+.form {
+    flex: 0 1 28%;
+    display: block;
+    
+
+    &__group {
+        display: flex;
+        position: relative;
+        align-items: center;
+        border-radius: 5rem;
+        padding: 0.3rem 1.4rem;
+        background-color: #ffffff;
+    }
+
+    &__label {
+        opacity: 1;
+        z-index: 1;
+        top: 1.3rem;
+        left: 1.43rem;
+        color: #9e9b9b;
+        position: absolute;
+        font-size: 1.35rem;
+        visibility: visible;
+        transition: all 0.2s ease-in-out;
+    }
+
+    &__input {
+        flex: 1;
+        border: 0;
+        z-index: 2;
+        display: flex;
+        outline: none;
+        color: inherit;
+        background: none;
+        font-weight: 400;
+        font-size: 1.5rem;
+        font-family: inherit;
+    }
+
+    &__input:focus + &__label,
+    &__input:valid + &__label {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+.btnSend {
+    border: 0;
+    display: flex;
+    padding: 1rem 0;
+    cursor: pointer;
+    background: none;
+}
+
+.iconSend {
+    width: 2rem;
+    height: 2rem;
+    stroke: #9b9b9b;
+    stroke-width: 1.1;
+}

@@ -1,0 +1,148 @@
+.container {
+    flex: 1 0 17%;
+    align-self: flex-start;
+    padding: 1.5rem 1.6rem;
+    transition: all 0.28s ease-out;
+
+    @media screen and (max-width: 72.2em) {
+        display: block;
+        overflow: hidden;
+        max-height: 7rem;
+        align-self: stretch;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+.expanded {
+    @media screen and (max-width: 72.2em) {
+        overflow: visible;
+        max-height: 100%;
+    }
+}
+
+.title {
+    display: block;
+    margin-top: 1rem;
+
+    button {
+        border: 0;
+        width: 100%;
+        display: flex;
+        background: none;
+        font-family: inherit;
+
+        justify-content: space-between;
+
+        @media screen and (max-width: 72.2em) {
+            padding: 1rem 0;
+            cursor: pointer;
+        }
+    }
+
+    h3 {
+        color: #2f3f5f;
+        font-weight: 600;
+        font-size: 1.42rem;
+        text-transform: capitalize;
+    }
+}
+
+.form {
+    margin-top: 2rem;
+
+    & > *:not(:last-child) {
+        margin-bottom: 2.2rem;
+    }
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__label {
+    }
+
+    &__input {
+        flex: 1;
+        z-index: 2;
+        display: flex;
+        outline: none;
+        color: inherit;
+        background: none;
+        font-weight: 400;
+        font-size: 1.4rem;
+        padding: 1.3rem 1rem;
+        font-family: inherit;
+        border-radius: 0.3rem;
+        background-color: #f6f6f6;
+        border: 1px solid transparent;
+
+        @media screen and (max-width: 72.2em) {
+            padding: 2rem 1rem;
+        }
+    }
+
+    &__select {
+        flex: 1;
+        display: flex;
+        outline: none;
+        color: inherit;
+        background: none;
+        font-weight: 400;
+        font-size: 1.4rem;
+        padding: 1.3rem 1rem;
+        font-family: inherit;
+        border-radius: 0.3rem;
+        background-color: #f6f6f6;
+        border: 1px solid transparent;
+
+        @media screen and (max-width: 72.2em) {
+            padding: 2rem 1rem;
+        }
+    }
+
+    &__button {
+        flex: 1;
+
+        button {
+            border: 0;
+            width: 100%;
+            display: flex;
+            color: #ffffff;
+            cursor: pointer;
+            font-weight: 500;
+            background: none;
+            font-size: 1.2rem;
+            align-items: center;
+            border-radius: 5rem;
+            padding: 1.3rem 1rem;
+            font-family: inherit;
+            justify-content: center;
+            text-transform: uppercase;
+            background-color: #0c75ec;
+
+            span {
+                margin-left: 0.4rem;
+            }
+        }
+    }
+}
+
+.iconSearch {
+    width: 1.9rem;
+    height: 1.9rem;
+    stroke: #ffffff;
+    stroke-width: 1.5;
+}
+
+.iconsExpand {
+    width: 2.6rem;
+    height: 2.6rem;
+    stroke: #2f3f5f;
+    stroke-width: 1.1;
+
+    @media screen and (min-width: 72.2em) {
+        display: none;
+    }
+}

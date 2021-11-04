@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    grid-column: 1 / -1;
+    border-top: 1px solid #f6f6f6;
+
+    @media screen and (max-width: 72.2em) {
+        flex-direction: column;
+    }
+}
