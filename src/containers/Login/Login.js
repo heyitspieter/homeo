@@ -1,5 +1,8 @@
-import { useState } from "react";
 import className from "classnames";
+import { useSWRConfig } from "swr";
+import { toast } from "react-toastify";
+import { useLogin } from "src/hooks/auth";
+import { useState, useEffect } from "react";
 import { updateObject, checkFormValidity } from "src/helpers";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
@@ -7,7 +10,7 @@ import FormButton from "src/components/Form/FormButton/FormButton";
 import formStyles from "styles/modules/Form.module.scss";
 import styles from "src/components/Modals/AuthModal/AuthModal.module.scss";
 
-function Login({ activeTab }) {
+function Login({ closeAuthModal }) {
   const [formControls, setFormControls] = useState({
     email: {
       label: {
@@ -65,6 +68,10 @@ function Login({ activeTab }) {
 
   const [formValidity, setFormValidity] = useState(false);
 
+  const [login, { data: success, error, loading }] = useLogin();
+
+  const { mutate } = useSWRConfig();
+
   let formElementsArray = [];
 
   for (let key in formControls) {
@@ -73,6 +80,41 @@ function Login({ activeTab }) {
       config: formControls[key],
     });
   }
+
+  useEffect(() => {
+    if (success) {
+      const newFormControls = { ...formControls };
+
+      for (let key in newFormControls) {
+        newFormControls[key].value = "";
+        newFormControls[key].valid = false;
+        newFormControls[key].touched = false;
+      }
+
+      closeAuthModal();
+      toast.success("Login Successful!");
+      setFormValidity(false);
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        ...newFormControls,
+      }));
+    }
+
+    if (error) {
+      toast.error(error);
+      setFormValidity(false);
+      mutate("/api/v1/user/session");
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        password: {
+          ...prevFormControls.password,
+          value: "",
+          valid: false,
+          touched: false,
+        },
+      }));
+    }
+  }, [success, error]);
 
   const inputChangeHandler = (event, formControlKey) => {
     const updatededFormControls = updateObject(formControls, {
@@ -137,8 +179,13 @@ function Login({ activeTab }) {
   const submitFormHandler = (e) => {
     e.preventDefault();
 
-    if (formValidity) {
+    let formData = {};
+
+    for (let key in formControls) {
+      formData[key] = formControls[key].value;
     }
+
+    if (formValidity) login(formData);
   };
 
   const containerClass = className({
@@ -151,9 +198,10 @@ function Login({ activeTab }) {
       <form onSubmit={(e) => submitFormHandler(e)} className={formStyles.form}>
         {formInputs}
         <FormButton
-          parentClasses={[formStyles.form__button]}
-          btnValue="Submit"
           type="auth"
+          parentClasses={[formStyles.form__button]}
+          config={{ disabled: loading || !formValidity }}
+          btnValue={`${loading ? "Verifying..." : "Submit"}`}
         />
       </form>
     </div>

@@ -1,12 +1,15 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Svg from "src/components/Svg/Svg";
+import { useAuth } from "src/context/AuthContext";
 import ActiveButton from "src/components/ActiveButton/ActiveButton";
 
 import styles from "src/components/TabBar/TabBar.module.scss";
 
-function TabBar() {
+function TabBar({ toggleAuthModal }) {
   const router = useRouter();
+
+  const { isAuthenticated } = useAuth();
 
   return (
     <div className={styles.container}>
@@ -36,7 +39,16 @@ function TabBar() {
           </button>
         </ActiveButton>
         <ActiveButton activeClassName={styles.activeTab}>
-          <button id="/account/me" onClick={() => router.push("/account/me")}>
+          <button
+            id="/account/me"
+            onClick={() => {
+              if (isAuthenticated) {
+                router.push("/account/me");
+              } else {
+                toggleAuthModal();
+              }
+            }}
+          >
             <figure>
               <Image
                 src="/images/avatar.jpg"

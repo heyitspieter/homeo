@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "src/components/Usp/Usp.module.scss";
 
 function Usp() {
@@ -10,31 +11,30 @@ function Usp() {
       <div className={styles.grid}>
         <div className={styles.grid__item}>
           <div className={styles.grid__item_circle}></div>
-          <h3>Trusted By Thousands</h3>
-          <p>A business based on integrity, honesty and trust. </p>
-        </div>
-        <div className={styles.grid__item}>
-          <div className={styles.grid__item_circle}></div>
-          <h3>Trusted By Thousands</h3>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-            pellentesque vulputate tortor at accumsan. Duis at fringilla eros.{" "}
+            Trusted By Thousands. We are a business built on integrity, honesty
+            and trust.
           </p>
         </div>
         <div className={styles.grid__item}>
           <div className={styles.grid__item_circle}></div>
-          <h3>Trusted By Thousands</h3>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-            pellentesque vulputate tortor at accumsan. Duis at fringilla eros.{" "}
+            We have experienced management staff who have worked in management
+            for FTSE 250 firms
           </p>
         </div>
         <div className={styles.grid__item}>
           <div className={styles.grid__item_circle}></div>
-          <h3>Trusted By Thousands</h3>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-            pellentesque vulputate tortor at accumsan. Duis at fringilla eros.{" "}
+            We engage all service workers to have professional indemnity
+            insurance
+          </p>
+        </div>
+        <div className={styles.grid__item}>
+          <div className={styles.grid__item_circle}></div>
+          <p>
+            We encourage international best practice training of trade services
+            through our plaform
           </p>
         </div>
       </div>

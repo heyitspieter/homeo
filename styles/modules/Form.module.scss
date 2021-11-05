@@ -92,6 +92,11 @@
             justify-content: center;
             text-transform: uppercase;
             background-color: #0c75ec;
+            transition: all 0.28s ease-in-out;
+
+            &:disabled {
+                opacity: 0.3;
+            }
         }
     }
 }

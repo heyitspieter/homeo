@@ -107,8 +107,8 @@ const AuthModal = ({ close, show }) => {
                   </a>
                 </div>
                 <div className={styles.formSlider}>
-                  <Login />
-                  <Register activeTab={activeTab} />
+                  <Login closeAuthModal={close} />
+                  <Register closeAuthModal={close} activeTab={activeTab} />
                 </div>
               </div>
             </div>

@@ -1,8 +1,15 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { useGetProfile } from "src/hooks/user";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
-import { checkFormValidity, getImageDataURL, updateObject } from "src/helpers";
+
+import {
+  capitalize,
+  checkFormValidity,
+  getImageDataURL,
+  updateObject,
+} from "src/helpers";
 
 import styles from "src/containers/Profile/Profile.module.scss";
 
@@ -28,7 +35,7 @@ function Profile() {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Firstname is required",
@@ -54,7 +61,7 @@ function Profile() {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Firstname is required",
@@ -63,18 +70,20 @@ function Profile() {
     profession: {
       label: {
         title: "",
-        htmlFor: "lastname",
+        htmlFor: "profession",
         classes: [styles.form__label],
       },
       elementType: "select",
       elementConfig: {
-        id: "lastname",
+        id: "profession",
         required: true,
         options: [
           { value: "", display: "-- Select a Profession" },
+          { value: "plumber", display: "Plumber" },
           { value: "bricklayer", display: "BrickLayer" },
           { value: "surveyor", display: "Surveyor" },
           { value: "architect", display: "Architect" },
+          { value: "electrical engineer", display: "Electrical Engineer" },
         ],
       },
       elementClasses: [styles.form__select],
@@ -83,7 +92,7 @@ function Profile() {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Profession is required",
@@ -110,7 +119,7 @@ function Profile() {
         isEmail: true,
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Email Address is required",
@@ -124,8 +133,8 @@ function Profile() {
       },
       elementType: "input",
       elementConfig: {
-        type: "email",
-        id: "email",
+        type: "text",
+        id: "mobile",
         required: true,
         placeholder: "Mobile Number (Will be displayed on your listings)",
         autoComplete: "off",
@@ -137,7 +146,7 @@ function Profile() {
         required: true,
         isMobilePhone: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Mobile Number is required",
@@ -172,6 +181,8 @@ function Profile() {
 
   const [formValidity, setFormValidity] = useState(false);
 
+  const { data: user, error, loading } = useGetProfile();
+
   const [imageSrc, setImageSrc] = useState("/images/avatar.jpg");
 
   let formElementsArray = [];
@@ -197,6 +208,28 @@ function Profile() {
       onGetDataUrl(file);
     }
   }, [formControls.image.file]);
+
+  useEffect(() => {
+    if (user) {
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        firstname: {
+          ...prevFormControls.firstname,
+          value: capitalize(user.firstname),
+        },
+        lastname: {
+          ...prevFormControls.lastname,
+          value: capitalize(user.lastname),
+        },
+        email: { ...prevFormControls.email, value: capitalize(user.email) },
+        mobile: {
+          ...prevFormControls.mobile,
+          value: user.mobile ? user.mobile : "",
+        },
+        profession: { ...prevFormControls.profession, value: user.profession },
+      }));
+    }
+  }, [user]);
 
   const inputChangeHandler = (event, formControlKey) => {
     let updatededFormControls = null;

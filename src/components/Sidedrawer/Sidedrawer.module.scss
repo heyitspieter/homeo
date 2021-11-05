@@ -1,0 +1,150 @@
+.container {
+    top: 0;
+    left: 0;
+    z-index: 95;
+    height: 100%;
+    width: 28rem;
+    position: fixed;
+    overflow-y: auto;
+    min-height: 100vh;
+    padding: 0.8rem 0;
+    background-color: #ffffff;
+
+    &::-webkit-scrollbar {
+        width: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #ffffff;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #cccccc;
+        border: 3px solid #cccccc;
+    }
+}
+
+.logo {
+    padding: 0 2rem 0.8rem 2rem;
+    border-bottom: 1px solid #f1f1f1;
+
+    h2 {
+        color: #2f3f5f;
+        font-weight: 700;
+        font-size: 2.5rem;
+    }
+}
+
+.backdrop {
+    top: 0;
+    left: 0;
+    z-index: 90;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow: hidden;
+    min-height: 100vh;
+    transition: all 0.3s ease-in-out;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.nav {
+    display: block;
+
+    &__list {
+        display: flex;
+        list-style-type: none;
+        flex-direction: column;
+
+        & > *:not(:last-child) {
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        &_item {
+            display: flex;
+        }
+
+        &_link:link,
+        &_link:visited {
+            flex: 1;
+            font-weight: 600;
+            color: #2f3f5f;
+            font-size: 1.34rem;
+            text-decoration: none;
+            padding: 1.55rem 2rem;
+            text-transform: uppercase;
+            background-color: #ffffff;
+            transition: all 0.29s ease-in-out;
+
+            &:hover {
+                background-color: #2f3f5f11;
+            }
+        }
+    }
+}
+
+.footer {
+    display: flex;
+    margin: 1.2rem 2rem;
+    flex-direction: column;
+}
+
+.open {
+    animation: sidedrawerOpen 0.3s ease-out forwards;
+}
+
+.close {
+    animation: sidedrawerClosed 0.3s ease-out forwards;
+}
+
+.btnListing {
+    border: 0;
+    width: 100%;
+    display: flex;
+    cursor: pointer;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.19rem;
+    align-items: center;
+    border-radius: 5rem;
+    justify-content: center;
+    padding: 1.5rem 1.45rem;
+    text-transform: uppercase;
+    background-color: #0c75ec;
+
+    span {
+        text-align: center;
+        margin-left: 0.5rem;
+    }
+}
+
+.iconPlusCircle {
+    width: 1.65rem;
+    height: 1.65rem;
+    stroke-width: 2;
+    stroke: #ffffff;
+}
+
+/** SIDE DRAWER ANIMATION START **/
+
+@keyframes sidedrawerOpen {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes sidedrawerClosed {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/** SIDE DRAWER ANIMATION END **/

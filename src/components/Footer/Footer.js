@@ -46,7 +46,7 @@ function Footer({ tabBar }) {
         </div>
         <div className={styles.newsletter}>
           <h3>
-            Subscribe <span>(we won't send spam mails)</span>
+            Subscribe <span>(we will not send spam emails)</span>
           </h3>
           <form className={styles.newsletter__form}>
             <div className={styles.newsletter__form_group}>

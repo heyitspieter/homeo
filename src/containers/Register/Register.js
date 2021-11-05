@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useSWRConfig } from "swr";
 import className from "classnames";
+import { toast } from "react-toastify";
+import { useState, useEffect } from "react";
+import { useRegister } from "src/hooks/auth";
 import { updateObject, checkFormValidity } from "src/helpers";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
@@ -7,7 +10,7 @@ import FormButton from "src/components/Form/FormButton/FormButton";
 import formStyles from "styles/modules/Form.module.scss";
 import styles from "src/components/Modals/AuthModal/AuthModal.module.scss";
 
-function Register({ activeTab }) {
+function Register({ activeTab, closeAuthModal }) {
   const [formControls, setFormControls] = useState({
     firstname: {
       label: {
@@ -76,6 +79,8 @@ function Register({ activeTab }) {
           { value: "bricklayer", display: "BrickLayer" },
           { value: "surveyor", display: "Surveyor" },
           { value: "architect", display: "Architect" },
+          { value: "plumber", display: "Plumber" },
+          { value: "electrical engineer", display: "Electrical Engineer" },
         ],
       },
       elementClasses: [formStyles.form__input],
@@ -146,7 +151,9 @@ function Register({ activeTab }) {
 
   const [formValidity, setFormValidity] = useState(false);
 
-  const [formExpanded, setFormExpanded] = useState(false);
+  const [register, { data: success, error, loading }] = useRegister();
+
+  const { mutate } = useSWRConfig();
 
   let formElementsArray = [];
 
@@ -156,6 +163,41 @@ function Register({ activeTab }) {
       config: formControls[key],
     });
   }
+
+  useEffect(() => {
+    if (success) {
+      const newFormControls = { ...formControls };
+
+      for (let key in newFormControls) {
+        newFormControls[key].value = "";
+        newFormControls[key].valid = false;
+        newFormControls[key].touched = false;
+      }
+
+      closeAuthModal();
+      mutate("/api/v1/user/session");
+      toast.success("Registration Successful!");
+      setFormValidity(false);
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        ...newFormControls,
+      }));
+    }
+
+    if (error) {
+      toast.error(error);
+      setFormValidity(false);
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        password: {
+          ...prevFormControls.password,
+          value: "",
+          valid: false,
+          touched: false,
+        },
+      }));
+    }
+  }, [success, error]);
 
   const inputChangeHandler = (event, formControlKey) => {
     const updatededFormControls = updateObject(formControls, {
@@ -220,8 +262,13 @@ function Register({ activeTab }) {
   const submitFormHandler = (e) => {
     e.preventDefault();
 
-    if (formValidity) {
+    let formData = {};
+
+    for (let key in formControls) {
+      formData[key] = formControls[key].value;
     }
+
+    if (formValidity) register(formData);
   };
 
   const containerClass = className({
@@ -235,9 +282,10 @@ function Register({ activeTab }) {
       <form onSubmit={(e) => submitFormHandler(e)} className={formStyles.form}>
         {formInputs}
         <FormButton
-          parentClasses={[formStyles.form__button]}
-          btnValue="Submit"
           type="auth"
+          parentClasses={[formStyles.form__button]}
+          config={{ disabled: loading || !formValidity }}
+          btnValue={`${loading ? "Registering" : "Submit"}`}
         />
       </form>
     </div>

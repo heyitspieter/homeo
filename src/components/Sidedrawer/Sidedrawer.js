@@ -1,47 +1,41 @@
-import Link from "next/link";
-import className from "classnames";
-import { useContext } from "react";
 import { useRouter } from "next/router";
 import Svg from "src/components/Svg/Svg";
-import { useAuth } from "src/context/AuthContext";
-import styles from "src/components/Header/Header.module.scss";
+import { useRef, useContext } from "react";
+import Animated from "src/components/Animated/Animated";
 import { SidedrawerContext } from "src/context/SidedrawerContext";
+import styles from "src/components/Sidedrawer/Sidedrawer.module.scss";
 
-function Header({ toggleAuthModal }) {
+function Sidedrawer({}) {
+  const ref = useRef();
+
   const router = useRouter();
-
-  const { isAuthenticated } = useAuth();
 
   const sidedrawer = useContext(SidedrawerContext);
 
-  const headerClass = className({
-    [styles.container]: true,
-    [styles.no_zIndex]: router.pathname !== "/",
-  });
-
-  const hamburgerClass = className({
-    [styles.harmburger]: true,
-    [styles.harmburgerBlue]: !sidedrawer.open && router.pathname !== "/",
-  });
+  const animConfig = {
+    nodeRef: ref,
+    mountOnEnter: true,
+    unmountOnExit: true,
+    in: sidedrawer.open,
+    timeout: { enter: 300, exit: 300 },
+    classNames: {
+      enter: "",
+      enterActive: styles.open,
+      exit: "",
+      exitActive: styles.close,
+    },
+  };
 
   return (
-    <>
-      <div className={hamburgerClass}>
-        <button onClick={() => sidedrawer.toggle()}>
-          <Svg
-            className={styles.iconHarmburger}
-            symbol={sidedrawer.open ? "x" : "menu"}
-          />
-        </button>
-      </div>
-      <div className={headerClass}>
-        <div className={styles.wrapper}>
+    <Animated type="css" config={animConfig}>
+      <>
+        <div
+          onClick={() => sidedrawer.toggle()}
+          className={styles.backdrop}
+        ></div>
+        <div ref={ref} className={styles.container}>
           <div className={styles.logo}>
-            <Link href="/">
-              <a className={styles.logo__link}>
-                <h2>Secutitex</h2>
-              </a>
-            </Link>
+            <h2>Secutitex</h2>
           </div>
           <nav className={styles.nav}>
             <ul className={styles.nav__list}>
@@ -77,21 +71,12 @@ function Header({ toggleAuthModal }) {
               </li>
             </ul>
           </nav>
-          <div className={styles.menu}>
+          <div className={styles.footer}>
             <button
               onClick={() => {
-                if (isAuthenticated) {
-                  router.push("/account/me");
-                } else {
-                  toggleAuthModal();
-                }
+                sidedrawer.toggle();
+                router.push("/listing/new");
               }}
-              className={styles.btnUser}
-            >
-              <Svg className={styles.iconUser} symbol="user" />
-            </button>
-            <button
-              onClick={() => router.push("/listing/new")}
               className={styles.btnListing}
             >
               <Svg className={styles.iconPlusCircle} symbol="plus-circle" />
@@ -99,9 +84,9 @@ function Header({ toggleAuthModal }) {
             </button>
           </div>
         </div>
-      </div>
-    </>
+      </>
+    </Animated>
   );
 }
 
-export default Header;
+export default Sidedrawer;

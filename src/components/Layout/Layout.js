@@ -1,25 +1,45 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useRouter } from "next/router";
 import { updateObject } from "src/helpers";
 import TabBar from "src/components/TabBar/TabBar";
 import Header from "src/components/Header/Header";
 import Footer from "src/components/Footer/Footer";
+import React, { useState, useEffect } from "react";
+import Sidedrawer from "src/components/Sidedrawer/Sidedrawer";
 import AuthModal from "src/components/Modals/AuthModal/AuthModal";
 
 import styles from "src/components/Layout/Layout.module.scss";
 
 function Layout({ title, tabBar, children }) {
+  const router = useRouter();
+
   const [authModal, setAuthModal] = useState({
-    visiblility: false,
+    visibility: false,
   });
+
+  useEffect(() => {
+    if (!authModal.visibility) {
+      router.replace(router.asPath);
+    }
+  }, [authModal.visibility]);
 
   const toggleAuthModal = () => {
     setAuthModal(
       updateObject(authModal, {
-        visiblility: !authModal.visiblility,
+        visibility: !authModal.visibility,
       })
     );
   };
+
+  const childrenWithProps = React.Children.map(children, (child) => {
+    if (React.isValidElement(child)) {
+      return React.cloneElement(child, {
+        toggleAuthModal,
+      });
+    }
+
+    return child;
+  });
 
   return (
     <>
@@ -33,11 +53,12 @@ function Layout({ title, tabBar, children }) {
         ></link>
       </Head>
       <div className={styles.container}>
-        <AuthModal show={authModal.visiblility} close={toggleAuthModal} />
+        <Sidedrawer />
+        <AuthModal show={authModal.visibility} close={toggleAuthModal} />
         <Header toggleAuthModal={toggleAuthModal} />
-        {children}
+        {childrenWithProps}
         <Footer tabBar={tabBar} />
-        {tabBar && <TabBar />}
+        {tabBar && <TabBar toggleAuthModal={toggleAuthModal} />}
       </div>
     </>
   );

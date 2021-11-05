@@ -20,7 +20,7 @@ function Hero() {
         type: "text",
         id: "search",
         required: true,
-        placeholder: "Enter an address, neighborhood, city or ZIP code",
+        placeholder: "Enter an address, state, city or local goverment",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -103,13 +103,13 @@ function Hero() {
   const tabClass = className({
     [styles.activeTab]: true,
   });
-  
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.box}>
           <div className={styles.captions}>
-            <p>It Feels Great to be home!</p>
+            <p>Making Real Estate Transparent!</p>
             <h2>Find Your Perfect Home</h2>
           </div>
           <div className={styles.tabs}>

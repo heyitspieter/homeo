@@ -49,7 +49,6 @@ function ListingForm() {
           { value: "office", display: "Office" },
           { value: "home", display: "Residential Home" },
           { value: "villa", display: "Villa" },
-          { value: "place of worship", display: "Place of Worship" },
         ],
       },
       elementClasses: [styles.form__select],

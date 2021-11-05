@@ -1,3 +1,5 @@
+import axios from "axios";
+import cookie from "cookie";
 import validator from "validator";
 
 export const updateObject = (oldObject, updatedObjectProperties) => {
@@ -80,4 +82,137 @@ export const truncate = (text, maxLength) => {
   }
 
   return text;
+};
+
+export const setCookieHeaders = (req) => {
+  const cookies = ["_token"];
+
+  let headers = {};
+
+  for (const key in cookies) {
+    const value = getCookie(cookies[key], req);
+
+    if (value) {
+      switch (cookies[key]) {
+        case "_token":
+          headers["Authorization"] = `Bearer ${value}`;
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  return { headers };
+};
+
+export const setCustomHeaders = (req) => {
+  let headers = {};
+  const reqHeaders = [];
+
+  for (const key in reqHeaders) {
+    const value = req.headers[reqHeaders[key]];
+
+    if (value) {
+      headers[reqHeaders[key]] = value;
+    }
+  }
+
+  return { headers };
+};
+
+export const setCookie = (res, options = {}) => {
+  const { key, value, ...rest } = options;
+
+  return res.setHeader(
+    "Set-Cookie",
+    cookie.serialize(key, value, {
+      ...rest,
+    })
+  );
+};
+
+export const catchError = (err) => {
+  let error = null;
+
+  if (err && err.response && err.response.data) {
+    if (err.response.data.error) {
+      error = { message: err.response.data.error };
+    } else if (err.response.data.message) {
+      error = err.response.data;
+    } else {
+      error = err.message;
+    }
+  } else {
+    error = "Oops, something went wrong...";
+  }
+
+  return error;
+};
+
+export const getClientCookie = (key) => {
+  return Cookie.get(key);
+};
+
+export const getServerCookie = (key, req) => {
+  if (!req.headers.cookie) {
+    return undefined;
+  }
+
+  const rawCookie = req.headers.cookie
+    .split(";")
+    .find((c) => c.trim().startsWith(`${key}=`));
+  if (!rawCookie) {
+    return undefined;
+  }
+  return rawCookie.split("=")[1];
+};
+
+export const getCookie = (key, req = null) => {
+  return process.browser ? getClientCookie(key) : getServerCookie(key, req);
+};
+
+export const getCookieFromResponse = (res, key) => {
+  let rawCookie = undefined;
+  const cookies = res.headers["set-cookie"];
+
+  if (cookies.length > 0) {
+    for (let cookie in cookies) {
+      const cookiePattern = cookies[cookie]
+        .split(";")[0]
+        .trim()
+        .startsWith(`${key}=`);
+
+      if (cookiePattern) {
+        rawCookie = cookies[cookie].split(";")[0].split("=")[1];
+      }
+    }
+  }
+
+  return rawCookie;
+};
+
+export const fetcher = async (url) => {
+  try {
+    const res = await axios.get(url);
+    return res.data;
+  } catch (e) {
+    return Promise.reject(catchError(e));
+  }
+};
+
+export const capitalize = (str) => {
+  if (typeof str !== "string") return "";
+  const strArr = str.split(" ");
+  let newString = "";
+
+  strArr.forEach((s, i) => {
+    if (strArr.length - 1 == i) {
+      newString += s.charAt(0).toUpperCase() + s.slice(1);
+    } else {
+      newString += s.charAt(0).toUpperCase() + s.slice(1) + " ";
+    }
+  });
+
+  return newString;
 };

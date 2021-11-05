@@ -1,6 +1,7 @@
 import Usp from "src/components/Usp/Usp";
 import Hero from "src/containers/Hero/Hero";
 import Layout from "src/components/Layout/Layout";
+import HomeBanner from "src/components/HomeBanner/HomeBanner";
 import ListingFeed from "src/components/ListingFeed/ListingFeed";
 import PropertyExplore from "src/components/PropertyExplore/PropertyExplore";
 
@@ -10,6 +11,7 @@ export default function home() {
       <Hero />
       <ListingFeed />
       <Usp />
+      <HomeBanner />
       <PropertyExplore />
     </Layout>
   );

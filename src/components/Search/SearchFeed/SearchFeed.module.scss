@@ -197,15 +197,18 @@
         &_avatar {
             z-index: 2;
             right: 0rem;
-            top: 16.2rem;
             position: absolute;
+            top: min(100vh - 16rem,  16rem);
 
             @media screen and (max-width: 72.2em) {
-                top: 14.5rem;
+                top: min(100vh - 14.5rem,  14.5rem);
+                // top: 14.5rem;
             }
 
             @media screen and (max-width: 37.5em) {
-                top: 18rem;
+                @media screen and (max-width: 72.2em) {
+                    top: min(100vh - 16rem,  16rem);
+                }
             }
 
             figure {

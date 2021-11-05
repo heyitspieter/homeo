@@ -1,5 +1,9 @@
 import Image from "next/image";
+import { useSWRConfig } from "swr";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { useSignout } from "src/hooks/auth";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
 import { checkFormValidity, getImageDataURL, updateObject } from "src/helpers";
@@ -90,6 +94,13 @@ function AccountSetting() {
 
   const [formValidity, setFormValidity] = useState(false);
 
+  const router = useRouter();
+
+  const { mutate } = useSWRConfig();
+
+  const [signout, { data: signedOut, error, loading: signingOut }] =
+    useSignout();
+
   let formElementsArray = [];
 
   for (let key in formControls) {
@@ -98,6 +109,14 @@ function AccountSetting() {
       config: formControls[key],
     });
   }
+
+  useEffect(() => {
+    if (signedOut) {
+      router.replace("/");
+      mutate("/api/v1/user/session");
+      toast.success("Signed Out!! Come back soon :)");
+    }
+  }, [signedOut]);
 
   const inputChangeHandler = (event, formControlKey) => {
     const updatededFormControls = updateObject(formControls, {
@@ -161,9 +180,10 @@ function AccountSetting() {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
+              signout();
             }}
           >
-            Sign Out
+            {`${signingOut ? "Signing out.." : "Sign Out"}`}
           </button>
         </div>
       </form>
