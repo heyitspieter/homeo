@@ -1,7 +1,9 @@
 import Image from "next/image";
+import { useSWRConfig } from "swr";
+import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
-import { useGetProfile } from "src/hooks/user";
 import FormInput from "src/components/Form/FormInput/FormInput";
+import { useUpdateProfile, useGetProfile } from "src/hooks/user";
 import FormButton from "src/components/Form/FormButton/FormButton";
 
 import {
@@ -109,6 +111,7 @@ function Profile() {
         type: "email",
         id: "email",
         required: true,
+        disabled: true,
         placeholder: "Email Address",
         autoComplete: "off",
       },
@@ -125,7 +128,7 @@ function Profile() {
         message: "Email Address is required",
       },
     },
-    mobile: {
+    mobileNumber: {
       label: {
         title: "",
         htmlFor: "mobile",
@@ -171,7 +174,7 @@ function Profile() {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Image is required",
@@ -179,9 +182,16 @@ function Profile() {
     },
   });
 
-  const [formValidity, setFormValidity] = useState(false);
+  const [isChangesMade, setIsChangesMade] = useState(false);
 
-  const { data: user, error, loading } = useGetProfile();
+  const [formValidity, setFormValidity] = useState(true);
+
+  const { mutate } = useSWRConfig();
+
+  const { data: user, loading } = useGetProfile();
+
+  const [updateProfile, { data: success, error, loading: updating }] =
+    useUpdateProfile();
 
   const [imageSrc, setImageSrc] = useState("/images/avatar.jpg");
 
@@ -210,7 +220,22 @@ function Profile() {
   }, [formControls.image.file]);
 
   useEffect(() => {
+    if (success) {
+      mutate("/api/v1/user");
+      toast.success("Profile updated successfully");
+    }
+
+    if (error) {
+      toast.error(error);
+    }
+  }, [success, error]);
+
+  useEffect(() => {
     if (user) {
+      if (user.profileImage) {
+        setImageSrc(user.profileImage);
+      }
+
       setFormControls((prevFormControls) => ({
         ...prevFormControls,
         firstname: {
@@ -222,9 +247,9 @@ function Profile() {
           value: capitalize(user.lastname),
         },
         email: { ...prevFormControls.email, value: capitalize(user.email) },
-        mobile: {
-          ...prevFormControls.mobile,
-          value: user.mobile ? user.mobile : "",
+        mobileNumber: {
+          ...prevFormControls.mobileNumber,
+          value: user.mobileNumber ? user.mobileNumber : "",
         },
         profession: { ...prevFormControls.profession, value: user.profession },
       }));
@@ -260,12 +285,24 @@ function Profile() {
     }
 
     let formIsValid = true;
+    let isFormChanged = true;
+    let updatededFormControlsArray = [];
+
+    let { _id, status, ...rest } = user;
+
+    updatededFormControlsArray.push(event.target.value.toLowerCase());
+
+    isFormChanged =
+      updatededFormControlsArray.every((value) =>
+        [rest[formControlKey]].includes(value)
+      ) && isFormChanged;
 
     for (let key in updatededFormControls) {
       formIsValid = updatededFormControls[key].valid && formIsValid;
     }
 
     setFormValidity(formIsValid);
+    setIsChangesMade(!isFormChanged);
     setFormControls(updatededFormControls);
   };
 
@@ -288,6 +325,30 @@ function Profile() {
     />
   ));
 
+  const submitFormHandler = (e) => {
+    e.preventDefault();
+
+    let formData = {};
+
+    for (let key in formControls) {
+      if (formControls[key].touched && key !== "email") {
+        if (key === "image") {
+          formData["profileImage"] = imageSrc;
+        } else {
+          formData[key] = formControls[key].value;
+        }
+      }
+    }
+
+    if (formValidity) {
+      updateProfile(formData);
+    }
+  };
+
+  const btnConfig = {
+    disabled: !formValidity || !isChangesMade || updating,
+  };
+
   return (
     <div className={styles.container}>
       <form onSubmit={(e) => submitFormHandler(e)} className={styles.form}>
@@ -297,8 +358,9 @@ function Profile() {
           </div>
           {formInputs.slice(0, 5)}
           <FormButton
-            btnValue="Save Changes"
+            config={btnConfig}
             parentClasses={[styles.form__button]}
+            btnValue={updating ? "saving..." : "Save Changes"}
           />
         </div>
         <div className={styles.form__inner}>

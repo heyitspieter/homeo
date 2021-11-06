@@ -268,7 +268,9 @@ function Register({ activeTab, closeAuthModal }) {
       formData[key] = formControls[key].value;
     }
 
-    if (formValidity) register(formData);
+    if (formValidity) {
+      register(formData);
+    }
   };
 
   const containerClass = className({

@@ -92,6 +92,7 @@ function Login({ closeAuthModal }) {
       }
 
       closeAuthModal();
+      mutate("/api/v1/user/session");
       toast.success("Login Successful!");
       setFormValidity(false);
       setFormControls((prevFormControls) => ({
@@ -103,7 +104,6 @@ function Login({ closeAuthModal }) {
     if (error) {
       toast.error(error);
       setFormValidity(false);
-      mutate("/api/v1/user/session");
       setFormControls((prevFormControls) => ({
         ...prevFormControls,
         password: {
@@ -185,7 +185,9 @@ function Login({ closeAuthModal }) {
       formData[key] = formControls[key].value;
     }
 
-    if (formValidity) login(formData);
+    if (formValidity) {
+      login(formData);
+    }
   };
 
   const containerClass = className({

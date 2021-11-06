@@ -25,10 +25,11 @@ function useProvideAuth() {
       setAuthState({ ...authState, isAuthenticated: true });
     }
 
-    if (sessionErr) {
+    if ((session && session.guest) || sessionErr) {
       setAuthState({
         error: true,
         isVerifying: false,
+        isAuthenticated: false,
       });
     }
 

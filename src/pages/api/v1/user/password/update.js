@@ -1,14 +1,12 @@
-import AuthApi from "src/apis/auth";
+import UserApi from "src/apis/user";
 
 export default async (req, res) => {
-  const authApi = new AuthApi(req);
+  const userApi = new UserApi(req);
 
-  if (req.method === "GET") {
-    if (!req.cookies._token) return res.send({ guest: true });
+  if (req.method === "POST") {
+    const [success, err] = await userApi.updatePassword(req.body);
 
-    const [session, err] = await authApi.getSession();
-
-    if (session) return res.send(session);
+    if (success) return res.send(success);
 
     if (err && err.response && err.response.data) {
       return res.status(err.response.status).send(err.response.data);

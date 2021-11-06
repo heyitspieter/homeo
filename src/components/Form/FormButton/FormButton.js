@@ -1,6 +1,7 @@
 import AuthButton from "src/components/Form/ButtonTemplates/AuthButton";
 import SearchButton from "src/components/Form/ButtonTemplates/SearchButton";
 import DefaultButton from "src/components/Form/ButtonTemplates/DefaultButton";
+import HeroSearchButton from "src/components/Form/ButtonTemplates/HeroSearchButton";
 import SearchhFilterButton from "src/components/Form/ButtonTemplates/SearchFilterButton";
 
 const FormButton = ({
@@ -14,9 +15,14 @@ const FormButton = ({
   let buttonTemplate = null;
 
   switch (type) {
-    case "search":
+    case "hero":
       buttonTemplate = (
-        <SearchButton config={config} btnValue={btnValue} loading={isLoading} />
+        <HeroSearchButton
+          config={config}
+          btnValue={btnValue}
+          loading={isLoading}
+          parentClasses={parentClasses}
+        />
       );
       break;
     case "search-filter":
@@ -32,6 +38,16 @@ const FormButton = ({
     case "auth":
       buttonTemplate = (
         <AuthButton
+          config={config}
+          btnValue={btnValue}
+          loading={isLoading}
+          parentClasses={parentClasses}
+        />
+      );
+      break;
+    case "search":
+      buttonTemplate = (
+        <SearchButton
           config={config}
           btnValue={btnValue}
           loading={isLoading}

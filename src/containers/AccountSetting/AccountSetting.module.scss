@@ -46,7 +46,7 @@
             flex-direction: column;
 
             @media screen and (max-width: 44.5em) {
-               margin-top: 2.5rem;
+                margin-top: 2.5rem;
             }
 
             button {
@@ -152,6 +152,11 @@
             padding: 1.35rem 2.2rem;
             text-transform: uppercase;
             background-color: #0c75ec;
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
 
             span {
                 margin-left: 0.4rem;

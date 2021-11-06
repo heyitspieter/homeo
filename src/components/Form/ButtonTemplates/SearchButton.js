@@ -1,10 +1,10 @@
 import Svg from "src/components/Svg/Svg";
 
-import styles from "src/containers/Hero/Hero.module.scss";
+import styles from "src/components/Search/SearchForm/SearchForm.module.scss";
 
 function SearchButton({ btnValue, config }) {
   return (
-    <button {...config}>
+    <button className={styles.form__button} {...config}>
       <Svg className={styles.iconSearch} symbol="search" />
       {btnValue}
     </button>

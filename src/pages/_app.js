@@ -1,3 +1,4 @@
+import { SWRConfig } from "swr";
 import { ToastContainer } from "react-toastify";
 import AuthProvider from "src/context/AuthContext";
 import SidedrawerProvider from "src/context/SidedrawerContext";
@@ -21,14 +22,18 @@ const toastConfig = {
 
 function MyApp({ Component, pageProps }) {
   return (
-    <>
+    <SWRConfig
+      value={{
+        refreshInterval: 3000,
+      }}
+    >
       <AuthProvider>
         <SidedrawerProvider>
           <Component {...pageProps} />
         </SidedrawerProvider>
       </AuthProvider>
       <ToastContainer {...toastConfig} />
-    </>
+    </SWRConfig>
   );
 }
 

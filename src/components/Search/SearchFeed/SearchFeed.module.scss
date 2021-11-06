@@ -8,6 +8,10 @@
         padding-left: 1.5rem;
         padding-right: 1.5rem;
     }
+
+    @media screen and (max-width: 38em) {
+        display: none;
+    }
 }
 
 .header {
@@ -198,16 +202,16 @@
             z-index: 2;
             right: 0rem;
             position: absolute;
-            top: min(100vh - 16rem,  16rem);
+            top: min(100vh - 16rem, 16rem);
 
             @media screen and (max-width: 72.2em) {
-                top: min(100vh - 14.5rem,  14.5rem);
+                top: min(100vh - 14.5rem, 14.5rem);
                 // top: 14.5rem;
             }
 
             @media screen and (max-width: 37.5em) {
                 @media screen and (max-width: 72.2em) {
-                    top: min(100vh - 16rem,  16rem);
+                    top: min(100vh - 16rem, 16rem);
                 }
             }
 

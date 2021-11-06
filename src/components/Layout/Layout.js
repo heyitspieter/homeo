@@ -41,6 +41,12 @@ function Layout({ title, tabBar, children }) {
     return child;
   });
 
+  let footer = null;
+
+  if (router.pathname !== "/search") {
+    footer = <Footer tabBar={tabBar} />;
+  }
+
   return (
     <>
       <Head>
@@ -57,7 +63,7 @@ function Layout({ title, tabBar, children }) {
         <AuthModal show={authModal.visibility} close={toggleAuthModal} />
         <Header toggleAuthModal={toggleAuthModal} />
         {childrenWithProps}
-        <Footer tabBar={tabBar} />
+        {footer}
         {tabBar && <TabBar toggleAuthModal={toggleAuthModal} />}
       </div>
     </>

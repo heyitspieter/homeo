@@ -1,26 +1,27 @@
-import className from "classnames";
-import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import { checkFormValidity, updateObject } from "src/helpers";
+import { useState } from "react";
+import { updateObject, checkFormValidity } from "src/helpers";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
+import SearchFormResults from "src/components/Search/SearchForm/SearchFormResults/SearchFormResults";
+import SearchFormDropdown from "src/components/Search/SearchForm/SearchFormDropdown/SearchFormDropdown";
 
-import styles from "src/containers/Hero/Hero.module.scss";
+import styles from "src/components/Search/SearchForm/SearchForm.module.scss";
 
-function Hero() {
+function SearchForm() {
   const [formControls, setFormControls] = useState({
-    search: {
+    query: {
       label: {
         title: "",
-        htmlFor: "search",
+        htmlFor: "query",
         classes: [styles.form__label],
       },
       elementType: "input",
       elementConfig: {
         type: "text",
-        id: "search",
+        id: "query",
         required: true,
         placeholder: "Enter an address, state, city or local goverment",
+        autoComplete: "off",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -28,19 +29,19 @@ function Hero() {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
-        message: "",
+        message: "Query is required",
       },
     },
   });
 
-  const [formValidity, setFormValidity] = useState(false);
+  const [formValidity, setFormValidity] = useState(true);
+
+  const [searchResults, setSearchResults] = useState([]);
 
   let formElementsArray = [];
-
-  const router = useRouter();
 
   for (let key in formControls) {
     formElementsArray.push({
@@ -75,7 +76,7 @@ function Hero() {
   let formInputs = formElementsArray.map(({ id, config }) => (
     <FormInput
       key={id}
-      type="hero"
+      type="search"
       value={config.value}
       label={config.label}
       error={config.error.message}
@@ -88,41 +89,35 @@ function Hero() {
       invalid={config.touched && !config.valid}
       write={(event) => inputChangeHandler(event, id)}
     >
-      <FormButton type="hero" config={{ className: styles.btnSearch }} />
+      <FormButton config={{ className: styles.form__button }} type="search" />
     </FormInput>
   ));
 
   const submitFormHandler = (e) => {
     e.preventDefault();
 
+    let formData = {};
+
+    for (let key in formControls) {
+      formData[key] = formControls[key].value;
+    }
+
     if (formValidity) {
-      router.push(`/search?q=${formControls.search.value}`);
+      setSearchResults(["x"]);
     }
   };
 
-  const tabClass = className({
-    [styles.activeTab]: true,
-  });
-
   return (
     <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <div className={styles.box}>
-          <div className={styles.captions}>
-            <p>Making Real Estate Transparent</p>
-            <h2>Find Your Perfect Home</h2>
-          </div>
-          <div className={styles.tabs}>
-            <button className={tabClass}>Buy</button>
-            <button>Rent</button>
-          </div>
-          <form onSubmit={(e) => submitFormHandler(e)} className={styles.form}>
-            {formInputs}
-          </form>
-        </div>
+      <form onSubmit={(e) => submitFormHandler(e)} className={styles.form}>
+        {formInputs}
+      </form>
+      <div className={styles.container__flex}>
+        <SearchFormDropdown count={searchResults.length} />
+        <SearchFormResults count={searchResults.length} />
       </div>
     </div>
   );
 }
 
-export default Hero;
+export default SearchForm;

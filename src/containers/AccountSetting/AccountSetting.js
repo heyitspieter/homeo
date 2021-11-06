@@ -4,9 +4,10 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useSignout } from "src/hooks/auth";
+import { useUpdatePassword } from "src/hooks/user";
+import { checkFormValidity, updateObject } from "src/helpers";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
-import { checkFormValidity, getImageDataURL, updateObject } from "src/helpers";
 
 import styles from "src/containers/AccountSetting/AccountSetting.module.scss";
 
@@ -98,7 +99,12 @@ function AccountSetting() {
 
   const { mutate } = useSWRConfig();
 
-  const [signout, { data: signedOut, error, loading: signingOut }] =
+  const [
+    updatePassword,
+    { data: success, error: updateErr, loading: updating },
+  ] = useUpdatePassword();
+
+  const [signout, { data: signedOut, error: signoutErr, loading: signingOut }] =
     useSignout();
 
   let formElementsArray = [];
@@ -116,7 +122,41 @@ function AccountSetting() {
       mutate("/api/v1/user/session");
       toast.success("Signed Out!! Come back soon :)");
     }
-  }, [signedOut]);
+
+    if (signoutErr) toast.error(signoutErr);
+  }, [signedOut, signoutErr]);
+
+  useEffect(() => {
+    if (success) {
+      let newFormControls = { ...formControls };
+
+      for (let key in newFormControls) {
+        newFormControls[key].value = "";
+        newFormControls[key].valid = false;
+        newFormControls[key].touched = false;
+      }
+
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        ...newFormControls,
+      }));
+
+      toast.success("Password changed successfully");
+    }
+
+    if (updateErr) {
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        oldPassword: {
+          ...prevFormControls.oldPassword,
+          value: "",
+          valid: false,
+          touched: false,
+        },
+      }));
+      toast.error(updateErr);
+    }
+  }, [success, updateErr]);
 
   const inputChangeHandler = (event, formControlKey) => {
     const updatededFormControls = updateObject(formControls, {
@@ -159,6 +199,22 @@ function AccountSetting() {
     />
   ));
 
+  const submitFormHandler = (e) => {
+    e.preventDefault();
+
+    let formData = {};
+
+    for (let key in formControls) {
+      formData[key] = formControls[key].value;
+    }
+
+    if (formValidity) updatePassword(formData);
+  };
+
+  const btnConfig = {
+    disabled: !formValidity || updating,
+  };
+
   return (
     <div className={styles.container}>
       <form onSubmit={(e) => submitFormHandler(e)} className={styles.form}>
@@ -168,8 +224,9 @@ function AccountSetting() {
           </div>
           {formInputs}
           <FormButton
-            btnValue="Save Password"
+            config={btnConfig}
             parentClasses={[styles.form__button]}
+            btnValue={`${updating ? "Please wait..." : "Change Password"}`}
           />
         </div>
         <div className={styles.form__inner}>
@@ -181,6 +238,7 @@ function AccountSetting() {
               e.preventDefault();
               e.stopPropagation();
               signout();
+              mutate("/api/v1/user/session", { guest: true }, false);
             }}
           >
             {`${signingOut ? "Signing out.." : "Sign Out"}`}

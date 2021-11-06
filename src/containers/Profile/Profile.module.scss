@@ -159,6 +159,11 @@
         background-color: #f6f6f6;
         border: 1px solid transparent;
 
+        &:disabled {
+            cursor: not-allowed;
+            background-color: #eeeeee;
+        }
+
         &::-webkit-input-placeholder {
             color: #9e9b9b;
         }
@@ -218,6 +223,11 @@
             padding: 1.35rem 2.2rem;
             text-transform: uppercase;
             background-color: #0c75ec;
+
+            &:disabled {
+                opacity: 0.3;
+                cursor: not-allowed;
+            }
 
             span {
                 margin-left: 0.4rem;

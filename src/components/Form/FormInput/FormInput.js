@@ -2,6 +2,7 @@ import className from "classnames";
 import AuthForm from "src/components/Form/FormTemplates/AuthForm";
 import SearchForm from "src/components/Form/FormTemplates/SearchForm";
 import ListingForm from "src/components/Form/FormTemplates/ListingForm";
+import HeroSearchForm from "src/components/Form/FormTemplates/HeroSearchForm";
 import SearchFilterForm from "src/components/Form/FormTemplates/SearchFilterForm";
 
 import { labelError, inputError } from "styles/modules/Error.module.scss";
@@ -97,16 +98,16 @@ const FormInput = ({
   }
 
   switch (type) {
-    case "search":
+    case "hero":
       inputTemplate = (
-        <SearchForm
+        <HeroSearchForm
           label={label}
           labelClasses={labelClass}
           inputElement={inputElement}
           parentClasses={parentClasses}
         >
           {children}
-        </SearchForm>
+        </HeroSearchForm>
       );
       break;
     case "search-filter":
@@ -142,6 +143,19 @@ const FormInput = ({
           parentClasses={parentClasses}
           validationMessage={validationMessage}
         />
+      );
+      break;
+    case "search":
+      inputTemplate = (
+        <SearchForm
+          label={label}
+          labelClasses={labelClass}
+          inputElement={inputElement}
+          parentClasses={parentClasses}
+          validationMessage={validationMessage}
+        >
+          {children}
+        </SearchForm>
       );
       break;
     default:

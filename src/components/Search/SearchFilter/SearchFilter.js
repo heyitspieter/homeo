@@ -19,10 +19,38 @@ function SearchFilter() {
       elementConfig: {
         type: "text",
         id: "keyword",
-        required: true,
         placeholder: "Enter Keyword",
       },
       elementClasses: [styles.form__input],
+      parentClasses: [styles.form__group],
+      value: "",
+      validation: {
+        required: false,
+      },
+      valid: true,
+      touched: false,
+      error: {
+        message: "Keyword is required",
+      },
+    },
+    status: {
+      label: {
+        title: "",
+        htmlFor: "propertystatus",
+        classes: [styles.form__label],
+      },
+      elementType: "select",
+      elementConfig: {
+        options: [
+          {
+            value: "",
+            display: "Property Status",
+          },
+        ],
+        required: true,
+        id: "propertystatus",
+      },
+      elementClasses: [styles.form__select],
       parentClasses: [styles.form__group],
       value: "",
       validation: {
@@ -31,7 +59,7 @@ function SearchFilter() {
       valid: false,
       touched: false,
       error: {
-        message: "Keyword is required",
+        message: "Property type is required",
       },
     },
     property: {
@@ -106,16 +134,15 @@ function SearchFilter() {
             display: "Bedrooms",
           },
         ],
-        required: true,
         id: "bedroom",
       },
       elementClasses: [styles.form__select],
       parentClasses: [styles.form__group],
       value: "",
       validation: {
-        required: true,
+        required: false,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "City is required",
@@ -129,7 +156,6 @@ function SearchFilter() {
       },
       elementType: "number",
       elementConfig: {
-        required: true,
         id: "minprice",
         placeholder: "Min. Price",
       },
@@ -137,9 +163,9 @@ function SearchFilter() {
       parentClasses: [styles.form__group],
       value: "",
       validation: {
-        required: true,
+        required: false,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Min Price is required",
@@ -153,7 +179,6 @@ function SearchFilter() {
       },
       elementType: "number",
       elementConfig: {
-        required: true,
         id: "maxprice",
         placeholder: "Max. Price",
       },
@@ -161,38 +186,12 @@ function SearchFilter() {
       parentClasses: [styles.form__group],
       value: "",
       validation: {
-        required: true,
+        required: false,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Max Price is required",
-      },
-    },
-    propertyId: {
-      label: {
-        title: "",
-        htmlFor: "propertyId",
-        classes: [styles.form__label],
-      },
-      elementType: "input",
-      elementConfig: {
-        options: [],
-        type: "text",
-        required: true,
-        id: "propertyId",
-        placeholder: "Property Id",
-      },
-      elementClasses: [styles.form__input],
-      parentClasses: [styles.form__group],
-      value: "",
-      validation: {
-        required: true,
-      },
-      valid: false,
-      touched: false,
-      error: {
-        message: "City is required",
       },
     },
   });

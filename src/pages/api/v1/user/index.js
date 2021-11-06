@@ -6,9 +6,7 @@ export default async (req, res) => {
   if (req.method === "GET") {
     const [user, err] = await userApi.getUser();
 
-    if (user) {
-      return res.send(user);
-    }
+    if (user) return res.send(user);
 
     if (err && err.response && err.response.data) {
       return res.status(err.response.status).send(err.response.data);
