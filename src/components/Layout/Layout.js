@@ -31,6 +31,14 @@ function Layout({ title, tabBar, children }) {
     );
   };
 
+  const toggleTabBar = () => {
+    setTabBar(
+      updateObject(tabBar, {
+        visibility: !tabBar.visibility,
+      })
+    );
+  };
+
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
       return React.cloneElement(child, {

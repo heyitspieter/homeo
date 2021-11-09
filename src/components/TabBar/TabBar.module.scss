@@ -4,12 +4,24 @@
     z-index: 4;
     width: 100%;
     position: fixed;
+    visibility: visible;
     background-color: #ffffff;
+    transition: all 0.29s ease-in-out;
     box-shadow: 0.5rem 0 1.5rem rgb(0 0 0 / 8%);
 
     @media screen and (min-width: 37.5em) {
         display: none;
     }
+}
+
+.translateY__bottom {
+    bottom: -100rem;
+    visibility: hidden;
+}
+
+.translateY__top {
+    bottom: 0;
+    visibility: visible;
 }
 
 .grid {

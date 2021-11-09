@@ -1,6 +1,7 @@
 import Image from "next/image";
 import className from "classnames";
 import Svg from "src/components/Svg/Svg";
+
 import styles from "src/components/Search/SearchForm/SearchForm.module.scss";
 
 function SearchFormResults({ count }) {
@@ -50,7 +51,7 @@ function SearchFormResults({ count }) {
             <Image
               src="/images/home-1.jpg"
               layout="responsive"
-              height={200}
+              height={210}
               width={300}
               alt="home 1"
             />
@@ -91,7 +92,7 @@ function SearchFormResults({ count }) {
             <Image
               src="/images/home-2.jpg"
               layout="responsive"
-              height={200}
+              height={210}
               width={300}
               alt="home 2"
             />
@@ -132,7 +133,7 @@ function SearchFormResults({ count }) {
             <Image
               src="/images/home-4.jpg"
               layout="responsive"
-              height={200}
+              height={210}
               width={300}
               alt="home 4"
             />

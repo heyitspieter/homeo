@@ -1,5 +1,7 @@
 import Image from "next/image";
+import className from "classnames";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 import Svg from "src/components/Svg/Svg";
 import { useAuth } from "src/context/AuthContext";
 import ActiveButton from "src/components/ActiveButton/ActiveButton";
@@ -11,8 +13,16 @@ function TabBar({ toggleAuthModal }) {
 
   const { isAuthenticated } = useAuth();
 
+  const visibility = useSelector((state) => state.tabBar.visibility);
+
+  const tabBarClass = className({
+    [styles.container]: true,
+    [styles.translateY__top]: visibility,
+    [styles.translateY__bottom]: !visibility,
+  });
+
   return (
-    <div className={styles.container}>
+    <div className={tabBarClass}>
       <div className={styles.grid}>
         <ActiveButton activeClassName={styles.activeTab}>
           <button id="/" onClick={() => router.push("/")}>

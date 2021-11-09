@@ -1,6 +1,10 @@
 .container {
     padding: 0 2rem;
 
+    @media screen and (max-width: 37.5em) {
+        padding: 0 1.5rem;
+    }
+
     &::-webkit-scrollbar {
         width: 0.6rem;
     }

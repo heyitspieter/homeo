@@ -1,10 +1,12 @@
 import className from "classnames";
+import Svg from "src/components/Svg/Svg";
 import AuthForm from "src/components/Form/FormTemplates/AuthForm";
 import SearchForm from "src/components/Form/FormTemplates/SearchForm";
 import ListingForm from "src/components/Form/FormTemplates/ListingForm";
 import HeroSearchForm from "src/components/Form/FormTemplates/HeroSearchForm";
 import SearchFilterForm from "src/components/Form/FormTemplates/SearchFilterForm";
 
+import { iconSelect, selectWrapper } from "styles/modules/Utility.module.scss";
 import { labelError, inputError } from "styles/modules/Error.module.scss";
 
 const FormInput = ({
@@ -66,24 +68,27 @@ const FormInput = ({
       const { options, ...selectProps } = elementConfig;
 
       inputElement = (
-        <select
-          className={inputClass}
-          onChange={write}
-          {...selectProps}
-          value={value}
-        >
-          {elementConfig.options.map((option, index) => {
-            return (
-              <option
-                key={index}
-                value={option.value}
-                disabled={option.disabled}
-              >
-                {option.display}
-              </option>
-            );
-          })}
-        </select>
+        <div className={selectWrapper}>
+          <select
+            className={inputClass}
+            onChange={write}
+            {...selectProps}
+            value={value}
+          >
+            {elementConfig.options.map((option, index) => {
+              return (
+                <option
+                  key={index}
+                  value={option.value}
+                  disabled={option.disabled}
+                >
+                  {option.display}
+                </option>
+              );
+            })}
+          </select>
+          <Svg className={iconSelect} symbol="chevron" />
+        </div>
       );
       break;
     default:

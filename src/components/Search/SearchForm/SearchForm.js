@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { toggleTabBar } from "src/store/actions";
 import { updateObject, checkFormValidity } from "src/helpers";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
@@ -20,8 +22,10 @@ function SearchForm() {
         type: "text",
         id: "query",
         required: true,
-        placeholder: "Enter an address, state, city or local goverment",
         autoComplete: "off",
+        onBlur: () => onToggleTabBar(true),
+        onFocus: () => onToggleTabBar(false),
+        placeholder: "Enter an address, state, city or local goverment",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -40,6 +44,10 @@ function SearchForm() {
   const [formValidity, setFormValidity] = useState(true);
 
   const [searchResults, setSearchResults] = useState([]);
+
+  const dispatch = useDispatch();
+
+  const onToggleTabBar = (visibility) => dispatch(toggleTabBar(visibility));
 
   let formElementsArray = [];
 

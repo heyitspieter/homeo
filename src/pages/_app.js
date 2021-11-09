@@ -1,4 +1,5 @@
 import { SWRConfig } from "swr";
+import { wrapper } from "src/store";
 import { ToastContainer } from "react-toastify";
 import AuthProvider from "src/context/AuthContext";
 import SidedrawerProvider from "src/context/SidedrawerContext";
@@ -37,4 +38,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

@@ -1,6 +1,8 @@
 import className from "classnames";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
+import { toggleTabBar } from "src/store/actions";
 import { checkFormValidity, updateObject } from "src/helpers";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
@@ -20,6 +22,8 @@ function Hero() {
         type: "text",
         id: "search",
         required: true,
+        onBlur: () => onToggleTabBar(true),
+        onFocus: () => onToggleTabBar(false),
         placeholder: "Enter an address, state, city or local goverment",
       },
       elementClasses: [styles.form__input],
@@ -37,6 +41,10 @@ function Hero() {
   });
 
   const [formValidity, setFormValidity] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const onToggleTabBar = (visibility) => dispatch(toggleTabBar(visibility));
 
   let formElementsArray = [];
 
