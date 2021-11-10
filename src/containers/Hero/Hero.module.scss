@@ -91,7 +91,9 @@
 }
 
 .form {
+    z-index: 1;
     display: block;
+    position: relative;
     margin-top: 2.8rem;
 
     &__group {
@@ -99,10 +101,58 @@
         align-items: center;
         border-radius: 5rem;
         background-color: #ffffff;
+        border-bottom: 1px solid #ebebeb;
         padding: 0.6rem 0.6rem 0.6rem 1.7rem;
     }
 
     &__label {
+    }
+
+    &__dropdown {
+        left: 0;
+        width: 100%;
+        z-index: -1;
+        top: 2.7rem;
+        position: absolute;
+        background-color: #ffffff;
+        border-radius: 0 0 0.6rem 0.6rem;
+        box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 8%);
+
+        &_list {
+            list-style-type: none;
+            padding: 3rem 0 0.2rem;
+
+            li {
+                display: flex;
+                cursor: pointer;
+                align-items: center;
+                padding: 0.85rem 1.4rem;
+                transition: all 0.28s ease-in-out;
+
+                &:hover {
+                    background-color: #f6f6f6;
+                }
+
+                div {
+                    display: flex;
+                    margin-left: 1rem;
+                    flex-direction: column;
+
+                    span {
+                        &:first-of-type {
+                            font-weight: 600;
+                            font-size: 1.48rem;
+                        }
+
+                        &:last-of-type {
+                            color: #777777;
+                            font-size: 1.33rem;
+                            text-transform: capitalize;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     &__input {
@@ -160,4 +210,10 @@
     height: 2rem;
     stroke-width: 1.1;
     stroke: #ffffff;
+}
+.iconMapPlace {
+    width: 2.45rem;
+    height: 2.45rem;
+    stroke: #232323;
+    stroke-width: 1.3;
 }

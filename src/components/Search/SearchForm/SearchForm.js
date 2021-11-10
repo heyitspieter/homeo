@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { toggleTabBar } from "src/store/actions";
+import { MapContext } from "src/context/MapContext";
+import { useContext, useState, useEffect } from "react";
+import usePlacesAutocomplete from "use-places-autocomplete";
 import { updateObject, checkFormValidity } from "src/helpers";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
@@ -10,6 +13,8 @@ import SearchFormDropdown from "src/components/Search/SearchForm/SearchFormDropd
 import styles from "src/components/Search/SearchForm/SearchForm.module.scss";
 
 function SearchForm() {
+  const inputRef = useRef();
+
   const [formControls, setFormControls] = useState({
     query: {
       label: {
@@ -21,6 +26,7 @@ function SearchForm() {
       elementConfig: {
         type: "text",
         id: "query",
+        ref: inputRef,
         required: true,
         autoComplete: "off",
         onBlur: () => onToggleTabBar(true),
@@ -41,11 +47,28 @@ function SearchForm() {
     },
   });
 
+  const formRef = useRef();
+
   const [formValidity, setFormValidity] = useState(true);
 
   const [searchResults, setSearchResults] = useState([]);
 
+  const mapContext = useContext(MapContext);
+
   const dispatch = useDispatch();
+
+  const {
+    init,
+    ready,
+    setValue,
+    clearSuggestions,
+    suggestions: { data },
+  } = usePlacesAutocomplete({
+    initOnMount: false,
+    requestOptions: {
+      componentRestrictions: { country: "ng" },
+    },
+  });
 
   const onToggleTabBar = (visibility) => dispatch(toggleTabBar(visibility));
 
@@ -57,6 +80,29 @@ function SearchForm() {
       config: formControls[key],
     });
   }
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    if (mapContext.isReady) init();
+  }, [mapContext]);
+
+  useEffect(() => {
+    if (ready) {
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        query: {
+          ...prevFormControls.query,
+          elementConfig: {
+            ...prevFormControls.query.elementConfig,
+            disabled: !ready,
+          },
+        },
+      }));
+    }
+  }, [ready]);
 
   const inputChangeHandler = (event, formControlKey) => {
     const updatededFormControls = updateObject(formControls, {
@@ -76,6 +122,7 @@ function SearchForm() {
       formIsValid = updatededFormControls[key].valid && formIsValid;
     }
 
+    setValue(event.target.value);
     setFormValidity(formIsValid);
     setFormControls(updatededFormControls);
   };
@@ -101,6 +148,26 @@ function SearchForm() {
     </FormInput>
   ));
 
+  const onSelectPlace = (address) => {
+    setValue(address, false);
+
+    setFormControls(
+      updateObject(formControls, {
+        query: updateObject(formControls.query, {
+          value: address,
+        }),
+      })
+    );
+
+    clearSuggestions();
+
+    setTimeout(() => {
+      formRef.current.dispatchEvent(
+        new Event("submit", { bubbles: true, cancelable: true })
+      );
+    }, 600);
+  };
+
   const submitFormHandler = (e) => {
     e.preventDefault();
 
@@ -117,11 +184,19 @@ function SearchForm() {
 
   return (
     <div className={styles.container}>
-      <form onSubmit={(e) => submitFormHandler(e)} className={styles.form}>
+      <form
+        ref={formRef}
+        className={styles.form}
+        onSubmit={(e) => submitFormHandler(e)}
+      >
         {formInputs}
       </form>
       <div className={styles.container__flex}>
-        <SearchFormDropdown count={searchResults.length} />
+        <SearchFormDropdown
+          data={data}
+          count={searchResults.length}
+          onSelectPlace={onSelectPlace}
+        />
         <SearchFormResults count={searchResults.length} />
       </div>
     </div>

@@ -147,7 +147,9 @@ const FormInput = ({
           inputElement={inputElement}
           parentClasses={parentClasses}
           validationMessage={validationMessage}
-        />
+        >
+          {children}
+        </ListingForm>
       );
       break;
     case "search":

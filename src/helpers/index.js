@@ -1,5 +1,6 @@
 import axios from "axios";
 import cookie from "cookie";
+import moment from "moment"
 import validator from "validator";
 
 export const updateObject = (oldObject, updatedObjectProperties) => {
@@ -215,4 +216,26 @@ export const capitalize = (str) => {
   });
 
   return newString;
+};
+
+export const formatDate = (date) => {
+  if (!date) {
+    return undefined;
+  }
+
+  return moment(date).format("MMM Do YYYY");
+};
+
+export const formatNumber = (num, fixed = false) => {
+  if (num === 0) {
+    return num + ".00";
+  }
+
+  let parts = fixed
+    ? Math.abs(num).toFixed(2).toString().split(".")
+    : num.toString().split(".");
+
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  return parts.join(".");
 };

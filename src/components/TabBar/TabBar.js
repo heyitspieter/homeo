@@ -31,7 +31,7 @@ function TabBar({ toggleAuthModal }) {
           </button>
         </ActiveButton>
         <ActiveButton activeClassName={styles.activeTab}>
-          <button id="/search" onClick={() => router.push("/search")}>
+          <button id="/search" onClick={() => router.push("/search?v=mobile")}>
             <Svg className={styles.iconSearch} symbol="search-glyph" />
             <span>Search</span>
           </button>

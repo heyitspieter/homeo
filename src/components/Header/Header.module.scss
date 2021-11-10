@@ -129,6 +129,10 @@
         cursor: pointer;
         background: none;
     }
+
+    &__fixed {
+        position: fixed;
+    }
 }
 
 .harmburgerBlue {

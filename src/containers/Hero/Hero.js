@@ -1,9 +1,13 @@
 import className from "classnames";
 import { useRouter } from "next/router";
+import Svg from "src/components/Svg/Svg";
 import { useDispatch } from "react-redux";
-import { useState, useEffect } from "react";
 import { toggleTabBar } from "src/store/actions";
+import { useIsMobile } from "src/hooks/mediaQuery";
+import { MapContext } from "src/context/MapContext";
+import usePlacesAutocomplete from "use-places-autocomplete";
 import { checkFormValidity, updateObject } from "src/helpers";
+import { useContext, useRef, useState, useEffect } from "react";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
 
@@ -21,6 +25,7 @@ function Hero() {
       elementConfig: {
         type: "text",
         id: "search",
+        disabled: true,
         required: true,
         onBlur: () => onToggleTabBar(true),
         onFocus: () => onToggleTabBar(false),
@@ -42,13 +47,19 @@ function Hero() {
 
   const [formValidity, setFormValidity] = useState(false);
 
+  const mapContext = useContext(MapContext);
+
   const dispatch = useDispatch();
+
+  const formRef = useRef();
+
+  const router = useRouter();
+
+  const isMobile = useIsMobile(599);
 
   const onToggleTabBar = (visibility) => dispatch(toggleTabBar(visibility));
 
   let formElementsArray = [];
-
-  const router = useRouter();
 
   for (let key in formControls) {
     formElementsArray.push({
@@ -56,6 +67,38 @@ function Hero() {
       config: formControls[key],
     });
   }
+
+  const {
+    init,
+    ready,
+    setValue,
+    clearSuggestions,
+    suggestions: { data },
+  } = usePlacesAutocomplete({
+    initOnMount: false,
+    requestOptions: {
+      componentRestrictions: { country: "ng" },
+    },
+  });
+
+  useEffect(() => {
+    if (mapContext.isReady) init();
+  }, [mapContext]);
+
+  useEffect(() => {
+    if (ready) {
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        search: {
+          ...prevFormControls.search,
+          elementConfig: {
+            ...prevFormControls.search.elementConfig,
+            disabled: !ready,
+          },
+        },
+      }));
+    }
+  }, [ready]);
 
   const inputChangeHandler = (event, formControlKey) => {
     const updatededFormControls = updateObject(formControls, {
@@ -75,6 +118,7 @@ function Hero() {
       formIsValid = updatededFormControls[key].valid && formIsValid;
     }
 
+    setValue(event.target.value);
     setFormValidity(formIsValid);
     setFormControls(updatededFormControls);
   };
@@ -100,11 +144,35 @@ function Hero() {
     </FormInput>
   ));
 
+  const onSelectPlace = (address) => {
+    setValue(address, false);
+
+    setFormControls(
+      updateObject(formControls, {
+        search: updateObject(formControls.search, {
+          value: address,
+        }),
+      })
+    );
+
+    clearSuggestions();
+
+    setTimeout(() => {
+      formRef.current.dispatchEvent(
+        new Event("submit", { bubbles: true, cancelable: true })
+      );
+    }, 600);
+  };
+
   const submitFormHandler = (e) => {
     e.preventDefault();
 
     if (formValidity) {
-      router.push(`/search?q=${formControls.search.value}`);
+      router.push(
+        `/search?q=${formControls.search.value}&v=${
+          isMobile ? "mobile" : "desktop"
+        }`
+      );
     }
   };
 
@@ -124,8 +192,37 @@ function Hero() {
             <button className={tabClass}>Buy</button>
             <button>Rent</button>
           </div>
-          <form onSubmit={(e) => submitFormHandler(e)} className={styles.form}>
+          <form
+            ref={formRef}
+            className={styles.form}
+            onSubmit={(e) => submitFormHandler(e)}
+          >
             {formInputs}
+            {data.length > 0 && (
+              <div className={styles.form__dropdown}>
+                <ul className={styles.form__dropdown_list}>
+                  {data.map((address, index) => {
+                    return (
+                      <li
+                        key={index}
+                        onClick={() => onSelectPlace(address.description)}
+                      >
+                        <Svg
+                          className={styles.iconMapPlace}
+                          symbol="map-place"
+                        />
+                        <div>
+                          <span>{address.structured_formatting.main_text}</span>
+                          <span>
+                            {address.structured_formatting.secondary_text}
+                          </span>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
           </form>
         </div>
       </div>

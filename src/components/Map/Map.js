@@ -1,4 +1,6 @@
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import { useContext } from "react";
+import { MapContext } from "src/context/MapContext";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 
 import styles from "src/components/Map/Map.module.scss";
 
@@ -12,11 +14,9 @@ let options = {
 };
 
 function Map({ zoom, height, config, location }) {
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY,
-  });
+  const mapContext = useContext(MapContext);
 
-  if (!isLoaded)
+  if (!mapContext.isReady)
     return (
       <div className={styles.container}>
         <p>"Loading Map..."</p>

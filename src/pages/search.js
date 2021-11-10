@@ -1,9 +1,6 @@
-import { useRef } from "react";
 import dynamic from "next/dynamic";
 import Search from "src/components/Search/Search";
 import Layout from "src/components/Layout/Layout";
-import { useIsMobile } from "src/hooks/mediaQuery";
-import Animated from "src/components/Animated/Animated";
 
 const SearchMap = dynamic(() =>
   import("src/components/Search/SearchMap/SearchMap")
@@ -21,54 +18,34 @@ const SearchFilter = dynamic(() =>
   import("src/components/Search/SearchFilter/SearchFilter")
 );
 
-export default function search() {
-  const mobileSearchRef = useRef();
-  const desktopSearchRef = useRef();
+export default function search({ view }) {
+  const renderView = () => {
+    if (view === "mobile") {
+      return <SearchForm />;
+    }
 
-  const isMobile = useIsMobile(599);
+    if (view === "desktop") {
+      return (
+        <>
+          <SearchFilter />
+          <SearchFeed />
+          <SearchMap />
+        </>
+      );
+    }
 
-  const mobileSearchConfig = {
-    nodeRef: mobileSearchRef,
-    mountOnEnter: true,
-    unmountOnExit: true,
-    in: isMobile,
-    timeout: { enter: 0, exit: 0 },
-    classNames: {
-      enter: "",
-      enterActive: "",
-      exit: "",
-      exitActive: "",
-    },
-  };
-
-  const desktopSearchConfig = {
-    nodeRef: desktopSearchRef,
-    mountOnEnter: true,
-    unmountOnExit: true,
-    in: !isMobile,
-    timeout: { enter: 0, exit: 0 },
-    classNames: {
-      enter: "",
-      enterActive: "",
-      exit: "",
-      exitActive: "",
-    },
+    return null;
   };
 
   return (
     <Layout tabBar title="Secutitex: Search properties for rent or sale in NG">
-      <Search>
-        <Animated type="css" config={mobileSearchConfig}>
-          <SearchForm />
-        </Animated>
-        <Animated type="css" config={desktopSearchConfig}>
-          <>
-            <SearchFilter />
-            <SearchFeed />
-            <SearchMap />
-          </>
-        </Animated>
-      </Search>
+      <Search>{renderView()}</Search>
     </Layout>
   );
 }
+
+export const getServerSideProps = ({ query }) => {
+  let view = query.v;
+
+  return { props: { view: view || null } };
+};

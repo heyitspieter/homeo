@@ -1,6 +1,7 @@
 import { SWRConfig } from "swr";
 import { wrapper } from "src/store";
 import { ToastContainer } from "react-toastify";
+import MapProvider from "src/context/MapContext";
 import AuthProvider from "src/context/AuthContext";
 import SidedrawerProvider from "src/context/SidedrawerContext";
 
@@ -30,7 +31,9 @@ function MyApp({ Component, pageProps }) {
     >
       <AuthProvider>
         <SidedrawerProvider>
-          <Component {...pageProps} />
+          <MapProvider>
+            <Component {...pageProps} />
+          </MapProvider>
         </SidedrawerProvider>
       </AuthProvider>
       <ToastContainer {...toastConfig} />

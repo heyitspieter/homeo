@@ -79,7 +79,7 @@ function AccountSetting() {
         placeholder: "Confirm New Password",
         autoComplete: "off",
       },
-      elementClasses: [styles.form__select],
+      elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
       value: "",
       validation: {

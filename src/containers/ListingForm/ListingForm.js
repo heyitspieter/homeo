@@ -1,11 +1,22 @@
-import { useState } from "react";
-import { updateObject, checkFormValidity } from "src/helpers";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import { useAuth } from "src/context/AuthContext";
+import { MapContext } from "src/context/MapContext";
+import { useCreateListing } from "src/hooks/listing";
+import { useContext, useEffect, useState } from "react";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
+import { updateObject, checkFormValidity, getImageDataURL } from "src/helpers";
+import ListingFormDropdown from "src/containers/ListingForm/ListingFormDropdown/ListingFormDropdown";
+
+import usePlacesAutocomplete, {
+  getLatLng,
+  getGeocode,
+} from "use-places-autocomplete";
 
 import styles from "src/containers/ListingForm/ListingForm.module.scss";
 
-function ListingForm() {
+function ListingForm({ toggleAuthModal }) {
   const [formControls, setFormControls] = useState({
     name: {
       label: {
@@ -19,7 +30,6 @@ function ListingForm() {
         id: "name",
         required: true,
         placeholder: "Property Name",
-        autoComplete: "off",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -99,11 +109,10 @@ function ListingForm() {
       },
       elementType: "input",
       elementConfig: {
-        type: "number",
+        type: "text",
         id: "price",
         required: true,
         placeholder: "Property Price (NGN)",
-        autoComplete: "off",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -129,7 +138,6 @@ function ListingForm() {
         id: "keywords",
         required: true,
         placeholder: "Property Keywords e.g (5 Bedroom duplex, Jacuzzi)",
-        autoComplete: "off",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -155,7 +163,6 @@ function ListingForm() {
         required: true,
         placeholder: "Property Description",
         rows: 7,
-        autoComplete: "off",
       },
       elementClasses: [styles.form__textarea],
       parentClasses: [styles.form__group, styles.span__row_100],
@@ -180,7 +187,6 @@ function ListingForm() {
         type: "number",
         id: "beds",
         required: false,
-        autoComplete: "off",
         min: 1,
         placeholder: "Bedrooms (optional)",
       },
@@ -210,7 +216,6 @@ function ListingForm() {
         required: false,
         min: 1,
         placeholder: "Bathrooms (optional)",
-        autoComplete: "off",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -235,14 +240,15 @@ function ListingForm() {
       elementConfig: {
         type: "number",
         id: "garages",
+        min: 1,
         required: false,
         placeholder: "Garages (optional)",
-        autoComplete: "off",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
       value: "",
       validation: {
+        min: 1,
         required: false,
       },
       valid: true,
@@ -259,11 +265,10 @@ function ListingForm() {
       },
       elementType: "input",
       elementConfig: {
-        type: "number",
+        type: "text",
         id: "area",
         required: true,
         placeholder: "Area (sqft)",
-        autoComplete: "off",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -289,7 +294,6 @@ function ListingForm() {
         id: "address",
         required: true,
         placeholder: "Friendly Address",
-        autoComplete: "off",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -301,6 +305,31 @@ function ListingForm() {
       touched: false,
       error: {
         message: "Address is required",
+      },
+    },
+    location: {
+      label: {
+        title: "",
+        htmlFor: "location",
+        classes: [styles.form__label],
+      },
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        id: "location",
+        required: true,
+        placeholder: "Property  Location e.g (Ajah, Lekki Phase 1)",
+      },
+      elementClasses: [styles.form__input],
+      parentClasses: [styles.form__group],
+      value: "",
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+      error: {
+        message: "Location is required",
       },
     },
     zipcode: {
@@ -315,7 +344,6 @@ function ListingForm() {
         id: "zipcode",
         required: true,
         placeholder: "Zipcode",
-        autoComplete: "off",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -339,7 +367,6 @@ function ListingForm() {
       elementConfig: {
         id: "country",
         required: true,
-        autoComplete: "off",
         options: [{ value: "NG", display: "Nigeria" }],
       },
       elementClasses: [styles.form__input],
@@ -365,7 +392,6 @@ function ListingForm() {
         type: "text",
         id: "yearbuilt",
         required: true,
-        autoComplete: "off",
         placeholder: "Year Built",
       },
       elementClasses: [styles.form__input],
@@ -418,7 +444,6 @@ function ListingForm() {
         id: "features",
         required: true,
         placeholder: "Property Features e.g (Swimming pool, Gym)",
-        autoComplete: "off",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -436,6 +461,29 @@ function ListingForm() {
 
   const [formValidity, setFormValidity] = useState(false);
 
+  const router = useRouter();
+
+  const [geoLocation, setGeoLocation] = useState(null);
+
+  const [createListing, { data: success, error, loading }] = useCreateListing();
+
+  const { isAuthenticated } = useAuth();
+
+  const mapContext = useContext(MapContext);
+
+  const {
+    init,
+    ready,
+    setValue,
+    clearSuggestions,
+    suggestions: { data },
+  } = usePlacesAutocomplete({
+    initOnMount: false,
+    requestOptions: {
+      componentRestrictions: { country: "ng" },
+    },
+  });
+
   let formElementsArray = [];
 
   for (let key in formControls) {
@@ -444,6 +492,55 @@ function ListingForm() {
       config: formControls[key],
     });
   }
+
+  useEffect(() => {
+    let timer = null;
+
+    if (success) {
+      let newFormControls = { ...formControls };
+
+      for (let key in newFormControls) {
+        newFormControls[key].value = "";
+        newFormControls[key].valid = false;
+        newFormControls[key].touched = false;
+      }
+
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        ...newFormControls,
+      }));
+
+      toast.success("Listing created  successfully");
+      timer = setTimeout(() => router.push("/account/property-list"), 500);
+    }
+
+    if (error) {
+      toast.error(error);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [success, error]);
+
+  useEffect(() => {
+    if (mapContext.isReady && isAuthenticated) init();
+  }, [mapContext, isAuthenticated]);
+
+  useEffect(() => {
+    if (ready) {
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        location: {
+          ...prevFormControls.location,
+          elementConfig: {
+            ...prevFormControls.location.elementConfig,
+            disabled: !ready,
+          },
+        },
+      }));
+    }
+  }, [ready]);
 
   const inputChangeHandler = (event, formControlKey) => {
     let updatededFormControls = null;
@@ -480,8 +577,37 @@ function ListingForm() {
       formIsValid = updatededFormControls[key].valid && formIsValid;
     }
 
+    if (formControlKey === "location") {
+      setValue(event.target.value);
+    }
+
     setFormValidity(formIsValid);
     setFormControls(updatededFormControls);
+  };
+
+  const onSelectPlace = async (address) => {
+    setValue(address, false);
+
+    setFormControls(
+      updateObject(formControls, {
+        location: updateObject(formControls.location, {
+          value: address,
+        }),
+      })
+    );
+
+    clearSuggestions();
+
+    try {
+      const results = await getGeocode({ address });
+      const { lat, lng } = await getLatLng(results[0]);
+
+      const location = { lat, lng, address };
+
+      setGeoLocation(location);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
   };
 
   /** Iterate over all the form elements and return it to the view */
@@ -500,14 +626,46 @@ function ListingForm() {
       parentClasses={config.parentClasses}
       invalid={config.touched && !config.valid}
       write={(event) => inputChangeHandler(event, id)}
-    />
+    >
+      {id === "location" && (
+        <ListingFormDropdown onSelectPlace={onSelectPlace} data={data} />
+      )}
+    </FormInput>
   ));
 
-  const submitFormHandler = (e) => {
+  const submitFormHandler = async (e) => {
     e.preventDefault();
 
-    if (formValidity) {
+    if (!isAuthenticated) {
+      toggleAuthModal();
     }
+
+    const formData = new FormData();
+
+    if (formValidity) {
+      for (let key in formControls) {
+        if (key !== "images" && key !== "location") {
+          formData.append(key, formControls[key].value);
+        }
+      }
+
+      let imagesData = [];
+
+      for (let i = 0; i < formControls.images.files.length; i++) {
+        const image = await getImageDataURL(formControls.images.files[i]);
+        imagesData = [...imagesData, { data: image.data.link }];
+      }
+
+      formData.append("images", JSON.stringify(imagesData));
+
+      formData.append("location", JSON.stringify(geoLocation));
+
+      createListing(formData);
+    }
+  };
+
+  const btnConfig = {
+    disabled: !formValidity || loading,
   };
 
   return (
@@ -521,22 +679,27 @@ function ListingForm() {
           </span>
         </p>
       </div>
-      <form onSubmit={(e) => submitFormHandler(e)} className={styles.form}>
+      <form
+        className={styles.form}
+        encType="multipart/form-data"
+        onSubmit={(e) => submitFormHandler(e)}
+      >
         <div className={styles.label}>
           <h3>Property Info</h3>
         </div>
-        {formInputs.slice(0, 13)}
+        {formInputs.slice(0, 15)}
         <div className={styles.label}>
           <h3>Media</h3>
         </div>
-        {formInputs.slice(14, 15)}
+        {formInputs.slice(15, 16)}
         <div className={styles.label}>
           <h3>Amenities</h3>
         </div>
-        {formInputs.slice(15)}
+        {formInputs.slice(16)}
         <FormButton
-          btnValue="Submit Listing"
+          config={btnConfig}
           parentClasses={[styles.form__button]}
+          btnValue={loading ? "Submitting..." : "Submit Listing"}
         />
       </form>
     </div>

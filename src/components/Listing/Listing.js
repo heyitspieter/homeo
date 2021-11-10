@@ -1,36 +1,64 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import Svg from "src/components/Svg/Svg";
+import { formatNumber } from "src/helpers";
+import { useEffect, useState } from "react";
+import ListingImage from "src/components/Listing/ListingImage/ListingImage";
+import ListingThumbnail from "src/components/Listing/ListingThumbnail/ListingThumbnail";
+
+const placeholderData =
+  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4=";
 
 import styles from "src/components/Listing/Listing.module.scss";
 
-function Listing() {
+function Listing({ listing }) {
+  const [currentImage, setCurrentImage] = useState(placeholderData);
+
+  let imageSrc = placeholderData;
+
+  const router = useRouter();
+
+  useEffect(() => {
+    return () => {
+      setCurrentImage("");
+    };
+  }, []);
+
+  if (router.isFallback) {
+    return <p>Loading...</p>;
+  }
+
+  // if (currentImage.length > 0) {
+  //   imageSrc = currentImage;
+  // }
+
   return (
     <div className={styles.container}>
       <div className={styles.row}>
         <div className={styles.title}>
-          <h2 className={styles.title}>Luxury Family Loft by Victory Park</h2>
-          <p>Quincy St, Brooklyn, NY, USA</p>
+          <h2 className={styles.title}>{listing.name}</h2>
+          <p>{listing.address}</p>
         </div>
         <div className={styles.features}>
           <div className={styles.features__item}>
             <Svg className={styles.iconBed} symbol="bed" />
-            <span>4 Beds</span>
+            <span>{listing.beds} Beds</span>
           </div>
           <div className={styles.features__item}>
             <Svg className={styles.iconBathtub} symbol="bathtub" />
-            <span>5 Baths</span>
+            <span>{listing.baths} Baths</span>
           </div>
           <div className={styles.features__item}>
             <Svg className={styles.iconGarage} symbol="garage" />
-            <span>1 Garage</span>
+            <span>{listing.garages} Garage</span>
           </div>
           <div className={styles.features__item}>
             <Svg className={styles.iconRuler} symbol="ruler" />
-            <span>1200 Sq ft</span>
+            <span>{listing.area} Sq ft</span>
           </div>
           <div className={styles.features__item}>
             <Svg className={styles.iconCalendar} symbol="calendar" />
-            <span>Year Built: 2012</span>
+            <span>Year Built: {listing.yearBuilt}</span>
           </div>
         </div>
         <div className={styles.util}>
@@ -44,142 +72,27 @@ function Listing() {
           </button>
         </div>
         <div className={styles.price}>
-          <p>$7,200/mo</p>
+          <p>₦{formatNumber(listing.price)}</p>
           <span>Est. Mortgage</span>
         </div>
       </div>
       <div className={styles.row}>
-        <div className={styles.img}>
-          <figure>
-            <Image
-              src="/images/home-1.jpg"
-              layout="responsive"
-              height={295}
-              width={500}
-            />
-          </figure>
-        </div>
+        <ListingImage
+          imageId={listing.images[0]}
+          currentImage={currentImage}
+          setCurrentImage={setCurrentImage}
+        />
         <div className={styles.img__thumbnail}>
-          <figure>
-            <Image
-              src="/images/home-2.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/home-3.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/home-4.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/house.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/apartment.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/office.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/home-1.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/home-2.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/home-3.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/home-4.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/office.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/apartment.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/room.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/office.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
-          <figure>
-            <Image
-              src="/images/villa.jpg"
-              layout="responsive"
-              height={150}
-              width={200}
-            />
-          </figure>
+          {listing.images.map((image, i) => {
+            return (
+              <ListingThumbnail
+                key={i}
+                imageId={image}
+                currentImage={currentImage}
+                setCurrentImage={setCurrentImage}
+              />
+            );
+          })}
         </div>
       </div>
       <div className={styles.row}>
@@ -187,29 +100,12 @@ function Listing() {
           <div className={styles.row__grid_item}>
             <div className={styles.description}>
               <h3>Description</h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at
-                tempor arcu. Cras in lobortis lectus. Vestibulum in elit
-                consectetur dolor ornare finibus ac at augue. Aenean eleifend
-                enim nulla, facilisis dapibus lacus iaculis a. Suspendisse sed
-                ex nisi. Aenean sed nisl mauris. Vivamus vitae sem at lacus
-                tempor posuere. Aenean malesuada nibh nec lacus pellentesque,
-                vel luctus diam commodo. Suspendisse libero lectus, tempus ac
-                ultricies ac, cursus in erat. Quisque vel nisl nec odio sodales
-                hendrerit ac eget quam. Aenean leo erat, sollicitudin ut
-                tristique at, elementum blandit nisl.
-              </p>
-              <p>
-                Phasellus tempor tellus nec lorem tristique, id dapibus tellus
-                condimentum. Pellentesque pharetra dolor mi, quis sagittis nisl
-                accumsan non. Nulla pharetra vehicula ex, non pharetra nisi
-                suscipit et.
-              </p>
+              <p>{listing.description}</p>
             </div>
             <div className={styles.description__grid}>
               <h3>Location</h3>
               <p>
-                Address: <span>329 Queens bury street</span>
+                Address: <span>{listing.location.address}</span>
               </p>
               <p>
                 City: <span>Jersey Street</span>
@@ -218,41 +114,39 @@ function Listing() {
                 State: <span>New Jersey State</span>
               </p>
               <p>
-                Zipcode: <span>901101</span>
+                Zipcode: <span>{listing.zipcode}</span>
               </p>
               <p>
-                Country: <span>United States</span>
+                Country: <span>{listing.country}</span>
               </p>
             </div>
             <div className={styles.description__map}>Map</div>
             <div className={styles.description__grid}>
               <h3>Property Details</h3>
               <p>
-                Property ID: <span>AJL-0129</span>
+                Bedrooms: <span>{listing.beds}</span>
               </p>
               <p>
-                Bedrooms: <span>8</span>
+                Property Type: <span>{listing.category}</span>
               </p>
               <p>
-                Property Type: <span>Apartment</span>
+                Price: <span>₦{formatNumber(listing.price)}</span>
               </p>
               <p>
-                Price: <span>$7,200</span>
+                Bathrooms: <span>{listing.baths}</span>
               </p>
               <p>
-                Bathrooms: <span>5</span>
+                Property Status:{" "}
+                <span>{listing.status.split("-").join(" ")}</span>
               </p>
               <p>
-                Property Status: <span>For Sale</span>
+                Garage: <span>{listing.garages}</span>
               </p>
               <p>
-                Garage: <span>2</span>
+                Size: <span>{listing.area} Sq ft</span>
               </p>
               <p>
-                Size: <span>1560 Sq ft</span>
-              </p>
-              <p>
-                Year Built: <span>2012</span>
+                Year Built: <span>{listing.yearBuilt}</span>
               </p>
             </div>
           </div>
@@ -262,7 +156,7 @@ function Listing() {
                 <figure className={styles.contactBox__img}>
                   <Image src="/images/user-1.jpg" width={200} height={200} />
                 </figure>
-                <h3>Darell Williams</h3>
+                <h3>{`${listing.createdBy.firstname} ${listing.createdBy.lastname}`}</h3>
                 <button>View Listings</button>
               </div>
               <div className={styles.contactBox__actions}>

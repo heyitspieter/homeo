@@ -15,6 +15,7 @@ function ListingForm({
       <label className={labelClasses}>{label.title}</label>
       {inputElement}
       <p className={styles.textError}>{validationMessage}</p>
+      {children}
     </div>
   );
 }

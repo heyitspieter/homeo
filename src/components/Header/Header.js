@@ -21,6 +21,7 @@ function Header({ toggleAuthModal }) {
 
   const hamburgerClass = className({
     [styles.harmburger]: true,
+    [styles.harmburger__fixed]: sidedrawer.open,
     [styles.harmburgerBlue]: !sidedrawer.open && router.pathname !== "/",
   });
 
