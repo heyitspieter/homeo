@@ -640,12 +640,12 @@ function ListingForm({ toggleAuthModal }) {
       toggleAuthModal();
     }
 
-    const formData = new FormData();
+    let formData = {};
 
     if (formValidity) {
       for (let key in formControls) {
         if (key !== "images" && key !== "location") {
-          formData.append(key, formControls[key].value);
+          formData[key] = formControls[key].value;
         }
       }
 
@@ -656,9 +656,9 @@ function ListingForm({ toggleAuthModal }) {
         imagesData = [...imagesData, { data: image.data.link }];
       }
 
-      formData.append("images", JSON.stringify(imagesData));
+      formData["images"] = JSON.stringify(imagesData);
 
-      formData.append("location", JSON.stringify(geoLocation));
+      formData["location"] = JSON.stringify(geoLocation);
 
       createListing(formData);
     }
@@ -679,11 +679,7 @@ function ListingForm({ toggleAuthModal }) {
           </span>
         </p>
       </div>
-      <form
-        className={styles.form}
-        encType="multipart/form-data"
-        onSubmit={(e) => submitFormHandler(e)}
-      >
+      <form className={styles.form} onSubmit={(e) => submitFormHandler(e)}>
         <div className={styles.label}>
           <h3>Property Info</h3>
         </div>
