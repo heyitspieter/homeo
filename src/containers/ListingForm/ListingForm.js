@@ -408,7 +408,7 @@ function ListingForm({ toggleAuthModal }) {
     },
     images: {
       label: {
-        title: "(Up to 25 images. 500 x 500 pixels)",
+        title: "(Up to 15 images. 500 x 500 pixels)",
         htmlFor: "images",
         classes: [styles.form__label],
       },
@@ -429,7 +429,7 @@ function ListingForm({ toggleAuthModal }) {
       valid: false,
       touched: false,
       error: {
-        message: "At most 25 property images must be selected",
+        message: "At most 15 property images must be selected",
       },
     },
     features: {
@@ -554,7 +554,7 @@ function ListingForm({ toggleAuthModal }) {
             checkFormValidity(
               event.target.value,
               formControls[formControlKey].validation
-            ) && event.target.files.length === 25,
+            ) && event.target.files.length === 15,
           touched: true,
         }),
       });
