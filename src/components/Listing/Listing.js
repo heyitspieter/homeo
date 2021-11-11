@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
+import Map from "src/components/Map/Map";
 import Svg from "src/components/Svg/Svg";
 import { formatNumber } from "src/helpers";
 import { useEffect, useState } from "react";
@@ -8,6 +9,11 @@ import ListingThumbnail from "src/components/Listing/ListingThumbnail/ListingThu
 
 const placeholderData =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4=";
+
+const mapConfig = {
+  disableDefaultUI: true,
+  zoomControl: false,
+};
 
 import styles from "src/components/Listing/Listing.module.scss";
 
@@ -28,15 +34,14 @@ function Listing({ listing }) {
     return <p>Loading...</p>;
   }
 
-  // if (currentImage.length > 0) {
-  //   imageSrc = currentImage;
-  // }
-
   return (
     <div className={styles.container}>
       <div className={styles.row}>
         <div className={styles.title}>
           <h2 className={styles.title}>{listing.name}</h2>
+          {listing.verified && (
+            <Svg className={styles.iconVerified} symbol="verified" />
+          )}
           <p>{listing.address}</p>
         </div>
         <div className={styles.features}>
@@ -120,7 +125,16 @@ function Listing({ listing }) {
                 Country: <span>{listing.country}</span>
               </p>
             </div>
-            <div className={styles.description__map}>Map</div>
+            <div className={styles.description__map}>
+              <Map
+                zoom={8}
+                config={mapConfig}
+                location={{
+                  lat: listing.location.lat,
+                  lng: listing.location.lng,
+                }}
+              />
+            </div>
             <div className={styles.description__grid}>
               <h3>Property Details</h3>
               <p>
@@ -154,17 +168,30 @@ function Listing({ listing }) {
             <div className={styles.contactBox}>
               <div className={styles.contactBox__header}>
                 <figure className={styles.contactBox__img}>
-                  <Image src="/images/user-1.jpg" width={200} height={200} />
+                  <Image
+                    width={200}
+                    height={200}
+                    src={listing.createdBy.profileImage || "/images/avatar.jpg"}
+                  />
                 </figure>
                 <h3>{`${listing.createdBy.firstname} ${listing.createdBy.lastname}`}</h3>
                 <button>View Listings</button>
               </div>
               <div className={styles.contactBox__actions}>
-                <button>Contact Property</button>
-                <button>
+                <a
+                  target="__blank"
+                  className={styles.action__mail}
+                  href={`mailto:${listing.createdBy.email}`}
+                >
+                  Contact Property
+                </a>
+                <a
+                  className={styles.action__tel}
+                  href={`tel:${listing.createdBy.mobileNumber}`}
+                >
                   <Svg className={styles.iconWhatsapp} symbol="whatsapp" />
                   <span>WhatsApp</span>
-                </button>
+                </a>
               </div>
             </div>
           </div>

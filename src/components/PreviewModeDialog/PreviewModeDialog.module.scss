@@ -1,0 +1,78 @@
+.container {
+    left: 0;
+    right: 0;
+    top: 6rem;
+    z-index: 6;
+    width: 35rem;
+    display: flex;
+    margin: 0 auto;
+    position: fixed;
+    overflow: hidden;
+    align-items: center;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+    box-shadow: 0 2px 7px #dfdfdf;
+
+    p {
+        flex: 1;
+        font-weight: 600;
+        color: #2f3f5f;
+        font-size: 1.45rem;
+        padding: 1rem 1rem 1rem 2rem;
+    }
+
+    button {
+        border: 0;
+        cursor: pointer;
+        color: #ffffff;
+        font-weight: 600;
+        background: none;
+        font-size: 1.2rem;
+        font-family: inherit;
+        padding: 1.5rem 1.4rem;
+        text-transform: uppercase;
+        background-color: #C72C41;
+    }
+}
+
+.show {
+    animation: showDialog 0.5s ease-out forwards;
+}
+
+.hide {
+    animation: hideDialog 0.5s ease-out forwards;
+}
+
+@keyframes showDialog {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: translateY(15%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes hideDialog {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    10% {
+        opacity: 0.8;
+        transform: translateY(16%);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+}

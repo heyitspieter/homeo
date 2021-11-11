@@ -35,7 +35,7 @@ class ListingApi extends Api {
 
   async getListing(id) {
     try {
-      const res = await axios.get(`${this.apiUrl}/${id}`, this.config);
+      const res = await axios.get(`${this.apiUrl}/_lId/${id}`, this.config);
       return [res.data, null];
     } catch (err) {
       return [null, err];
@@ -45,6 +45,24 @@ class ListingApi extends Api {
   async getAllListings() {
     try {
       const res = await axios.get(this.apiUrl, this.config);
+      return [res.data, null];
+    } catch (err) {
+      return [null, err];
+    }
+  }
+
+  async verifyPreviewToken(token) {
+    try {
+      const res = await axios.post(`${this.apiUrl}/preview/verify`, { token });
+      return [res.data, null];
+    } catch (err) {
+      return [null, err];
+    }
+  }
+
+  async getListingPreview(id) {
+    try {
+      const res = await axios.get(`${this.apiUrl}/preview/listing/${id}`);
       return [res.data, null];
     } catch (err) {
       return [null, err];

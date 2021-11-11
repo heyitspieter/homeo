@@ -29,10 +29,22 @@ export const getStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ params, preview }) => {
   const listingApi = new ListingApi();
 
-  const [listing, err] = await listingApi.getListing(params.id);
+  let listing = null;
+
+  if (preview) {
+    const [listingPreview] = await listingApi.getListingPreview(params.id);
+
+    listing = listingPreview;
+
+    return { props: { listing } };
+  }
+
+  const [publicListing, err] = await listingApi.getListing(params.id);
+
+  listing = publicListing;
 
   if (listing) {
     return { props: { listing }, revalidate: 10 };

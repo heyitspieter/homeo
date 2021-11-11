@@ -7,15 +7,37 @@ import Footer from "src/components/Footer/Footer";
 import React, { useState, useEffect } from "react";
 import Sidedrawer from "src/components/Sidedrawer/Sidedrawer";
 import AuthModal from "src/components/Modals/AuthModal/AuthModal";
+import { useCheckPreview, useEndPreviewSession } from "src/hooks/preview";
+import PreviewModeDialog from "src/components/PreviewModeDialog/PreviewModeDialog";
 
 import styles from "src/components/Layout/Layout.module.scss";
 
 function Layout({ title, tabBar, children }) {
   const router = useRouter();
 
+  const { data: preview } = useCheckPreview();
+
+  const [endPreviewSession, { data: sessionEnded }] = useEndPreviewSession();
+
+  const [previewModeDialog, setPreviewModeDialog] = useState(false);
+
   const [authModal, setAuthModal] = useState({
     visibility: false,
   });
+
+  useEffect(() => {
+    if (sessionEnded) {
+      setPreviewModeDialog(false);
+    }
+  }, [sessionEnded]);
+
+  useEffect(() => {
+    if (preview) {
+      setPreviewModeDialog(true);
+    } else {
+      setPreviewModeDialog(false);
+    }
+  }, [preview]);
 
   useEffect(() => {
     if (!authModal.visibility) {
@@ -59,6 +81,10 @@ function Layout({ title, tabBar, children }) {
         ></link>
       </Head>
       <div className={styles.container}>
+        <PreviewModeDialog
+          endPreviewSession={endPreviewSession}
+          previewModeDialog={previewModeDialog}
+        />
         <Sidedrawer />
         <AuthModal show={authModal.visibility} close={toggleAuthModal} />
         <Header toggleAuthModal={toggleAuthModal} />

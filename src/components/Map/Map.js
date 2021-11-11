@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { MapContext } from "src/context/MapContext";
+import mapStyles from "src/components/Map/MapStyles";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
 import styles from "src/components/Map/Map.module.scss";
@@ -10,7 +11,7 @@ const mapContainerStyle = {
 };
 
 let options = {
-  styles,
+  styles: mapStyles,
 };
 
 function Map({ zoom, height, config, location }) {
@@ -35,7 +36,7 @@ function Map({ zoom, height, config, location }) {
       >
         <Marker
           icon={{
-            url: "/svg/location-black.svg",
+            url: "/map-icon.svg",
             origin: new window.google.maps.Point(0, 0),
             scaledSize: new window.google.maps.Size(30, 30),
           }}
