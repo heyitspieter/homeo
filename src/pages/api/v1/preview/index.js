@@ -16,7 +16,7 @@ export default async (req, res) => {
         }
       );
 
-      res.redirect(req.query.slug);
+      return res.redirect(req.query.slug);
     }
 
     if (err && err.response && err.response.data) {
