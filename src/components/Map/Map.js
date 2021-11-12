@@ -14,7 +14,7 @@ let options = {
   styles: mapStyles,
 };
 
-function Map({ zoom, height, config, location }) {
+function Map({ zoom, height, children, config, location }) {
   const mapContext = useContext(MapContext);
 
   if (!mapContext.isReady)
@@ -38,10 +38,12 @@ function Map({ zoom, height, config, location }) {
           icon={{
             url: "/map-icon.svg",
             origin: new window.google.maps.Point(0, 0),
+            anchor: new window.google.maps.Point(15, 15),
             scaledSize: new window.google.maps.Size(30, 30),
           }}
           position={location}
         />
+        {children}
       </GoogleMap>
     </div>
   );

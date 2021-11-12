@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import SearchApi from "src/apis/search";
 import Search from "src/components/Search/Search";
 import Layout from "src/components/Layout/Layout";
 
@@ -18,7 +19,7 @@ const SearchFilter = dynamic(() =>
   import("src/components/Search/SearchFilter/SearchFilter")
 );
 
-export default function search({ view }) {
+export default function search({ view, results }) {
   const renderView = () => {
     if (view === "mobile") {
       return <SearchForm />;
@@ -28,8 +29,8 @@ export default function search({ view }) {
       return (
         <>
           <SearchFilter />
-          <SearchFeed />
-          <SearchMap />
+          <SearchFeed results={results} />
+          <SearchMap results={results} />
         </>
       );
     }
@@ -44,8 +45,20 @@ export default function search({ view }) {
   );
 }
 
-export const getServerSideProps = ({ query }) => {
+export const getServerSideProps = async ({ query }) => {
   let view = query.v;
+  let address = query.q;
 
-  return { props: { view: view || null } };
+  let searchResults = [];
+
+  if (address && view === "desktop") {
+    const searchApi = new SearchApi();
+    const [results, err] = await searchApi.searchListings(query.q);
+
+    if (results) {
+      searchResults = results;
+    }
+  }
+
+  return { props: { view: view || null, results: searchResults } };
 };

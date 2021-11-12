@@ -154,14 +154,24 @@
                 align-self: flex-start;
                 justify-content: space-between;
 
-                span {
-                    color: #ffffff;
-                    font-weight: 500;
-                    font-size: 0.9rem;
-                    border-radius: 0.2rem;
-                    padding: 0.3rem 0.9rem;
-                    text-transform: uppercase;
-                    background-color: #081533;
+                div {
+                    span {
+                        color: #ffffff;
+                        font-weight: 600;
+                        font-size: 0.9rem;
+                        border-radius: 0.2rem;
+                        padding: 0.3rem 0.9rem;
+                        text-transform: uppercase;
+                        background-color: #081533;
+                    }
+
+                    & > *:not(:last-child) {
+                        margin-right: 0.5rem;
+                    }
+
+                    & > *:last-child {
+                        background-color: #ff0000;
+                    }
                 }
 
                 button {
@@ -176,10 +186,15 @@
                 margin-top: 8.4rem;
 
                 h4 {
+                    width: 22rem;
                     color: #ffffff;
+                    overflow: hidden;
                     font-weight: 600;
                     font-size: 1.43rem;
+                    white-space: nowrap;
                     margin-bottom: 0.3rem;
+                    text-overflow: ellipsis;
+                    text-transform: capitalize;
                 }
 
                 p {

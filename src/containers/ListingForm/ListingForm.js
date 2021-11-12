@@ -29,15 +29,15 @@ function ListingForm({ toggleAuthModal }) {
         type: "text",
         id: "name",
         required: true,
-        placeholder: "Property Name",
+        placeholder: "Property Name (optional)",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
       value: "",
       validation: {
-        required: true,
+        required: false,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Property name is required",

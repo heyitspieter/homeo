@@ -78,6 +78,8 @@ function Register({ activeTab, closeAuthModal }) {
           { value: "", display: "-- choose your profession --" },
           { value: "bricklayer", display: "BrickLayer" },
           { value: "surveyor", display: "Surveyor" },
+          { value: "carpenter", display: "Carpenter" },
+          { value: "interior decorator", display: "Interior Decorator" },
           { value: "architect", display: "Architect" },
           { value: "plumber", display: "Plumber" },
           { value: "electrical engineer", display: "Electrical Engineer" },

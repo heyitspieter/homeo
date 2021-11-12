@@ -1,13 +1,14 @@
+import { formatNumber } from "src/helpers";
 import SearchFeedItem from "src/components/Search/SearchFeed/SearchFeedItem/SearchFeedItem";
 
 import styles from "src/components/Search/SearchFeed/SearchFeed.module.scss";
 
-function SearchFeed() {
+function SearchFeed({ results }) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <p className={styles.header__count}>
-          13,000 <span>results</span>
+          {formatNumber(results.length || 0)} <span>result(s)</span>
         </p>
         <div className={styles.header__sort}>
           <span>Sort by:</span>
@@ -18,12 +19,14 @@ function SearchFeed() {
         </div>
       </div>
       <div className={styles.grid}>
-        <SearchFeedItem imgsrc="home-1.jpg" verified />
-        <SearchFeedItem imgsrc="home-2.jpg" />
-        <SearchFeedItem imgsrc="home-3.jpg" verified />
-        <SearchFeedItem imgsrc="home-4.jpg" />
-        <SearchFeedItem imgsrc="home-4.jpg" />
-        <SearchFeedItem imgsrc="home-4.jpg" />
+        {results.map((result, index) => {
+          return (
+            <SearchFeedItem
+              key={index}
+              listing={result}
+            />
+          );
+        })}
       </div>
       <div className={styles.footer}>
         <button className={styles.btnLoad}>Load More</button>

@@ -64,11 +64,6 @@ function Sidedrawer({}) {
                   VIP Escort Services
                 </a>
               </li>
-              <li className={styles.nav__list_item}>
-                <a href="#" className={styles.nav__list_link}>
-                  Legal & Consulting
-                </a>
-              </li>
             </ul>
           </nav>
           <div className={styles.footer}>

@@ -21,8 +21,6 @@ export default async (req, res) => {
       return res.send({ success: true });
     }
 
-    console.log(err);
-
     if (err && err.response && err.response.data) {
       return res.status(err.response.status).send(err.response.data);
     }

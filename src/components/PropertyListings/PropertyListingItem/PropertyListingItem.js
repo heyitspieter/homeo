@@ -12,7 +12,7 @@ const placeholderData =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4=";
 
 function PropertyListingItem({ listing }) {
-  const [getImage, { data: image, loading }] = useGetImage();
+  const [getImage, { data: image }] = useGetImage();
 
   useEffect(() => {
     getImage(listing.thumbnail);

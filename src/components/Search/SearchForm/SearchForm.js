@@ -1,7 +1,9 @@
 import { useRef } from "react";
+import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { toggleTabBar } from "src/store/actions";
 import { MapContext } from "src/context/MapContext";
+import { useSearchListings } from "src/hooks/search";
 import { useContext, useState, useEffect } from "react";
 import usePlacesAutocomplete from "use-places-autocomplete";
 import { updateObject, checkFormValidity } from "src/helpers";
@@ -49,7 +51,12 @@ function SearchForm() {
 
   const formRef = useRef();
 
+  const router = useRouter();
+
   const [formValidity, setFormValidity] = useState(true);
+
+  const [searchListings, { data: results, loading: searching }] =
+    useSearchListings();
 
   const [searchResults, setSearchResults] = useState([]);
 
@@ -82,8 +89,22 @@ function SearchForm() {
   }
 
   useEffect(() => {
+    if (router.query.q) {
+      searchListings(router.query.q);
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        query: { ...prevFormControls.query, value: router.query.q },
+      }));
+    }
+
     inputRef.current.focus();
   }, []);
+
+  useEffect(() => {
+    if (results) {
+      setSearchResults(results);
+    }
+  }, [results]);
 
   useEffect(() => {
     if (mapContext.isReady) init();
@@ -120,6 +141,10 @@ function SearchForm() {
 
     for (let key in updatededFormControls) {
       formIsValid = updatededFormControls[key].valid && formIsValid;
+    }
+
+    if (event.target.value.length > 0) {
+      setSearchResults([]);
     }
 
     setValue(event.target.value);
@@ -178,7 +203,13 @@ function SearchForm() {
     }
 
     if (formValidity) {
-      setSearchResults(["x"]);
+      router
+        .push(`/search?q=${formControls.query.value}&v=mobile`)
+        .then((fulfilled) => {
+          if (fulfilled) {
+            searchListings(formControls.query.value);
+          }
+        });
     }
   };
 
@@ -194,10 +225,14 @@ function SearchForm() {
       <div className={styles.container__flex}>
         <SearchFormDropdown
           data={data}
+          searching={searching}
           count={searchResults.length}
           onSelectPlace={onSelectPlace}
         />
-        <SearchFormResults count={searchResults.length} />
+        <SearchFormResults
+          count={searchResults.length}
+          searchResults={searchResults}
+        />
       </div>
     </div>
   );

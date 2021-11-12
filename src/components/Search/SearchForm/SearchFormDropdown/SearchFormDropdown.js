@@ -1,9 +1,10 @@
 import className from "classnames";
 import Svg from "src/components/Svg/Svg";
+import Spinner from "src/components/Spinner/Spinner";
 
 import styles from "src/components/Search/SearchForm/SearchForm.module.scss";
 
-function SearchFormDropdown({ data, count, onSelectPlace }) {
+function SearchFormDropdown({ data, searching, count, onSelectPlace }) {
   const dropdownClass = className({
     [styles.dropdown]: true,
     [styles.translateX_out__left]: count > 0,
@@ -11,6 +12,7 @@ function SearchFormDropdown({ data, count, onSelectPlace }) {
 
   return (
     <div className={dropdownClass}>
+      <Spinner loading={searching} />
       {data.length > 0 && (
         <ul className={styles.dropdown__list}>
           {data.map((address, index) => {

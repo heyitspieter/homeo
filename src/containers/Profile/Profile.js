@@ -84,6 +84,8 @@ function Profile() {
           { value: "plumber", display: "Plumber" },
           { value: "bricklayer", display: "BrickLayer" },
           { value: "surveyor", display: "Surveyor" },
+          { value: "carpenter", display: "Carpenter" },
+          { value: "interior decorator", display: "Interior Decorator" },
           { value: "architect", display: "Architect" },
           { value: "electrical engineer", display: "Electrical Engineer" },
         ],
