@@ -1,10 +1,12 @@
 import ListingApi from "src/apis/listing";
 import Layout from "src/components/Layout/Layout";
+import Toolbar from "src/components/Toolbar/Toolbar";
 import ListingUploadForm from "src/containers/ListingForm/ListingUploadForm/ListingUploadForm";
 
 export default function listingImageUpload({ images = [] }) {
   return (
     <Layout title="Secutitex: Upload Listing Images" tabBar>
+      <Toolbar />
       <ListingUploadForm images={images} />
     </Layout>
   );
