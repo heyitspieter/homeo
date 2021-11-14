@@ -1,6 +1,6 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost", "https://secutitex-api.herokuapp.com"],
+    domains: ["localhost", "secutitex-api.herokuapp.com"],
   },
 };
