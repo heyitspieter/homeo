@@ -4,6 +4,7 @@ import AuthForm from "src/components/Form/FormTemplates/AuthForm";
 import SearchForm from "src/components/Form/FormTemplates/SearchForm";
 import ListingForm from "src/components/Form/FormTemplates/ListingForm";
 import HeroSearchForm from "src/components/Form/FormTemplates/HeroSearchForm";
+import ListingImageForm from "src/components/Form/FormTemplates/ListingImageForm";
 import SearchFilterForm from "src/components/Form/FormTemplates/SearchFilterForm";
 
 import { iconSelect, selectWrapper } from "styles/modules/Utility.module.scss";
@@ -150,6 +151,18 @@ const FormInput = ({
         >
           {children}
         </ListingForm>
+      );
+      break;
+    case "listing-image":
+      inputTemplate = (
+        <ListingImageForm
+          label={label}
+          labelClasses={labelClass}
+          inputElement={inputElement}
+          parentClasses={parentClasses}
+          imageSrc={elementConfig.datasrc}
+          validationMessage={validationMessage}
+        />
       );
       break;
     case "search":

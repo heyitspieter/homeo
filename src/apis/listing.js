@@ -68,6 +68,28 @@ class ListingApi extends Api {
       return [null, err];
     }
   }
+
+  async getListingImages(id) {
+    try {
+      const res = await axios.get(`${this.apiUrl}/${id}/images`, this.config);
+      return [res.data, null];
+    } catch (err) {
+      return [null, err];
+    }
+  }
+
+  async uploadImage(image) {
+    try {
+      const res = await axios.patch(
+        `${this.apiUrl}/upload`,
+        image,
+        this.config
+      );
+      return [res.data, null];
+    } catch (err) {
+      return [null, err];
+    }
+  }
 }
 
 export default ListingApi;

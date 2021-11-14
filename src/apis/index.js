@@ -1,4 +1,3 @@
-import axios from "src/libs/axios";
 import { setCustomHeaders, setCookieHeaders } from "src/helpers";
 
 let endpoints = ["POST", "PATCH", "DELETE", "PUT"];

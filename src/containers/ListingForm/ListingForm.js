@@ -58,6 +58,7 @@ function ListingForm({ toggleAuthModal }) {
           { value: "apartment", display: "Apartment" },
           { value: "office", display: "Office" },
           { value: "home", display: "Residential Home" },
+          { value: "penthouse", display: "Penthouse" },
           { value: "villa", display: "Villa" },
         ],
       },
@@ -137,7 +138,7 @@ function ListingForm({ toggleAuthModal }) {
         type: "text",
         id: "keywords",
         required: true,
-        placeholder: "Property Keywords e.g (5 Bedroom duplex, Jacuzzi)",
+        placeholder: "Property Keywords e.g (penthouse, house, Jacuzzi)",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -187,7 +188,7 @@ function ListingForm({ toggleAuthModal }) {
         type: "number",
         id: "beds",
         required: false,
-        min: 1,
+        min: 0,
         placeholder: "Bedrooms (optional)",
       },
       elementClasses: [styles.form__input],
@@ -195,7 +196,34 @@ function ListingForm({ toggleAuthModal }) {
       value: "",
       validation: {
         required: false,
-        min: 1,
+        min: 0,
+      },
+      valid: true,
+      touched: false,
+      error: {
+        message: "",
+      },
+    },
+    parlors: {
+      label: {
+        title: "",
+        htmlFor: "parlors",
+        classes: [styles.form__label],
+      },
+      elementType: "input",
+      elementConfig: {
+        type: "number",
+        id: "parlors",
+        required: false,
+        min: 0,
+        placeholder: "Living Rooms (optional)",
+      },
+      elementClasses: [styles.form__input],
+      parentClasses: [styles.form__group],
+      value: "",
+      validation: {
+        required: false,
+        min: 0,
       },
       valid: true,
       touched: false,
@@ -214,7 +242,7 @@ function ListingForm({ toggleAuthModal }) {
         type: "number",
         id: "baths",
         required: false,
-        min: 1,
+        min: 0,
         placeholder: "Bathrooms (optional)",
       },
       elementClasses: [styles.form__input],
@@ -222,7 +250,7 @@ function ListingForm({ toggleAuthModal }) {
       value: "",
       validation: {
         required: false,
-        min: 1,
+        min: 0,
       },
       valid: true,
       touched: false,
@@ -240,7 +268,7 @@ function ListingForm({ toggleAuthModal }) {
       elementConfig: {
         type: "number",
         id: "garages",
-        min: 1,
+        min: 0,
         required: false,
         placeholder: "Garages (optional)",
       },
@@ -248,7 +276,7 @@ function ListingForm({ toggleAuthModal }) {
       parentClasses: [styles.form__group],
       value: "",
       validation: {
-        min: 1,
+        min: 0,
         required: false,
       },
       valid: true,
@@ -267,16 +295,16 @@ function ListingForm({ toggleAuthModal }) {
       elementConfig: {
         type: "text",
         id: "area",
-        required: true,
+        required: false,
         placeholder: "Area (sqft)",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
       value: "",
       validation: {
-        required: true,
+        required: false,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Area is required in Sq. ft",
@@ -406,32 +434,6 @@ function ListingForm({ toggleAuthModal }) {
         message: "",
       },
     },
-    images: {
-      label: {
-        title: "(Up to 15 images. 500 x 500 pixels)",
-        htmlFor: "images",
-        classes: [styles.form__label],
-      },
-      elementType: "input",
-      elementConfig: {
-        type: "file",
-        id: "images",
-        multiple: true,
-        required: true,
-      },
-      elementClasses: [styles.form__input],
-      parentClasses: [styles.form__group],
-      files: [],
-      value: "",
-      validation: {
-        required: true,
-      },
-      valid: false,
-      touched: false,
-      error: {
-        message: "At most 15 property images must be selected",
-      },
-    },
     features: {
       label: {
         title: "",
@@ -465,24 +467,19 @@ function ListingForm({ toggleAuthModal }) {
 
   const [geoLocation, setGeoLocation] = useState(null);
 
-  const [createListing, { data: success, error, loading }] = useCreateListing();
+  const [createListing, { data, error, loading }] = useCreateListing();
 
   const { isAuthenticated } = useAuth();
 
   const mapContext = useContext(MapContext);
 
-  const {
-    init,
-    ready,
-    setValue,
-    clearSuggestions,
-    suggestions: { data },
-  } = usePlacesAutocomplete({
-    initOnMount: false,
-    requestOptions: {
-      componentRestrictions: { country: "ng" },
-    },
-  });
+  const { init, ready, setValue, suggestions, clearSuggestions } =
+    usePlacesAutocomplete({
+      initOnMount: false,
+      requestOptions: {
+        componentRestrictions: { country: "ng" },
+      },
+    });
 
   let formElementsArray = [];
 
@@ -496,7 +493,7 @@ function ListingForm({ toggleAuthModal }) {
   useEffect(() => {
     let timer = null;
 
-    if (success) {
+    if (data) {
       let newFormControls = { ...formControls };
 
       for (let key in newFormControls) {
@@ -510,8 +507,11 @@ function ListingForm({ toggleAuthModal }) {
         ...newFormControls,
       }));
 
-      toast.success("Listing created  successfully");
-      timer = setTimeout(() => router.push("/account/property-list"), 500);
+      toast.success("Listing saved successfully");
+
+      setTimeout(() => {
+        router.push(`/listing/upload/${data.listingId}`);
+      }, 400);
     }
 
     if (error) {
@@ -521,7 +521,7 @@ function ListingForm({ toggleAuthModal }) {
     return () => {
       clearTimeout(timer);
     };
-  }, [success, error]);
+  }, [data, error]);
 
   useEffect(() => {
     if (mapContext.isReady && isAuthenticated) init();
@@ -543,33 +543,16 @@ function ListingForm({ toggleAuthModal }) {
   }, [ready]);
 
   const inputChangeHandler = (event, formControlKey) => {
-    let updatededFormControls = null;
-
-    if (formControlKey === "images") {
-      updatededFormControls = updateObject(formControls, {
-        [formControlKey]: updateObject(formControls[formControlKey], {
-          files: [...event.target.files],
-          value: event.target.value,
-          valid:
-            checkFormValidity(
-              event.target.value,
-              formControls[formControlKey].validation
-            ) && event.target.files.length === 15,
-          touched: true,
-        }),
-      });
-    } else {
-      updatededFormControls = updateObject(formControls, {
-        [formControlKey]: updateObject(formControls[formControlKey], {
-          value: event.target.value,
-          valid: checkFormValidity(
-            event.target.value,
-            formControls[formControlKey].validation
-          ),
-          touched: true,
-        }),
-      });
-    }
+    const updatededFormControls = updateObject(formControls, {
+      [formControlKey]: updateObject(formControls[formControlKey], {
+        value: event.target.value,
+        valid: checkFormValidity(
+          event.target.value,
+          formControls[formControlKey].validation
+        ),
+        touched: true,
+      }),
+    });
 
     let formIsValid = true;
 
@@ -628,7 +611,10 @@ function ListingForm({ toggleAuthModal }) {
       write={(event) => inputChangeHandler(event, id)}
     >
       {id === "location" && (
-        <ListingFormDropdown onSelectPlace={onSelectPlace} data={data} />
+        <ListingFormDropdown
+          data={suggestions.data}
+          onSelectPlace={onSelectPlace}
+        />
       )}
     </FormInput>
   ));
@@ -644,21 +630,12 @@ function ListingForm({ toggleAuthModal }) {
 
     if (formValidity) {
       for (let key in formControls) {
-        if (key !== "images" && key !== "location") {
+        if (key !== "location") {
           formData[key] = formControls[key].value;
         }
       }
 
-      let imagesData = [];
-
-      for (let i = 0; i < formControls.images.files.length; i++) {
-        const image = await getImageDataURL(formControls.images.files[i]);
-        imagesData = [...imagesData, { data: image.data.link }];
-      }
-
-      formData["images"] = JSON.stringify(imagesData);
-
-      formData["location"] = JSON.stringify(geoLocation);
+      formData["location"] = geoLocation;
 
       createListing(formData);
     }
@@ -683,11 +660,7 @@ function ListingForm({ toggleAuthModal }) {
         <div className={styles.label}>
           <h3>Property Info</h3>
         </div>
-        {formInputs.slice(0, 15)}
-        <div className={styles.label}>
-          <h3>Media</h3>
-        </div>
-        {formInputs.slice(15, 16)}
+        {formInputs.slice(0, 16)}
         <div className={styles.label}>
           <h3>Amenities</h3>
         </div>
@@ -695,7 +668,7 @@ function ListingForm({ toggleAuthModal }) {
         <FormButton
           config={btnConfig}
           parentClasses={[styles.form__button]}
-          btnValue={loading ? "Submitting..." : "Submit Listing"}
+          btnValue={loading ? "Please wait..." : "Next"}
         />
       </form>
     </div>

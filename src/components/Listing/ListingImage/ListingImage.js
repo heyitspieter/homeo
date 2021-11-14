@@ -1,22 +1,8 @@
 import Image from "next/image";
-import { useEffect } from "react";
-import { useGetImage } from "src/hooks/listing";
 
 import styles from "src/components/Listing/Listing.module.scss";
 
-function ListingImage({ imageId, currentImage, setCurrentImage }) {
-  const [getImage, { data: image }] = useGetImage();
-
-  useEffect(() => {
-    getImage(imageId);
-  }, []);
-
-  useEffect(() => {
-    if (image) {
-      setCurrentImage(image);
-    }
-  }, [image]);
-
+function ListingImage({ currentImage }) {
   return (
     <div className={styles.img}>
       <figure>

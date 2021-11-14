@@ -1,29 +1,14 @@
 import Image from "next/image";
-import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Svg from "src/components/Svg/Svg";
-import { useGetImage } from "src/hooks/listing";
 import { formatNumber, truncate } from "src/helpers";
 
 import styles from "src/components/Search/SearchFeed/SearchFeed.module.scss";
 
-const placeholderData =
-  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4=";
-
 function SearchFeedItem({ listing }) {
   const router = useRouter();
 
-  const [getImage, { data: image }] = useGetImage();
-
-  useEffect(() => {
-    getImage(listing.images[0]);
-  }, []);
-
-  let imageSrc = placeholderData;
-
-  if (image) {
-    imageSrc = image;
-  }
+  const imageSrc = `${process.env.NEXT_PUBLIC_SERVER_IMAGE_URL}/${listing.images[0]}`;
 
   return (
     <div className={styles.grid__item}>
@@ -37,9 +22,9 @@ function SearchFeedItem({ listing }) {
         </div>
         <figure>
           <Image
-            src={imageSrc}
             layout="responsive"
             alt={listing.name}
+            src={imageSrc}
             height={253}
             width={400}
           />

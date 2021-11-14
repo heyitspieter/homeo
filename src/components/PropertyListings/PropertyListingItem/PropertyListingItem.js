@@ -1,35 +1,20 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect } from "react";
 import className from "classnames";
 import Svg from "src/components/Svg/Svg";
-import { useGetImage } from "src/hooks/listing";
 import { formatNumber, formatDate } from "src/helpers";
 
 import styles from "src/components/PropertyListings/PropertyListings.module.scss";
 
-const placeholderData =
-  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4=";
-
 function PropertyListingItem({ listing }) {
-  const [getImage, { data: image }] = useGetImage();
-
-  useEffect(() => {
-    getImage(listing.thumbnail);
-  }, []);
-
   const statusClass = (listing) =>
     className({
       [styles.green]: listing.verified,
       [styles.red]: !listing.verified,
     });
 
-  let imageSrc = placeholderData;
-
-  if (image) {
-    imageSrc = image;
-  }
-
+  const imageSrc = `${process.env.NEXT_PUBLIC_SERVER_IMAGE_URL}/${listing.thumbnail}`;
+  
   return (
     <tr>
       <td>

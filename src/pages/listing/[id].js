@@ -1,3 +1,4 @@
+import { capitalize } from "src/helpers";
 import ListingApi from "src/apis/listing";
 import Layout from "src/components/Layout/Layout";
 import Toolbar from "src/components/Toolbar/Toolbar";
@@ -5,7 +6,11 @@ import Listing from "src/components/Listing/Listing";
 
 export default function listingPage({ listing }) {
   return (
-    <Layout title="Secutitex: Search properties for rent or sale in NG">
+    <Layout
+      title={`Secutitex: ${capitalize(listing.name)}, ${capitalize(
+        listing.address
+      )}`}
+    >
       <Toolbar />
       <Listing listing={listing} />
     </Layout>

@@ -20,11 +20,13 @@ import styles from "src/components/Listing/Listing.module.scss";
 function Listing({ listing }) {
   const [currentImage, setCurrentImage] = useState(placeholderData);
 
-  let imageSrc = placeholderData;
-
   const router = useRouter();
 
   useEffect(() => {
+    setCurrentImage(
+      `${process.env.NEXT_PUBLIC_SERVER_IMAGE_URL}/${listing.images[0]}`
+    );
+
     return () => {
       setCurrentImage("");
     };
@@ -38,10 +40,12 @@ function Listing({ listing }) {
     <div className={styles.container}>
       <div className={styles.row}>
         <div className={styles.title}>
-          <h2 className={styles.title}>{listing.name}</h2>
-          {listing.verified && (
-            <Svg className={styles.iconVerified} symbol="verified" />
-          )}
+          <div>
+            <h2>{listing.name}</h2>
+            {listing.verified && (
+              <Svg className={styles.iconVerified} symbol="verified" />
+            )}
+          </div>
           <p>{listing.address}</p>
         </div>
         <div className={styles.features}>
@@ -150,6 +154,9 @@ function Listing({ listing }) {
                 Bathrooms: <span>{listing.baths}</span>
               </p>
               <p>
+                Living Rooms: <span>{listing.parlors}</span>
+              </p>
+              <p>
                 Property Status:{" "}
                 <span>{listing.status.split("-").join(" ")}</span>
               </p>
@@ -162,6 +169,16 @@ function Listing({ listing }) {
               <p>
                 Year Built: <span>{listing.yearBuilt}</span>
               </p>
+            </div>
+            <div className={styles.description__grid}>
+              <h3>Features</h3>
+              {listing.features.map((feature, i) => {
+                return (
+                  <p className={styles.feature} key={i}>
+                    {feature}
+                  </p>
+                );
+              })}
             </div>
           </div>
           <div className={styles.row__grid_item}>
