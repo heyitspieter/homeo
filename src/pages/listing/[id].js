@@ -5,12 +5,11 @@ import Toolbar from "src/components/Toolbar/Toolbar";
 import Listing from "src/components/Listing/Listing";
 
 export default function listingPage({ listing }) {
+  let name = listing ? listing.name : "";
+  let address = listing ? listing.address : "";
+
   return (
-    <Layout
-      title={`Secutitex: ${capitalize(listing.name)}, ${capitalize(
-        listing.address
-      )}`}
-    >
+    <Layout title={`Secutitex: ${capitalize(name)}, ${capitalize(address)}`}>
       <Toolbar />
       <Listing listing={listing} />
     </Layout>
