@@ -8,10 +8,10 @@ class SearchApi extends Api {
     this.lockId = Math.floor(1000 + Math.random() * 9000);
   }
 
-  async searchListings(address) {
+  async searchListings(address, filter) {
     try {
       const res = await axios.get(
-        `${this.apiUrl}?addr=${address}&lockId=${this.lockId}`
+        `${this.apiUrl}?addr=${address}&filter=${filter}`
       );
       return [res.data, null];
     } catch (err) {

@@ -18,3 +18,9 @@ export const useGetImage = () =>
 
 export const useUploadImage = () =>
   useApiHandler((image) => axios.patch(`/api/v1/listing/upload`, image));
+
+export const useGetStates = () => {
+  const { data, error, ...rest } = useSWR("/api/v1/listing/states", fetcher);
+
+  return { data, error, loading: !data && !error, ...rest };
+};

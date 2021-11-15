@@ -48,12 +48,13 @@ export default function search({ view, results }) {
 export const getServerSideProps = async ({ query }) => {
   let view = query.v;
   let address = query.q;
+  let filter = query.filter;
 
   let searchResults = [];
 
   if (address && view === "desktop") {
     const searchApi = new SearchApi();
-    const [results, err] = await searchApi.searchListings(query.q);
+    const [results, err] = await searchApi.searchListings(query.q, filter);
 
     if (results) {
       searchResults = results;

@@ -1,10 +1,10 @@
 import className from "classnames";
 import { useRouter } from "next/router";
 import Svg from "src/components/Svg/Svg";
-import { useDispatch } from "react-redux";
 import { toggleTabBar } from "src/store/actions";
 import { useIsMobile } from "src/hooks/mediaQuery";
 import { MapContext } from "src/context/MapContext";
+import { useSelector, useDispatch } from "react-redux";
 import usePlacesAutocomplete from "use-places-autocomplete";
 import { checkFormValidity, updateObject } from "src/helpers";
 import { useContext, useRef, useState, useEffect } from "react";
@@ -55,6 +55,10 @@ function Hero() {
 
   const router = useRouter();
 
+  const tabBar = useSelector((state) => state.tabBar);
+
+  const [activeTab, setActiveTab] = useState(0);
+
   const isMobile = useIsMobile(599);
 
   const onToggleTabBar = (visibility) => dispatch(toggleTabBar(visibility));
@@ -85,6 +89,11 @@ function Hero() {
     if (mapContext.isReady) init();
   }, [mapContext]);
 
+  useEffect(() => {
+    if (isMobile && !tabBar.visibility) {
+      router.push("/search?v=mobile");
+    }
+  }, [isMobile, tabBar]);
   useEffect(() => {
     if (ready) {
       setFormControls((prevFormControls) => ({
@@ -167,18 +176,21 @@ function Hero() {
   const submitFormHandler = (e) => {
     e.preventDefault();
 
+    let filter = activeTab <= 0 ? "for-sale" : "for-rent";
+
     if (formValidity) {
       router.push(
-        `/search?q=${formControls.search.value}&v=${
+        `/search?q=${formControls.search.value}&filter=${filter}&v=${
           isMobile ? "mobile" : "desktop"
         }`
       );
     }
   };
 
-  const tabClass = className({
-    [styles.activeTab]: true,
-  });
+  const tabClass = (index) =>
+    className({
+      [styles.activeTab]: index === activeTab,
+    });
 
   return (
     <div className={styles.container}>
@@ -189,8 +201,12 @@ function Hero() {
             <h2>Find Your Perfect Home</h2>
           </div>
           <div className={styles.tabs}>
-            <button className={tabClass}>Buy</button>
-            <button>Rent</button>
+            <button onClick={() => setActiveTab(0)} className={tabClass(0)}>
+              Buy
+            </button>
+            <button onClick={() => setActiveTab(1)} className={tabClass(1)}>
+              Rent
+            </button>
           </div>
           <form
             ref={formRef}

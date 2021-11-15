@@ -90,6 +90,15 @@ class ListingApi extends Api {
       return [null, err];
     }
   }
+
+  async getStates() {
+    try {
+      const res = await axios.get(`${this.apiUrl}/states`, this.config);
+      return [res.data, null];
+    } catch (err) {
+      return [null, err];
+    }
+  }
 }
 
 export default ListingApi;

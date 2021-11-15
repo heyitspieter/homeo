@@ -2,11 +2,11 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useAuth } from "src/context/AuthContext";
 import { MapContext } from "src/context/MapContext";
+import { useCreateListing } from "src/hooks/listing";
 import { useContext, useEffect, useState } from "react";
 import FormInput from "src/components/Form/FormInput/FormInput";
-import { useCreateListing, useGetStates } from "src/hooks/listing";
 import FormButton from "src/components/Form/FormButton/FormButton";
-import { updateObject, checkFormValidity, capitalize } from "src/helpers";
+import { updateObject, checkFormValidity, getImageDataURL } from "src/helpers";
 import ListingFormDropdown from "src/containers/ListingForm/ListingFormDropdown/ListingFormDropdown";
 
 import usePlacesAutocomplete, {
@@ -16,7 +16,7 @@ import usePlacesAutocomplete, {
 
 import styles from "src/containers/ListingForm/ListingForm.module.scss";
 
-function ListingForm({ toggleAuthModal }) {
+function ListingEditForm({ toggleAuthModal }) {
   const [formControls, setFormControls] = useState({
     name: {
       label: {
@@ -68,7 +68,7 @@ function ListingForm({ toggleAuthModal }) {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Property category is required",
@@ -96,7 +96,7 @@ function ListingForm({ toggleAuthModal }) {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Property status is required",
@@ -121,7 +121,7 @@ function ListingForm({ toggleAuthModal }) {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Property Price is required",
@@ -146,7 +146,7 @@ function ListingForm({ toggleAuthModal }) {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Property keywords is required",
@@ -171,7 +171,7 @@ function ListingForm({ toggleAuthModal }) {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Property descrption is required",
@@ -329,7 +329,7 @@ function ListingForm({ toggleAuthModal }) {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Address is required",
@@ -354,7 +354,7 @@ function ListingForm({ toggleAuthModal }) {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Location is required",
@@ -379,7 +379,7 @@ function ListingForm({ toggleAuthModal }) {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Zip Code is required",
@@ -458,6 +458,31 @@ function ListingForm({ toggleAuthModal }) {
         message: "",
       },
     },
+    yearBuilt: {
+      label: {
+        title: "",
+        htmlFor: "yearbuilt",
+        classes: [styles.form__label],
+      },
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        id: "yearbuilt",
+        required: true,
+        placeholder: "Year Built",
+      },
+      elementClasses: [styles.form__input],
+      parentClasses: [styles.form__group],
+      value: "",
+      validation: {
+        required: true,
+      },
+      valid: true,
+      touched: false,
+      error: {
+        message: "",
+      },
+    },
     features: {
       label: {
         title: "",
@@ -490,8 +515,6 @@ function ListingForm({ toggleAuthModal }) {
   const router = useRouter();
 
   const [geoLocation, setGeoLocation] = useState(null);
-
-  const { data: states } = useGetStates();
 
   const [createListing, { data, error, loading }] = useCreateListing();
 
@@ -567,27 +590,6 @@ function ListingForm({ toggleAuthModal }) {
       }));
     }
   }, [ready]);
-
-  useEffect(() => {
-    if (states) {
-      setFormControls((prevFormControls) => ({
-        ...prevFormControls,
-        state: {
-          ...prevFormControls.state,
-          elementConfig: {
-            ...prevFormControls.state.elementConfig,
-            options: [
-              { value: "", display: "-- Choose a State" },
-              ...states.map((state) => ({
-                value: state,
-                display: capitalize(state),
-              })),
-            ],
-          },
-        },
-      }));
-    }
-  }, [states]);
 
   const inputChangeHandler = (event, formControlKey) => {
     const updatededFormControls = updateObject(formControls, {
@@ -695,7 +697,7 @@ function ListingForm({ toggleAuthModal }) {
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        <h2>Submit New Listing</h2>
+        <h2>Edit Listing</h2>
         <p>
           Tip:{" "}
           <span>
@@ -722,4 +724,4 @@ function ListingForm({ toggleAuthModal }) {
   );
 }
 
-export default ListingForm;
+export default ListingEditForm;

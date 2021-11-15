@@ -46,6 +46,18 @@ function SearchFilter() {
             value: "",
             display: "Property Status",
           },
+          {
+            value: "all",
+            display: "All",
+          },
+          {
+            value: "for-sale",
+            display: "For Sale",
+          },
+          {
+            value: "for-rent",
+            display: "For Rent",
+          },
         ],
         required: true,
         id: "propertystatus",
@@ -62,7 +74,7 @@ function SearchFilter() {
         message: "Property type is required",
       },
     },
-    property: {
+    category: {
       label: {
         title: "",
         htmlFor: "propertytype",
@@ -83,7 +95,7 @@ function SearchFilter() {
       parentClasses: [styles.form__group],
       value: "",
       validation: {
-        required: true,
+        required: false,
       },
       valid: false,
       touched: false,
@@ -91,50 +103,17 @@ function SearchFilter() {
         message: "Property type is required",
       },
     },
-    city: {
-      label: {
-        title: "",
-        htmlFor: "city",
-        classes: [styles.form__label],
-      },
-      elementType: "select",
-      elementConfig: {
-        options: [
-          {
-            value: "",
-            display: "City",
-          },
-        ],
-        required: true,
-        id: "city",
-      },
-      elementClasses: [styles.form__select],
-      parentClasses: [styles.form__group],
-      value: "",
-      validation: {
-        required: true,
-      },
-      valid: false,
-      touched: false,
-      error: {
-        message: "City is required",
-      },
-    },
-    bedroom: {
+    beds: {
       label: {
         title: "",
         htmlFor: "bedroom",
         classes: [styles.form__label],
       },
-      elementType: "select",
+      elementType: "input",
       elementConfig: {
-        options: [
-          {
-            value: "",
-            display: "Bedrooms",
-          },
-        ],
+        type: "text",
         id: "bedroom",
+        placeholder: "Bedrooms"
       },
       elementClasses: [styles.form__select],
       parentClasses: [styles.form__group],
@@ -145,7 +124,31 @@ function SearchFilter() {
       valid: true,
       touched: false,
       error: {
-        message: "City is required",
+        message: "Bedroom is required",
+      },
+    },
+    baths: {
+      label: {
+        title: "",
+        htmlFor: "bathroom",
+        classes: [styles.form__label],
+      },
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        id: "bathroom",
+        placeholder: "Bathrooms"
+      },
+      elementClasses: [styles.form__select],
+      parentClasses: [styles.form__group],
+      value: "",
+      validation: {
+        required: false,
+      },
+      valid: true,
+      touched: false,
+      error: {
+        message: "Bedroom is required",
       },
     },
     minPrice: {

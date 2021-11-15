@@ -65,10 +65,6 @@ function Listing({ listing }) {
             <Svg className={styles.iconRuler} symbol="ruler" />
             <span>{listing.area} Sq ft</span>
           </div>
-          <div className={styles.features__item}>
-            <Svg className={styles.iconCalendar} symbol="calendar" />
-            <span>Year Built: {listing.yearBuilt}</span>
-          </div>
         </div>
         <div className={styles.util}>
           <button>
@@ -165,9 +161,6 @@ function Listing({ listing }) {
               </p>
               <p>
                 Size: <span>{listing.area} Sq ft</span>
-              </p>
-              <p>
-                Year Built: <span>{listing.yearBuilt}</span>
               </p>
             </div>
             <div className={styles.description__grid}>

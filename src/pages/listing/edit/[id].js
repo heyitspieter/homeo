@@ -1,11 +1,13 @@
 import ListingApi from "src/apis/listing";
 import Layout from "src/components/Layout/Layout";
 import Toolbar from "src/components/Toolbar/Toolbar";
+import ListingEditForm from "src/containers/ListingForm/ListingEditForm/ListingEditForm";
 
 export default function editlistingPage() {
   return (
     <Layout title={`Secutitex`}>
       <Toolbar />
+      <ListingEditForm />
     </Layout>
   );
 }

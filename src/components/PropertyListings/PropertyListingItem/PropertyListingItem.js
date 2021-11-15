@@ -2,11 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import className from "classnames";
 import Svg from "src/components/Svg/Svg";
+import { useRouter } from "next/router";
 import { formatNumber, formatDate } from "src/helpers";
 
 import styles from "src/components/PropertyListings/PropertyListings.module.scss";
 
 function PropertyListingItem({ listing }) {
+  const router = useRouter();
+
   const statusClass = (listing) =>
     className({
       [styles.green]: listing.verified,
@@ -14,7 +17,7 @@ function PropertyListingItem({ listing }) {
     });
 
   const imageSrc = `${process.env.NEXT_PUBLIC_SERVER_IMAGE_URL}/${listing.thumbnail}`;
-  
+
   return (
     <tr>
       <td>
@@ -48,6 +51,11 @@ function PropertyListingItem({ listing }) {
       <td>0</td>
       <td>
         <div className={styles.action}>
+          <button
+            onClick={() => router.push(`/listing/upload/${listing._lId}`)}
+          >
+            <Svg className={styles.iconImage} symbol="image" />
+          </button>
           <button disabled={listing.verified}>
             <Svg className={styles.iconEdit} symbol="edit-circle" />
           </button>
