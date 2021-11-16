@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useSWRConfig } from "swr";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
+import { useGetProfessions } from "src/hooks/user";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import { useUpdateProfile, useGetProfile } from "src/hooks/user";
 import FormButton from "src/components/Form/FormButton/FormButton";
@@ -79,16 +80,7 @@ function Profile() {
       elementConfig: {
         id: "profession",
         required: true,
-        options: [
-          { value: "", display: "-- Select a Profession" },
-          { value: "plumber", display: "Plumber" },
-          { value: "bricklayer", display: "BrickLayer" },
-          { value: "surveyor", display: "Surveyor" },
-          { value: "carpenter", display: "Carpenter" },
-          { value: "interior decorator", display: "Interior Decorator" },
-          { value: "architect", display: "Architect" },
-          { value: "electrical engineer", display: "Electrical Engineer" },
-        ],
+        options: [],
       },
       elementClasses: [styles.form__select],
       parentClasses: [styles.form__group],
@@ -176,7 +168,7 @@ function Profile() {
       validation: {
         required: true,
       },
-      valid: true,
+      valid: false,
       touched: false,
       error: {
         message: "Image is required",
@@ -189,6 +181,8 @@ function Profile() {
   const [formValidity, setFormValidity] = useState(true);
 
   const { mutate } = useSWRConfig();
+
+  const { data: professions } = useGetProfessions();
 
   const { data: user, loading } = useGetProfile();
 
@@ -205,6 +199,27 @@ function Profile() {
       config: formControls[key],
     });
   }
+
+  useEffect(() => {
+    if (professions) {
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        profession: {
+          ...prevFormControls.profession,
+          elementConfig: {
+            ...prevFormControls.profession.elementConfig,
+            options: [
+              { value: "", display: "-- choose your profession --" },
+              ...professions.map((profession) => ({
+                value: profession._id,
+                display: capitalize(profession.name),
+              })),
+            ],
+          },
+        },
+      }));
+    }
+  }, [professions]);
 
   useEffect(() => {
     const file = formControls.image.file;
@@ -243,6 +258,14 @@ function Profile() {
         firstname: {
           ...prevFormControls.firstname,
           value: capitalize(user.firstname),
+        },
+        image: {
+          ...prevFormControls.image,
+          elementConfig: {
+            ...prevFormControls.image.elementConfig,
+            required: user.profileImage ? false : true,
+          },
+          valid: user.profileImage ? true : false,
         },
         lastname: {
           ...prevFormControls.lastname,

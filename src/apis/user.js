@@ -40,6 +40,15 @@ class UserApi extends Api {
       return [null, err];
     }
   }
+
+  async getProfessions() {
+    try {
+      const res = await axios.get(`${this.apiUrl}/professions`, this.config);
+      return [res.data, null];
+    } catch (err) {
+      return [null, err];
+    }
+  }
 }
 
 export default UserApi;

@@ -109,21 +109,23 @@ function Listing({ listing }) {
             </div>
             <div className={styles.description__grid}>
               <h3>Location</h3>
-              <p>
-                Address: <span>{listing.location.address}</span>
-              </p>
-              <p>
-                City: <span>Jersey Street</span>
-              </p>
-              <p>
-                State: <span>New Jersey State</span>
-              </p>
-              <p>
-                Zipcode: <span>{listing.zipcode}</span>
-              </p>
-              <p>
-                Country: <span>{listing.country}</span>
-              </p>
+              <div>
+                <p>
+                  Address: <span>{listing.location.address}</span>
+                </p>
+                <p>
+                  City: <span>{listing.city || "Not Available"}</span>
+                </p>
+                <p>
+                  State: <span>{listing.state || "Not Available"}</span>
+                </p>
+                <p>
+                  Zipcode: <span>{listing.zipcode}</span>
+                </p>
+                <p>
+                  Country: <span>{listing.country}</span>
+                </p>
+              </div>
             </div>
             <div className={styles.description__map}>
               <Map
@@ -137,41 +139,45 @@ function Listing({ listing }) {
             </div>
             <div className={styles.description__grid}>
               <h3>Property Details</h3>
-              <p>
-                Bedrooms: <span>{listing.beds}</span>
-              </p>
-              <p>
-                Property Type: <span>{listing.category}</span>
-              </p>
-              <p>
-                Price: <span>₦{formatNumber(listing.price)}</span>
-              </p>
-              <p>
-                Bathrooms: <span>{listing.baths}</span>
-              </p>
-              <p>
-                Living Rooms: <span>{listing.parlors}</span>
-              </p>
-              <p>
-                Property Status:{" "}
-                <span>{listing.status.split("-").join(" ")}</span>
-              </p>
-              <p>
-                Garage: <span>{listing.garages}</span>
-              </p>
-              <p>
-                Size: <span>{listing.area} Sq ft</span>
-              </p>
+              <div>
+                <p>
+                  Bedrooms: <span>{listing.beds}</span>
+                </p>
+                <p>
+                  Property Type: <span>{listing.category}</span>
+                </p>
+                <p>
+                  Price: <span>₦{formatNumber(listing.price)}</span>
+                </p>
+                <p>
+                  Bathrooms: <span>{listing.baths}</span>
+                </p>
+                <p>
+                  Living Rooms: <span>{listing.parlors}</span>
+                </p>
+                <p>
+                  Property Status:{" "}
+                  <span>{listing.status.split("-").join(" ")}</span>
+                </p>
+                <p>
+                  Garage: <span>{listing.garages}</span>
+                </p>
+                <p>
+                  Size: <span>{listing.area} Sq ft</span>
+                </p>
+              </div>
             </div>
             <div className={styles.description__grid}>
               <h3>Features</h3>
-              {listing.features.map((feature, i) => {
-                return (
-                  <p className={styles.feature} key={i}>
-                    {feature}
-                  </p>
-                );
-              })}
+              <div>
+                {listing.features.map((feature, i) => {
+                  return (
+                    <p className={styles.feature} key={i}>
+                      {feature}
+                    </p>
+                  );
+                })}
+              </div>
             </div>
           </div>
           <div className={styles.row__grid_item}>
@@ -191,14 +197,11 @@ function Listing({ listing }) {
                 <a
                   target="__blank"
                   className={styles.action__mail}
-                  href={`mailto:${listing.createdBy.email}`}
+                  href={`mailto:support@secutitexltd.com`}
                 >
                   Contact Property
                 </a>
-                <a
-                  className={styles.action__tel}
-                  href={`tel:${listing.createdBy.mobileNumber}`}
-                >
+                <a className={styles.action__tel} href={`tel:`}>
                   <Svg className={styles.iconWhatsapp} symbol="whatsapp" />
                   <span>WhatsApp</span>
                 </a>

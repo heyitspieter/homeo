@@ -23,11 +23,7 @@ function PropertyListings() {
             </select>
           </div>
         </div>
-        <div className={styles.filter__col}>
-          <div className={styles.filter__item}>
-            <input type="text" placeholder="Search Listings" required />
-          </div>
-        </div>
+        <div className={styles.filter__col}></div>
       </div>
       <div className={styles.tableWrapper}>
         <table>

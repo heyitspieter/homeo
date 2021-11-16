@@ -398,70 +398,64 @@
     }
 
     &__grid {
-        gap: 1.4rem;
-        display: grid;
+        display: flex;
         margin-top: 3rem;
         padding-bottom: 3rem;
-        grid-template-rows: min-content;
+        flex-direction: column;
         border-bottom: 1px solid #ebebeb;
-        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-
-        @media screen and (max-width: 44.3em) {
-            column-gap: 2rem;
-            grid-template-columns: repeat(2, minmax(min-content, 1fr));
-        }
-
-        @media screen and (max-width: 37em) {
-            grid-template-columns: 1fr;
-            column-gap: 2rem;
-        }
 
         h3 {
-            grid-row: 1 /2;
+            grid-row: 1 / 2;
             color: #2f3f5f;
             font-weight: 600;
             font-size: 1.4rem;
             grid-column: 1 / -1;
         }
 
-        p {
-            color: #2f3f5f;
-            font-weight: 600;
-            overflow-y: auto;
-            font-size: 1.3rem;
-            white-space: nowrap;
+        & > div {
+            display: grid;
+            row-gap: 1rem;
+            margin-top: 1rem;
+            column-gap: 5rem;
+            grid-template-rows: min-content;
+            grid-template-columns: repeat(auto-fill, minmax(12rem, min-content));
 
-            &.feature {
-                color: #777777;
-                font-weight: 400;
+            p {
+                color: #2f3f5f;
+                font-weight: 600;
                 overflow-y: auto;
+                font-size: 1.3rem;
                 white-space: nowrap;
-                border-radius: 5rem;
-                padding: 1rem 2.4rem;
-                justify-self: flex-start;
-                text-transform: capitalize;
-                background-color: #f6f6f6;
-            }
 
-            &::-webkit-scrollbar {
-                height: 0.2rem;
-            }
+                &.feature {
+                    color: #777777;
+                    font-weight: 400;
+                    overflow-y: auto;
+                    white-space: nowrap;
+                    justify-self: flex-start;
+                    text-transform: capitalize;
+                }
 
-            &::-webkit-scrollbar-track {
-                background: #ffffff;
-            }
+                &::-webkit-scrollbar {
+                    height: 0.2rem;
+                }
 
-            &::-webkit-scrollbar-thumb {
-                border-radius: 5rem;
-                background-color: #cccccc;
-                border: 3px solid #cccccc;
-            }
+                &::-webkit-scrollbar-track {
+                    background: #ffffff;
+                }
 
-            span {
-                color: #777777;
-                font-weight: 400;
-                margin-left: 1rem;
-                text-transform: capitalize;
+                &::-webkit-scrollbar-thumb {
+                    border-radius: 5rem;
+                    background-color: #cccccc;
+                    border: 3px solid #cccccc;
+                }
+
+                span {
+                    color: #777777;
+                    font-weight: 400;
+                    margin-left: 0.5rem;
+                    text-transform: capitalize;
+                }
             }
         }
     }

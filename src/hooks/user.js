@@ -9,6 +9,12 @@ export const useGetProfile = () => {
   return { data, error, loading: !data && !error, ...rest };
 };
 
+export const useGetProfessions = () => {
+  const { data, error, ...rest } = useSWR("/api/v1/user/professions", fetcher);
+
+  return { data, error, loading: !data && !error, ...rest };
+};
+
 export const useUpdateProfile = () =>
   useApiHandler((data) => axios.patch("/api/v1/user/update", data));
 

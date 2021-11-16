@@ -3,9 +3,10 @@ import className from "classnames";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { useRegister } from "src/hooks/auth";
-import { updateObject, checkFormValidity } from "src/helpers";
+import { useGetProfessions } from "src/hooks/user";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
+import { updateObject, capitalize, checkFormValidity } from "src/helpers";
 
 import formStyles from "styles/modules/Form.module.scss";
 import styles from "src/components/Modals/AuthModal/AuthModal.module.scss";
@@ -74,16 +75,7 @@ function Register({ activeTab, closeAuthModal }) {
       elementConfig: {
         id: "profession",
         required: true,
-        options: [
-          { value: "", display: "-- choose your profession --" },
-          { value: "bricklayer", display: "BrickLayer" },
-          { value: "surveyor", display: "Surveyor" },
-          { value: "carpenter", display: "Carpenter" },
-          { value: "interior decorator", display: "Interior Decorator" },
-          { value: "architect", display: "Architect" },
-          { value: "plumber", display: "Plumber" },
-          { value: "electrical engineer", display: "Electrical Engineer" },
-        ],
+        options: [],
       },
       elementClasses: [formStyles.form__input],
       parentClasses: [formStyles.form__group],
@@ -153,6 +145,8 @@ function Register({ activeTab, closeAuthModal }) {
 
   const [formValidity, setFormValidity] = useState(false);
 
+  const { data: professions } = useGetProfessions();
+
   const [register, { data: success, error, loading }] = useRegister();
 
   const { mutate } = useSWRConfig();
@@ -165,6 +159,27 @@ function Register({ activeTab, closeAuthModal }) {
       config: formControls[key],
     });
   }
+
+  useEffect(() => {
+    if (professions) {
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        profession: {
+          ...prevFormControls.profession,
+          elementConfig: {
+            ...prevFormControls.profession.elementConfig,
+            options: [
+              { value: "", display: "-- choose your profession --" },
+              ...professions.map((profession) => ({
+                value: profession._id,
+                display: capitalize(profession.name),
+              })),
+            ],
+          },
+        },
+      }));
+    }
+  }, [professions]);
 
   useEffect(() => {
     if (success) {

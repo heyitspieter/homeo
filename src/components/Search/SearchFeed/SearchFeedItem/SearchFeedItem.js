@@ -74,7 +74,7 @@ function SearchFeedItem({ listing }) {
           <p>₦{formatNumber(listing.price)}</p>
         </div>
         <div className={styles.grid__item_actions}>
-          <a href={`tel:${listing.createdBy.mobileNumber}`}>
+          <a href={`tel:`}>
             <Svg className={styles.iconPhone} symbol="phone" />
           </a>
           <button>
