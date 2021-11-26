@@ -6,6 +6,7 @@ import AuthProvider from "src/context/AuthContext";
 import SidedrawerProvider from "src/context/SidedrawerContext";
 
 import "react-toastify/dist/ReactToastify.min.css";
+import "react-loading-skeleton/dist/skeleton.css";
 import "styles/globals.scss";
 
 const toastConfig = {

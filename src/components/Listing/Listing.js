@@ -78,7 +78,7 @@ function Listing({ listing }) {
         </div>
         <div className={styles.price}>
           <p>₦{formatNumber(listing.price)}</p>
-          <span>Est. Mortgage</span>
+          <span></span>
         </div>
       </div>
       <div className={styles.row}>

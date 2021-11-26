@@ -1,5 +1,3 @@
-import Svg from "src/components/Svg/Svg";
-
 function SearchForm({
   label,
   children,

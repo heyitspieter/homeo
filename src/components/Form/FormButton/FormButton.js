@@ -1,5 +1,6 @@
 import AuthButton from "src/components/Form/ButtonTemplates/AuthButton";
 import SearchButton from "src/components/Form/ButtonTemplates/SearchButton";
+import FinderButton from "src/components/Form/ButtonTemplates/FinderButton";
 import DefaultButton from "src/components/Form/ButtonTemplates/DefaultButton";
 import HeroSearchButton from "src/components/Form/ButtonTemplates/HeroSearchButton";
 import SearchhFilterButton from "src/components/Form/ButtonTemplates/SearchFilterButton";
@@ -51,6 +52,15 @@ const FormButton = ({
           config={config}
           btnValue={btnValue}
           loading={isLoading}
+          parentClasses={parentClasses}
+        />
+      );
+      break;
+    case "finder":
+      buttonTemplate = (
+        <FinderButton
+          config={config}
+          btnValue={btnValue}
           parentClasses={parentClasses}
         />
       );

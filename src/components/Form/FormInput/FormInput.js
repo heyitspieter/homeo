@@ -2,6 +2,7 @@ import className from "classnames";
 import Svg from "src/components/Svg/Svg";
 import AuthForm from "src/components/Form/FormTemplates/AuthForm";
 import SearchForm from "src/components/Form/FormTemplates/SearchForm";
+import FinderForm from "src/components/Form/FormTemplates/FinderForm";
 import ListingForm from "src/components/Form/FormTemplates/ListingForm";
 import HeroSearchForm from "src/components/Form/FormTemplates/HeroSearchForm";
 import ListingImageForm from "src/components/Form/FormTemplates/ListingImageForm";
@@ -176,6 +177,17 @@ const FormInput = ({
         >
           {children}
         </SearchForm>
+      );
+      break;
+    case "finder":
+      inputTemplate = (
+        <FinderForm
+          label={label}
+          labelClasses={labelClass}
+          inputElement={inputElement}
+          parentClasses={parentClasses}
+          validationMessage={validationMessage}
+        />
       );
       break;
     default:

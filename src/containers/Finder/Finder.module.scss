@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    overflow: hidden;
+    padding: 1.6rem 1.8rem;
+
+    & > * {
+        flex: 0 0 100%;
+    }
+}
+
+.dialog__width {
+    @media screen and (min-width: 48em) {
+        max-width: 65rem;
+    }
+}
+
+.no_height {
+    max-height: 0;
+}

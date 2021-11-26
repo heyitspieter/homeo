@@ -1,0 +1,58 @@
+.container {
+    max-height: 0;
+    display: flex;
+    visibility: hidden;
+    flex-direction: column;
+    background-color: #ffffff;
+    transition: transform 0.35s ease;
+}
+
+.title {
+    font-size: 1.45rem;
+}
+
+.form {
+    gap: 1.2rem;
+    display: grid;
+    margin-top: 1.7rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content;
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+
+        label ~ input[type="file"] {
+            padding: 1.5rem 1rem;
+        }
+    }
+}
+
+.action {
+    display: flex;
+    margin-top: 2rem;
+    justify-content: space-between;
+
+    button {
+        border: 0;
+        cursor: pointer;
+        color: #0c75ec;
+        background: none;
+        font-weight: 600;
+        font-size: 1.6rem;
+        padding: 1rem 1.5rem;
+        font-family: inherit;
+        transition: all 0.15s ease-in-out;
+
+        &:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+    }
+}
+
+.translateX_in__left {
+    max-height: 100%;
+    visibility: visible;
+    transform: translateX(-100%);
+}

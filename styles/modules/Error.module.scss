@@ -6,11 +6,12 @@
 }
 
 .inputError {
-    border: 1px solid #ee4540;
+    border-radius: 0.3rem;
+    border: 1px solid #ee4540 !important;
 }
 
 .labelError {
     font-weight: 400;
     font-size: 1.3rem;
-    color: #ee4540 !important;
+    color: #ee4540;
 }

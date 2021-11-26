@@ -1,11 +1,16 @@
-import className from "classnames";
 import dynamic from "next/dynamic";
+import className from "classnames";
 import { useRef, useState } from "react";
 import Animated from "src/components/Animated/Animated";
 import Backdrop from "src/components/Backdrop/Backdrop";
+import Professions from "src/containers/Finder/Professions/Professions";
 
+const JobInfo = dynamic(() => import("src/containers/Finder/JobInfo/JobInfo"), {
+  loading: () => <p>Loading..</p>,
+});
+
+import styles from "src/containers/Finder/Finder.module.scss";
 import modalStyles from "styles/modules/Modal.module.scss";
-import styles from "src/components/Modals/AuthModal/AuthModal.module.scss";
 
 const backdropConfig = {
   style: {
@@ -18,13 +23,17 @@ const animationTiming = {
   enter: 400,
 };
 
-const Login = dynamic(() => import("src/containers/Login/Login"));
-const Register = dynamic(() => import("src/containers/Register/Register"));
-
-const AuthModal = ({ close, show }) => {
+function Finder({ close, show }) {
   const ref = useRef();
 
-  const [activeTab, setActiveTab] = useState(0);
+  const [jobData, setJobData] = useState({
+    files: [],
+    contact: null,
+    profession: null,
+    description: null,
+  });
+
+  const [currentStep, setCurrentStep] = useState(0);
 
   const modalBodyClass = className({
     [modalStyles.content__body]: true,
@@ -62,19 +71,15 @@ const AuthModal = ({ close, show }) => {
     },
   };
 
-  const btnLoginClass = className({
-    [styles.tabLogin]: true,
-    [styles.activeTab]: activeTab === 0,
-  });
-
-  const btnRegisterClass = className({
-    [styles.tabRegister]: true,
-    [styles.activeTab]: activeTab === 1,
-  });
-
   const closeModal = () => {
     close();
-    setActiveTab(0);
+    setJobData({
+      files: [],
+      contact: null,
+      profession: null,
+      description: null,
+    });
+    setCurrentStep(0);
   };
 
   return (
@@ -90,25 +95,20 @@ const AuthModal = ({ close, show }) => {
             <div className={modalStyles.content}>
               <div className={modalHeaderClass}></div>
               <div className={modalBodyClass}>
-                <div className={styles.tabs}>
-                  <a
-                    onClick={() => setActiveTab(0)}
-                    className={btnLoginClass}
-                    href="#Login"
-                  >
-                    Login
-                  </a>
-                  <a
-                    onClick={() => setActiveTab(1)}
-                    className={btnRegisterClass}
-                    href="#Register"
-                  >
-                    Register
-                  </a>
-                </div>
-                <div className={styles.formSlider}>
-                  <Login closeAuthModal={close} />
-                  <Register closeAuthModal={close} activeTab={activeTab} />
+                <div className={styles.container}>
+                  <Professions
+                    jobData={jobData}
+                    setJobData={setJobData}
+                    currentStep={currentStep}
+                    setCurrentStep={setCurrentStep}
+                  />
+                  <JobInfo
+                    jobData={jobData}
+                    setJobData={setJobData}
+                    closeFinder={closeModal}
+                    currentStep={currentStep}
+                    setCurrentStep={setCurrentStep}
+                  />
                 </div>
               </div>
             </div>
@@ -117,6 +117,6 @@ const AuthModal = ({ close, show }) => {
       </>
     </Animated>
   );
-};
+}
 
-export default AuthModal;
+export default Finder;

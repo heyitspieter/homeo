@@ -75,6 +75,23 @@
         font-family: inherit;
     }
 
+    &__textarea {
+        flex: 1;
+        border: 0;
+        width: 100%;
+        display: flex;
+        outline: none;
+        color: inherit;
+        background: none;
+        font-weight: 400;
+        padding: 2rem 1rem;
+        font-size: 1.33rem;
+        font-family: inherit;
+        border-radius: 0.3rem;
+        background-color: #f6f6f6;
+        transition: border 0.3s ease-in-out;
+    }
+
     &__button {
         display: block;
         margin-top: 0.5rem;
