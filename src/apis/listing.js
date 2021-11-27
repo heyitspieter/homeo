@@ -99,6 +99,24 @@ class ListingApi extends Api {
       return [null, err];
     }
   }
+
+  async getFeaturedListings() {
+    try {
+      const res = await axios.get(`${this.apiUrl}/featured`);
+      return [res.data, null];
+    } catch (err) {
+      return [null, err];
+    }
+  }
+
+  async getLikes(data) {
+    try {
+      const res = await axios.post(`${this.apiUrl}/likes`, data);
+      return [res.data, null];
+    } catch (err) {
+      return [null, err];
+    }
+  }
 }
 
 export default ListingApi;

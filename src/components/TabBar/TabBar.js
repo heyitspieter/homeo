@@ -43,7 +43,7 @@ function TabBar({ toggleAuthModal }) {
           </button>
         </ActiveButton>
         <ActiveButton activeClassName={styles.activeTab}>
-          <button id="/favorite" onClick={() => router.push("/favorite")}>
+          <button id="/favorites" onClick={() => router.push("/favorites")}>
             <Svg className={styles.iconFavorite} symbol="favorite-glyph" />
             <span>Favorites</span>
           </button>

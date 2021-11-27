@@ -1,7 +1,10 @@
 import Image from "next/image";
+import className from "classnames";
 import { useRouter } from "next/router";
 import Svg from "src/components/Svg/Svg";
+import { likeListing } from "src/store/actions";
 import { formatNumber, truncate } from "src/helpers";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "src/components/Search/SearchFeed/SearchFeed.module.scss";
 
@@ -9,6 +12,19 @@ function SearchFeedItem({ listing }) {
   const router = useRouter();
 
   const imageSrc = `${process.env.NEXT_PUBLIC_SERVER_IMAGE_URL}/${listing.images[0]}`;
+
+  const dispatch = useDispatch();
+
+  const likes = useSelector((state) => state.favorite.likes);
+
+  const onLikeListing = (id) => dispatch(likeListing(id));
+
+  const isLiked = likes.findIndex((like) => like.id === listing._lId) !== -1;
+
+  const likeIconClass = className({
+    [styles.iconHeart]: !isLiked,
+    [styles.iconHeartFill]: isLiked,
+  });
 
   return (
     <div className={styles.grid__item}>
@@ -45,9 +61,11 @@ function SearchFeedItem({ listing }) {
           {listing.name
             ? truncate(`${listing.name}`, 23)
             : truncate(listing.address, 23)}
-          <div className={styles.grid__item_badge}>
-            <Svg className={styles.iconVerified} symbol="verified" />
-          </div>
+          {listing.verified && (
+            <div className={styles.grid__item_badge}>
+              <Svg className={styles.iconVerified} symbol="verified" />
+            </div>
+          )}
         </h3>
         <p>{listing.name && listing.address}</p>
         <div className={styles.grid__item_features}>
@@ -77,8 +95,11 @@ function SearchFeedItem({ listing }) {
           <a href={`tel:`}>
             <Svg className={styles.iconPhone} symbol="phone" />
           </a>
-          <button>
-            <Svg className={styles.iconHeart} symbol="heart" />
+          <button onClick={() => onLikeListing(listing._lId)}>
+            <Svg
+              className={likeIconClass}
+              symbol={isLiked ? "heart-fill" : "heart"}
+            />
           </button>
         </div>
       </div>

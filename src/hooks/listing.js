@@ -2,7 +2,6 @@ import axios from "axios";
 import useSWR from "swr";
 import { fetcher } from "src/helpers";
 import { useApiHandler } from "src/hooks";
-import ListingApi from "src/apis/listing";
 
 export const useCreateListing = () =>
   useApiHandler((listing) => axios.post("/api/v1/listing/new", listing));
@@ -24,3 +23,14 @@ export const useGetStates = () => {
 
   return { data, error, loading: !data && !error, ...rest };
 };
+
+export const useGetFeaturedListings = () => {
+  const { data, error, ...rest } = useSWR("/api/v1/listing/featured", fetcher, {
+    revalidateOnFocus: false,
+  });
+
+  return { data, error, loading: !data && !error, ...rest };
+};
+
+export const usePopulateLikes = () =>
+  useApiHandler((data) => axios.post("/api/v1/listing/likes", data));

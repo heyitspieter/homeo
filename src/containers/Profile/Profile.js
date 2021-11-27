@@ -132,14 +132,16 @@ function Profile() {
       elementConfig: {
         type: "text",
         id: "mobile",
+        maxLength: 11,
         required: true,
-        placeholder: "Mobile Number (Will be displayed on your listings)",
         autoComplete: "off",
+        placeholder: "Mobile Number (Will be displayed on your listings)",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
       value: "",
       validation: {
+        maxLength: 11,
         required: true,
         isMobilePhone: true,
       },

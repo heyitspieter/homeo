@@ -25,15 +25,29 @@
     border-bottom: 1px solid #ebebeb;
 
     @media screen and (max-width: 37.5em) {
-        justify-content: space-between;
+        overflow-x: auto;
+
+        & > * {
+            flex: 1;
+        }
+
+        &::-webkit-scrollbar {
+            height: 0.4rem;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #ffffff;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            border-radius: 6px;
+            background-color: #cccccc;
+            border: 3px solid #cccccc;
+        }
     }
 
     & > *:not(:first-child) {
         padding-left: 2rem;
-
-        @media screen and (max-width: 37.5em) {
-            padding-left: 0;
-        }
     }
 
     button {

@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 import { updateObject } from "src/helpers";
+import { getLikes } from "src/store/actions";
 import TabBar from "src/components/TabBar/TabBar";
 import Header from "src/components/Header/Header";
 import Footer from "src/components/Footer/Footer";
@@ -15,15 +17,23 @@ import styles from "src/components/Layout/Layout.module.scss";
 function Layout({ title, tabBar, children }) {
   const router = useRouter();
 
+  const dispatch = useDispatch();
+
   const { data: preview } = useCheckPreview();
 
   const [endPreviewSession, { data: sessionEnded }] = useEndPreviewSession();
 
   const [previewModeDialog, setPreviewModeDialog] = useState(false);
 
+  const onGetLikes = () => dispatch(getLikes());
+
   const [authModal, setAuthModal] = useState({
     visibility: false,
   });
+
+  useEffect(() => {
+    onGetLikes();
+  }, []);
 
   useEffect(() => {
     if (sessionEnded) {

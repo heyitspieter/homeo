@@ -239,3 +239,12 @@ export const formatNumber = (num, fixed = false) => {
 
   return parts.join(".");
 };
+
+export const copyToClipboard = (value) => {
+  let textArea = document.createElement("textarea");
+  textArea.value = value;
+  document.body.appendChild(textArea);
+  textArea.select();
+  document.execCommand("copy");
+  textArea.remove();
+};

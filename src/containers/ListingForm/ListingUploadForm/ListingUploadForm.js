@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useUploadImage, useGetImage } from "src/hooks/listing";
+import { useUploadImage } from "src/hooks/listing";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import { updateObject, checkFormValidity, getImageDataURL } from "src/helpers";
 

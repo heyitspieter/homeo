@@ -1,9 +1,13 @@
 import Image from "next/image";
+import className from "classnames";
+import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import Map from "src/components/Map/Map";
 import Svg from "src/components/Svg/Svg";
-import { formatNumber } from "src/helpers";
 import { useEffect, useState } from "react";
+import { likeListing } from "src/store/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { formatNumber, copyToClipboard } from "src/helpers";
 import ListingImage from "src/components/Listing/ListingImage/ListingImage";
 import ListingThumbnail from "src/components/Listing/ListingThumbnail/ListingThumbnail";
 
@@ -31,6 +35,26 @@ function Listing({ listing }) {
       setCurrentImage("");
     };
   }, []);
+
+  const shareListing = () => {
+    copyToClipboard(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/listing/${listing._lId}`
+    );
+    toast.success("Link copied to clipboard");
+  };
+
+  const dispatch = useDispatch();
+
+  const likes = useSelector((state) => state.favorite.likes);
+
+  const onLikeListing = (id) => dispatch(likeListing(id));
+
+  const isLiked = likes.findIndex((like) => like.id === listing._lId) !== -1;
+
+  const likeIconClass = className({
+    [styles.iconHeart]: !isLiked,
+    [styles.iconHeartFill]: isLiked,
+  });
 
   if (router.isFallback) {
     return <p>Loading...</p>;
@@ -67,18 +91,23 @@ function Listing({ listing }) {
           </div>
         </div>
         <div className={styles.util}>
-          <button>
+          <button onClick={shareListing}>
             <Svg className={styles.iconShare} symbol="share" />
             <span>Share</span>
           </button>
-          <button>
-            <Svg className={styles.iconHeart} symbol="heart" />
-            <span>Save</span>
+          <button onClick={() => onLikeListing(listing._lId)}>
+            <Svg
+              className={likeIconClass}
+              symbol={isLiked ? "heart-fill" : "heart"}
+            />
+            <span>Like</span>
           </button>
         </div>
         <div className={styles.price}>
           <p>₦{formatNumber(listing.price)}</p>
-          <span></span>
+          <span>
+            {listing.bargain === "yes" ? "Negotiable" : "Non-negotiable"}
+          </span>
         </div>
       </div>
       <div className={styles.row}>
@@ -187,10 +216,18 @@ function Listing({ listing }) {
                   <Image
                     width={200}
                     height={200}
-                    src={listing.createdBy.profileImage || "/images/avatar.jpg"}
+                    src={
+                      listing.createdBy
+                        ? listing.createdBy.profileImage
+                        : "/images/avatar.jpg"
+                    }
                   />
                 </figure>
-                <h3>{`${listing.createdBy.firstname} ${listing.createdBy.lastname}`}</h3>
+                <h3>
+                  {listing.createdBy
+                    ? `${listing.createdBy.firstname} ${listing.createdBy.lastname}`
+                    : "Secutitex"}
+                </h3>
                 <button>View Listings</button>
               </div>
               <div className={styles.contactBox__actions}>

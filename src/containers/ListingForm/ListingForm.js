@@ -29,7 +29,7 @@ function ListingForm({ toggleAuthModal }) {
         type: "text",
         id: "name",
         required: true,
-        placeholder: "Property Name (optional)",
+        placeholder: "Property Title (optional)",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -125,6 +125,34 @@ function ListingForm({ toggleAuthModal }) {
       touched: false,
       error: {
         message: "Property Price is required",
+      },
+    },
+    bargain: {
+      label: {
+        title: "",
+        htmlFor: "bargain",
+        classes: [styles.form__label],
+      },
+      elementType: "select",
+      elementConfig: {
+        id: "bargain",
+        required: true,
+        options: [
+          { value: "", display: "Is this price negotiable?" },
+          { value: "yes", display: "Yes" },
+          { value: "no", display: "No" },
+        ],
+      },
+      elementClasses: [styles.form__select],
+      parentClasses: [styles.form__group],
+      value: "",
+      validation: {
+        required: true,
+      },
+      valid: false,
+      touched: false,
+      error: {
+        message: "Price bargain is required",
       },
     },
     keywords: {
@@ -499,6 +527,8 @@ function ListingForm({ toggleAuthModal }) {
 
   const mapContext = useContext(MapContext);
 
+  const [inputCheckbox, setInputCheckbox] = useState(false);
+
   const { init, ready, setValue, suggestions, clearSuggestions } =
     usePlacesAutocomplete({
       initOnMount: false,
@@ -683,6 +713,7 @@ function ListingForm({ toggleAuthModal }) {
       }
 
       formData["location"] = geoLocation;
+      formData["verification"] = { request: inputCheckbox };
 
       createListing(formData);
     }
@@ -707,11 +738,23 @@ function ListingForm({ toggleAuthModal }) {
         <div className={styles.label}>
           <h3>Property Info</h3>
         </div>
-        {formInputs.slice(0, 17)}
+        {formInputs.slice(0, 18)}
         <div className={styles.label}>
           <h3>Amenities</h3>
         </div>
-        {formInputs.slice(17)}
+        {formInputs.slice(18)}
+        <div className={styles.checkbox}>
+          <label
+            onClick={(e) => {
+              e.preventDefault();
+              setInputCheckbox(!inputCheckbox);
+            }}
+          >
+            Would you like this property to be verified by Secutitex?
+            <input aria-checked={inputCheckbox} type="checkbox" />
+            <span></span>
+          </label>
+        </div>
         <FormButton
           config={btnConfig}
           parentClasses={[styles.form__button]}

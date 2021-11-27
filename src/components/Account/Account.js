@@ -71,6 +71,14 @@ function Account() {
         </ActiveButton>
         <ActiveButton activeClassName={styles.activeTab}>
           <button
+            onClick={() => router.push("/favorites")}
+            id="/favorites"
+          >
+            My Property Favorites
+          </button>
+        </ActiveButton>
+        <ActiveButton activeClassName={styles.activeTab}>
+          <button
             onClick={() => router.push("/account/setting")}
             id="/account/setting"
           >

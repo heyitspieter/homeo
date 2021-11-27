@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Usp from "src/components/Usp/Usp";
+import ListingApi from "src/apis/listing";
 import Hero from "src/containers/Hero/Hero";
 import Layout from "src/components/Layout/Layout";
 import Finder from "src/containers/Finder/Finder";
@@ -8,7 +9,7 @@ import ListingFeed from "src/components/ListingFeed/ListingFeed";
 import JobQuotation from "src/components/JobQuotation/JobQuotation";
 import PropertyExplore from "src/components/PropertyExplore/PropertyExplore";
 
-export default function home() {
+export default function home({ listings }) {
   const [finder, setFinder] = useState({ open: false });
 
   const toggleFinder = () => setFinder({ open: !finder.open });
@@ -20,7 +21,7 @@ export default function home() {
         tabBar
       >
         <Hero />
-        <ListingFeed />
+        <ListingFeed listings={listings} />
         <JobQuotation launchFinder={toggleFinder} />
         <Usp />
         <HomeBanner />
@@ -30,3 +31,15 @@ export default function home() {
     </>
   );
 }
+
+export const getStaticProps = async () => {
+  let listingApi = new ListingApi();
+
+  const [listings] = await listingApi.getFeaturedListings();
+
+  return {
+    props: {
+      listings,
+    },
+  };
+};

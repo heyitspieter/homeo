@@ -84,6 +84,7 @@
                     overflow: hidden;
                     font-size: 1.35rem;
                     text-overflow: ellipsis;
+                    text-transform: capitalize;
 
                     @media screen and (max-width: 37.5em) {
                         width: 18rem;
@@ -97,6 +98,7 @@
                     font-size: 1.23rem;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    text-transform: capitalize;
 
                     @media screen and (max-width: 37.5em) {
                         width: 18rem;
