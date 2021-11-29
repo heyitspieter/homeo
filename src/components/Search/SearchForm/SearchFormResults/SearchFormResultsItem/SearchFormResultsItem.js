@@ -63,7 +63,7 @@ function SearchFormResultsItem({ listing }) {
           </div>
           <div>
             <Svg className={styles.iconRuler} symbol="ruler" />
-            <span>{listing.area} Sq ft</span>
+            <span>{listing.area}</span>
           </div>
         </div>
       </div>

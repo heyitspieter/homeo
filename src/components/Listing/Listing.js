@@ -192,7 +192,7 @@ function Listing({ listing }) {
                   Garage: <span>{listing.garages}</span>
                 </p>
                 <p>
-                  Size: <span>{listing.area} Sq ft</span>
+                  Size: <span>{listing.area}</span>
                 </p>
               </div>
             </div>

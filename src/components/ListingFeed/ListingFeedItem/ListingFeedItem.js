@@ -46,7 +46,11 @@ function ListingFeedItem({ listing }) {
       <div className={styles.grid__item_avatar}>
         <figure>
           <Image
-            src="/images/user-1.jpg"
+            src={
+              listing.createdBy
+                ? listing.createdBy.profileImage
+                : "/images/avatar.jpg"
+            }
             alt="User 1"
             width={200}
             height={200}
@@ -80,7 +84,7 @@ function ListingFeedItem({ listing }) {
           </div>
           <div>
             <Svg className={styles.iconRuler} symbol="ruler" />
-            <span>{listing.area} Sq ft</span>
+            <span>{listing.area}</span>
           </div>
         </div>
       </div>

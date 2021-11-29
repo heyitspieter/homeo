@@ -49,7 +49,11 @@ function SearchFeedItem({ listing }) {
       <div className={styles.grid__item_avatar}>
         <figure>
           <Image
-            src={listing.createdBy.profileImage || "/images/avatar.jpg"}
+            src={
+              listing.createdBy
+                ? listing.createdBy.profileImage
+                : "/images/avatar.jpg"
+            }
             alt="Property Owner"
             height={200}
             width={200}
@@ -83,7 +87,7 @@ function SearchFeedItem({ listing }) {
           </div>
           <div>
             <Svg className={styles.iconRuler} symbol="ruler" />
-            <span>{listing.area} Sq ft</span>
+            <span>{listing.area}</span>
           </div>
         </div>
       </div>
