@@ -3,7 +3,7 @@ import axios from "src/libs/axios";
 
 class JobRequestApi extends Api {
   constructor(req) {
-    super(req, "/job-request");
+    super(req, "/job-requests");
   }
 
   async submit(data) {

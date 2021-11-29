@@ -28,7 +28,7 @@ const JobInfo = ({
         id: "description",
         required: true,
         rows: 7,
-        placeholder: "Brief description of what you are looking for",
+        placeholder: "Brief description of your project",
         autoComplete: "off",
       },
       elementClasses: [formStyles.form__textarea],
@@ -69,33 +69,60 @@ const JobInfo = ({
         message: "Please select at most 6 files",
       },
     },
-    contact: {
+    email: {
       label: {
-        title: "How would you like us to contact you?",
-        htmlFor: "contact",
+        title: "Email Address",
+        htmlFor: "email",
         classes: [formStyles.form__label],
       },
-      elementType: "select",
+      elementType: "input",
       elementConfig: {
-        id: "contact",
+        type: "email",
         required: true,
+        id: "mobilenumber",
         autoComplete: "off",
-        options: [
-          { value: "", display: "-- select contact info --" },
-          { value: "phone", display: "Phone Number" },
-          { value: "email", display: "Email Address" },
-        ],
+        placeholder: "Johndoe@example.com",
       },
-      elementClasses: [formStyles.form__textarea],
+      elementClasses: [formStyles.form__input],
       parentClasses: [styles.form__group],
       value: "",
       validation: {
         required: true,
+        isEmail: true,
       },
       valid: false,
       touched: false,
       error: {
-        message: "Cotact is required",
+        message: "Email Address is required",
+      },
+    },
+    mobileNumber: {
+      label: {
+        title: "Mobile Number",
+        htmlFor: "mobilenumber",
+        classes: [formStyles.form__label],
+      },
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        maxLength: 11,
+        required: true,
+        id: "mobilenumber",
+        autoComplete: "off",
+        placeholder: "Your Mobile Number",
+      },
+      elementClasses: [formStyles.form__input],
+      parentClasses: [styles.form__group],
+      value: "",
+      validation: {
+        required: true,
+        maxLength: 11,
+        isMobilePhone: true,
+      },
+      valid: false,
+      touched: false,
+      error: {
+        message: "Mobile Number is required",
       },
     },
   });
@@ -127,45 +154,6 @@ const JobInfo = ({
       toast.error(error);
     }
   }, [success, error]);
-
-  useEffect(() => {
-    const value = formControls.contact.value;
-
-    if (["phone", "email"].includes(value)) {
-      const { options, ...rest } = formControls.contact.elementConfig;
-
-      setFormControls((prevFormControls) => ({
-        ...prevFormControls,
-        contact: {
-          ...prevFormControls.contact,
-          label: {
-            ...prevFormControls.contact.label,
-            title:
-              value === "phone"
-                ? "Enter your phone number"
-                : "Enter your email address",
-          },
-          value: "",
-          elementType: "input",
-          elementConfig: {
-            ...rest,
-            type: "text",
-          },
-          validation: {
-            ...prevFormControls.contact.validation,
-            isEmail: value === "email" ? true : false,
-            isMobilePhone: value === "phone" ? true : false,
-          },
-          error: {
-            message:
-              value === "phone"
-                ? "Valid phone number is required"
-                : "Email address is required",
-          },
-        },
-      }));
-    }
-  }, [formControls.contact.value]);
 
   const inputChangeHandler = (event, formControlKey) => {
     let updatededFormControls = null;
@@ -289,7 +277,7 @@ const JobInfo = ({
   return (
     <div className={containerClass}>
       <div className={styles.title}>
-        <h2>Tell us more</h2>
+        <h2>Tell us more about your project</h2>
       </div>
       <form
         className={styles.form}

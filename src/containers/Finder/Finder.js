@@ -28,9 +28,10 @@ function Finder({ close, show }) {
 
   const [jobData, setJobData] = useState({
     files: [],
-    contact: null,
+    email: null,
     profession: null,
     description: null,
+    mobileNumber: null,
   });
 
   const [currentStep, setCurrentStep] = useState(0);
