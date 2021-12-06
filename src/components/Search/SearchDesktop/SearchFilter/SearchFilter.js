@@ -1,28 +1,29 @@
-import { useState } from "react";
 import className from "classnames";
+import { useRouter } from "next/router";
 import Svg from "src/components/Svg/Svg";
+import { useState, useEffect } from "react";
 import { updateObject, checkFormValidity } from "src/helpers";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
 
-import styles from "src/components/Search/SearchFilter/SearchFilter.module.scss";
+import styles from "src/containers/Search/SearchDesktop/SearchDesktop.module.scss";
 
-function SearchFilter() {
+function SearchFilter({ mobile, applyFilters }) {
   const [formControls, setFormControls] = useState({
-    keyword: {
+    keywords: {
       label: {
         title: "",
         htmlFor: "keyword",
-        classes: [styles.form__label],
+        classes: [styles.filter__form_label],
       },
       elementType: "input",
       elementConfig: {
         type: "text",
         id: "keyword",
-        placeholder: "Enter Keyword",
+        placeholder: "e.g Penthouse, Jacuzzi",
       },
-      elementClasses: [styles.form__input],
-      parentClasses: [styles.form__group],
+      elementClasses: [styles.filter__form_input],
+      parentClasses: [styles.filter__form_group],
       value: "",
       validation: {
         required: false,
@@ -37,7 +38,7 @@ function SearchFilter() {
       label: {
         title: "",
         htmlFor: "propertystatus",
-        classes: [styles.form__label],
+        classes: [styles.filter__form_label],
       },
       elementType: "select",
       elementConfig: {
@@ -62,8 +63,8 @@ function SearchFilter() {
         required: true,
         id: "propertystatus",
       },
-      elementClasses: [styles.form__select],
-      parentClasses: [styles.form__group],
+      elementClasses: [styles.filter__form_select],
+      parentClasses: [styles.filter__form_group],
       value: "",
       validation: {
         required: true,
@@ -78,7 +79,7 @@ function SearchFilter() {
       label: {
         title: "",
         htmlFor: "propertytype",
-        classes: [styles.form__label],
+        classes: [styles.filter__form_label],
       },
       elementType: "select",
       elementConfig: {
@@ -87,17 +88,22 @@ function SearchFilter() {
             value: "",
             display: "Property Type",
           },
+          { value: "apartment", display: "Apartment" },
+          { value: "office", display: "Office" },
+          { value: "home", display: "Residential Home" },
+          { value: "penthouse", display: "Penthouse" },
+          { value: "villa", display: "Villa" },
         ],
-        required: true,
+        required: false,
         id: "propertytype",
       },
-      elementClasses: [styles.form__select],
-      parentClasses: [styles.form__group],
+      elementClasses: [styles.filter__form_select],
+      parentClasses: [styles.filter__form_group],
       value: "",
       validation: {
         required: false,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "Property type is required",
@@ -107,18 +113,20 @@ function SearchFilter() {
       label: {
         title: "",
         htmlFor: "bedroom",
-        classes: [styles.form__label],
+        classes: [styles.filter__form_label],
       },
       elementType: "input",
       elementConfig: {
-        type: "text",
+        type: "number",
         id: "bedroom",
-        placeholder: "Bedrooms"
+        min: 1,
+        placeholder: "Bedrooms",
       },
-      elementClasses: [styles.form__select],
-      parentClasses: [styles.form__group],
+      elementClasses: [styles.filter__form_select],
+      parentClasses: [styles.filter__form_group],
       value: "",
       validation: {
+        min: 1,
         required: false,
       },
       valid: true,
@@ -131,18 +139,20 @@ function SearchFilter() {
       label: {
         title: "",
         htmlFor: "bathroom",
-        classes: [styles.form__label],
+        classes: [styles.filter__form_label],
       },
       elementType: "input",
       elementConfig: {
-        type: "text",
+        type: "number",
         id: "bathroom",
-        placeholder: "Bathrooms"
+        min: 1,
+        placeholder: "Bathrooms",
       },
-      elementClasses: [styles.form__select],
-      parentClasses: [styles.form__group],
+      elementClasses: [styles.filter__form_select],
+      parentClasses: [styles.filter__form_group],
       value: "",
       validation: {
+        min: 1,
         required: false,
       },
       valid: true,
@@ -155,15 +165,16 @@ function SearchFilter() {
       label: {
         title: "",
         htmlFor: "minprice",
-        classes: [styles.form__label],
+        classes: [styles.filter__form_label],
       },
-      elementType: "number",
+      elementType: "input",
       elementConfig: {
         id: "minprice",
+        type: "text",
         placeholder: "Min. Price",
       },
-      elementClasses: [styles.form__input],
-      parentClasses: [styles.form__group],
+      elementClasses: [styles.filter__form_input],
+      parentClasses: [styles.filter__form_group],
       value: "",
       validation: {
         required: false,
@@ -178,15 +189,16 @@ function SearchFilter() {
       label: {
         title: "",
         htmlFor: "maxprice",
-        classes: [styles.form__label],
+        classes: [styles.filter__form_label],
       },
-      elementType: "number",
+      elementType: "input",
       elementConfig: {
         id: "maxprice",
+        type: "text",
         placeholder: "Max. Price",
       },
-      elementClasses: [styles.form__input],
-      parentClasses: [styles.form__group],
+      elementClasses: [styles.filter__form_input],
+      parentClasses: [styles.filter__form_group],
       value: "",
       validation: {
         required: false,
@@ -203,6 +215,8 @@ function SearchFilter() {
 
   const [containerExpanded, setContainerExpanded] = useState(false);
 
+  const router = useRouter();
+
   let formElementsArray = [];
 
   for (let key in formControls) {
@@ -211,6 +225,19 @@ function SearchFilter() {
       config: formControls[key],
     });
   }
+
+  useEffect(() => {
+    if (router.query.filter) {
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        status: {
+          ...prevFormControls.status,
+          value: router.query.filter,
+          valid: true,
+        },
+      }));
+    }
+  }, []);
 
   const inputChangeHandler = (event, formControlKey) => {
     const updatededFormControls = updateObject(formControls, {
@@ -256,18 +283,35 @@ function SearchFilter() {
   const submitFormHandler = (e) => {
     e.preventDefault();
 
+    let formData = {};
+
+    for (let key in formControls) {
+      if (
+        formControls[key].touched &&
+        formControls[key].value.trim().length > 0
+      ) {
+        if (formControls[key].elementConfig.type === "number") {
+          formData[key] = +formControls[key].value;
+        } else {
+          formData[key] = formControls[key].value;
+        }
+      }
+    }
+
     if (formValidity) {
+      applyFilters(router.query.q, formData);
     }
   };
 
   const containerClass = className({
-    [styles.container]: true,
-    [styles.expanded]: containerExpanded,
+    [styles.filter]: true,
+    [styles.no__display]: !mobile ? false : true,
+    [styles.expanded]: !mobile ? true : containerExpanded,
   });
 
   return (
     <div className={containerClass}>
-      <div className={styles.title}>
+      <div className={styles.filter__title}>
         <button onClick={() => setContainerExpanded(!containerExpanded)}>
           <h3>Find your new home</h3>
           <Svg
@@ -276,12 +320,15 @@ function SearchFilter() {
           />
         </button>
       </div>
-      <form className={styles.form}>
+      <form
+        onSubmit={(e) => submitFormHandler(e)}
+        className={styles.filter__form}
+      >
         {formInputs}
         <FormButton
-          parentClasses={[styles.form__button]}
-          type="search-filter"
           btnValue="Search"
+          type="search-filter"
+          parentClasses={[styles.filter__form_button]}
         />
       </form>
     </div>

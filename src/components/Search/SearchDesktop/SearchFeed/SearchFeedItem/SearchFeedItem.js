@@ -6,7 +6,7 @@ import { likeListing } from "src/store/actions";
 import { formatNumber, truncate } from "src/helpers";
 import { useDispatch, useSelector } from "react-redux";
 
-import styles from "src/components/Search/SearchFeed/SearchFeed.module.scss";
+import styles from "src/containers/Search/SearchDesktop/SearchDesktop.module.scss";
 
 function SearchFeedItem({ listing }) {
   const router = useRouter();
@@ -27,12 +27,12 @@ function SearchFeedItem({ listing }) {
   });
 
   return (
-    <div className={styles.grid__item}>
+    <div className={styles.feed__grid_item}>
       <div
         onClick={() => router.push(`/listing/${listing._lId}`)}
-        className={styles.grid__item_img}
+        className={styles.feed__grid_item_img}
       >
-        <div className={styles.grid__item_overlay}>
+        <div className={styles.feed__grid_item_overlay}>
           <span>{listing.status.split("-").join(" ")}</span>
           <span>{listing.distance.text}</span>
         </div>
@@ -46,7 +46,7 @@ function SearchFeedItem({ listing }) {
           />
         </figure>
       </div>
-      <div className={styles.grid__item_avatar}>
+      <div className={styles.feed__grid_item_avatar}>
         <figure>
           <Image
             src={
@@ -60,19 +60,19 @@ function SearchFeedItem({ listing }) {
           />
         </figure>
       </div>
-      <div className={styles.grid__item_details}>
+      <div className={styles.feed__grid_item_details}>
         <h3>
           {listing.name
             ? truncate(`${listing.name}`, 23)
             : truncate(listing.address, 23)}
           {listing.verified && (
-            <div className={styles.grid__item_badge}>
+            <div className={styles.feed__grid_item_badge}>
               <Svg className={styles.iconVerified} symbol="verified" />
             </div>
           )}
         </h3>
         <p>{listing.name && listing.address}</p>
-        <div className={styles.grid__item_features}>
+        <div className={styles.feed__grid_item_features}>
           <div>
             <Svg className={styles.iconBed} symbol="bed" />
             <span>{listing.beds} Beds</span>
@@ -91,11 +91,11 @@ function SearchFeedItem({ listing }) {
           </div>
         </div>
       </div>
-      <div className={styles.grid__item_footer}>
-        <div className={styles.grid__item_price}>
+      <div className={styles.feed__grid_item_footer}>
+        <div className={styles.feed__grid_item_price}>
           <p>₦{formatNumber(listing.price)}</p>
         </div>
-        <div className={styles.grid__item_actions}>
+        <div className={styles.feed__grid_item_actions}>
           <a href={`tel:`}>
             <Svg className={styles.iconPhone} symbol="phone" />
           </a>

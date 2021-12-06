@@ -8,7 +8,7 @@ import styles from "src/components/Account/Account.module.scss";
 const Profile = dynamic(() => import("src/containers/Profile/Profile"), {
   loading: () => (
     <div className={styles.spinner__wrapper}>
-      <Spinner loading />
+      <Spinner mini loading />
     </div>
   ),
 });
@@ -18,7 +18,7 @@ const PropertyListings = dynamic(
   {
     loading: () => (
       <div className={styles.spinner__wrapper}>
-        <Spinner loading />
+        <Spinner mini loading />
       </div>
     ),
   }
@@ -29,7 +29,7 @@ const AccountSetting = dynamic(
   {
     loading: () => (
       <div className={styles.spinner__wrapper}>
-        <Spinner loading />
+        <Spinner mini loading />
       </div>
     ),
   }
@@ -70,10 +70,7 @@ function Account() {
           </button>
         </ActiveButton>
         <ActiveButton activeClassName={styles.activeTab}>
-          <button
-            onClick={() => router.push("/favorites")}
-            id="/favorites"
-          >
+          <button onClick={() => router.push("/favorites")} id="/favorites">
             My Property Favorites
           </button>
         </ActiveButton>

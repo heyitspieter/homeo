@@ -6,7 +6,7 @@ import { formatNumber } from "src/helpers";
 import { likeListing } from "src/store/actions";
 import { useDispatch, useSelector } from "react-redux";
 
-import styles from "src/components/Search/SearchForm/SearchForm.module.scss";
+import styles from "src/components/Search/SearchMobile/SearchForm/SearchForm.module.scss";
 
 function SearchFormResultsItem({ listing }) {
   const router = useRouter();

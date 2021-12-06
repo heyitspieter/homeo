@@ -33,7 +33,9 @@ const FormButton = ({
           btnValue={btnValue}
           loading={isLoading}
           parentClasses={parentClasses}
-        />
+        >
+          {children}
+        </SearchhFilterButton>
       );
       break;
     case "auth":

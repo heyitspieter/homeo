@@ -56,7 +56,7 @@ function PropertyListingItem({ listing }) {
           >
             <Svg className={styles.iconImage} symbol="image" />
           </button>
-          <button disabled={listing.verified}>
+          <button>
             <Svg className={styles.iconEdit} symbol="edit-circle" />
           </button>
           <button disabled={listing.verified}>

@@ -1,3 +1,4 @@
+
 import styles from "src/components/Search/Search.module.scss";
 
 function Search({ children }) {

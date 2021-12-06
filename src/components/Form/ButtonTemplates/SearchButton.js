@@ -1,6 +1,6 @@
 import Svg from "src/components/Svg/Svg";
 
-import styles from "src/components/Search/SearchForm/SearchForm.module.scss";
+import styles from "src/components/Search/SearchMobile/SearchForm/SearchForm.module.scss";
 
 function SearchButton({ btnValue, config }) {
   return (

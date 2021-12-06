@@ -18,6 +18,18 @@ class SearchApi extends Api {
       return [null, err];
     }
   }
+
+  async applyFilters(addr, filter) {
+    try {
+      const res = await axios.post(
+        `${this.apiUrl}/filter?addr=${addr}`,
+        filter
+      );
+      return [res.data, null];
+    } catch (err) {
+      return [null, err];
+    }
+  }
 }
 
 export default SearchApi;

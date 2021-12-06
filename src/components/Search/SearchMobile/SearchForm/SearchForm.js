@@ -1,7 +1,9 @@
 import { useRef } from "react";
+import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { toggleTabBar } from "src/store/actions";
+import { useApplyFilter } from "src/hooks/search";
 import { MapContext } from "src/context/MapContext";
 import { useSearchListings } from "src/hooks/search";
 import { useContext, useState, useEffect } from "react";
@@ -9,10 +11,11 @@ import usePlacesAutocomplete from "use-places-autocomplete";
 import { updateObject, checkFormValidity } from "src/helpers";
 import FormInput from "src/components/Form/FormInput/FormInput";
 import FormButton from "src/components/Form/FormButton/FormButton";
-import SearchFormResults from "src/components/Search/SearchForm/SearchFormResults/SearchFormResults";
-import SearchFormDropdown from "src/components/Search/SearchForm/SearchFormDropdown/SearchFormDropdown";
+import SearchFormFilter from "src/components/Search/SearchMobile/SearchForm/SearchFormFilter/SearchFormFilter";
+import SearchFormResults from "src/components/Search/SearchMobile/SearchForm/SearchFormResults/SearchFormResults";
+import SearchFormDropdown from "src/components/Search/SearchMobile/SearchForm/SearchFormDropdown/SearchFormDropdown";
 
-import styles from "src/components/Search/SearchForm/SearchForm.module.scss";
+import styles from "src/components/Search/SearchMobile/SearchForm/SearchForm.module.scss";
 
 function SearchForm() {
   const inputRef = useRef();
@@ -53,10 +56,16 @@ function SearchForm() {
 
   const router = useRouter();
 
+  const [applyFilter, { loading }] = useApplyFilter();
+
   const [formValidity, setFormValidity] = useState(true);
 
   const [searchListings, { data: results, loading: searching }] =
     useSearchListings();
+
+  const [searchFilter, setSearchFilter] = useState({
+    visibility: false,
+  });
 
   const [searchResults, setSearchResults] = useState([]);
 
@@ -193,6 +202,29 @@ function SearchForm() {
     }, 600);
   };
 
+  const toggleSearchFilter = () => {
+    setSearchFilter(
+      updateObject(searchFilter, {
+        visibility: !searchFilter.visibility,
+      })
+    );
+  };
+
+  const onApplyFilters = async (addr, filters) => {
+    toggleSearchFilter();
+    setSearchResults([]);
+
+    const [data, err] = await applyFilter(addr, filters);
+
+    if (data) {
+      setSearchResults(data);
+    }
+
+    if (err) {
+      toast.error(err);
+    }
+  };
+
   const submitFormHandler = (e) => {
     e.preventDefault();
 
@@ -214,27 +246,35 @@ function SearchForm() {
   };
 
   return (
-    <div className={styles.container}>
-      <form
-        ref={formRef}
-        className={styles.form}
-        onSubmit={(e) => submitFormHandler(e)}
-      >
-        {formInputs}
-      </form>
-      <div className={styles.container__flex}>
-        <SearchFormDropdown
-          data={data}
-          searching={searching}
-          count={searchResults.length}
-          onSelectPlace={onSelectPlace}
-        />
-        <SearchFormResults
-          count={searchResults.length}
-          searchResults={searchResults}
-        />
+    <>
+      <SearchFormFilter
+        close={toggleSearchFilter}
+        applyFilters={onApplyFilters}
+        show={searchFilter.visibility}
+      />
+      <div className={styles.container}>
+        <form
+          ref={formRef}
+          className={styles.form}
+          onSubmit={(e) => submitFormHandler(e)}
+        >
+          {formInputs}
+        </form>
+        <div className={styles.container__flex}>
+          <SearchFormDropdown
+            data={data}
+            count={searchResults.length}
+            onSelectPlace={onSelectPlace}
+            searching={searching || loading}
+          />
+          <SearchFormResults
+            count={searchResults.length}
+            searchResults={searchResults}
+            toggleSearchFilter={toggleSearchFilter}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

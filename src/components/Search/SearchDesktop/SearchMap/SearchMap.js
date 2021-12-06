@@ -3,7 +3,7 @@ import Map from "src/components/Map/Map";
 import { Marker } from "@react-google-maps/api";
 import { MapContext } from "src/context/MapContext";
 
-import styles from "src/components/Search/SearchMap/SearchMap.module.scss";
+import styles from "src/components/Search/SearchDesktop/SearchMap/SearchMap.module.scss";
 
 const mapConfig = {
   disableDefaultUI: true,
