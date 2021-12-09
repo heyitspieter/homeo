@@ -5,7 +5,9 @@ import Toolbar from "src/components/Toolbar/Toolbar";
 import Listing from "src/components/Listing/Listing";
 
 export default function listingPage({ listing }) {
-  let headingTitle = listing ? `${listing.name} ${listing.address}` : "Loading... ";
+  let headingTitle = listing
+    ? `${listing.name && listing.name} ${listing.address}`
+    : "Loading... ";
 
   return (
     <Layout title={`${capitalize(headingTitle)}: Secutitex`}>
