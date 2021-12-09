@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useAuth } from "src/context/AuthContext";
@@ -16,6 +17,11 @@ import usePlacesAutocomplete, {
 
 import styles from "src/containers/ListingForm/ListingForm.module.scss";
 
+const RichTextEditor = dynamic(
+  () => import("src/containers/RichTextEditor/RichTextEditor"),
+  { ssr: false, loading: () => <p>Loading Editor...</p> }
+);
+
 function ListingForm({ toggleAuthModal }) {
   const [formControls, setFormControls] = useState({
     name: {
@@ -28,8 +34,8 @@ function ListingForm({ toggleAuthModal }) {
       elementConfig: {
         type: "text",
         id: "name",
-        required: true,
-        placeholder: "Property Title (optional)",
+        required: false,
+        placeholder: "Property Name (optional) e.g 5 Bedroom Penthouse",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -190,6 +196,7 @@ function ListingForm({ toggleAuthModal }) {
       elementConfig: {
         id: "description",
         required: true,
+        hidden: true,
         placeholder: "Property Description",
         rows: 7,
       },
@@ -496,7 +503,7 @@ function ListingForm({ toggleAuthModal }) {
       elementConfig: {
         type: "text",
         id: "features",
-        required: true,
+        required: false,
         placeholder: "Property Features e.g (Swimming pool, Gym)",
       },
       elementClasses: [styles.form__input],
@@ -670,6 +677,21 @@ function ListingForm({ toggleAuthModal }) {
     }
   };
 
+  const getEditorContent = (content) => {
+    setFormControls(
+      updateObject(formControls, {
+        description: updateObject(formControls.description, {
+          valid: checkFormValidity(
+            content,
+            formControls.description.validation
+          ),
+          value: content,
+          touched: true,
+        }),
+      })
+    );
+  };
+
   /** Iterate over all the form elements and return it to the view */
   let formInputs = formElementsArray.map(({ id, config }) => (
     <FormInput
@@ -691,6 +713,12 @@ function ListingForm({ toggleAuthModal }) {
         <ListingFormDropdown
           data={suggestions.data}
           onSelectPlace={onSelectPlace}
+        />
+      )}
+      {id === "description" && (
+        <RichTextEditor
+          initialContent={null}
+          getEditorContent={getEditorContent}
         />
       )}
     </FormInput>

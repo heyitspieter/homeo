@@ -12,8 +12,8 @@ function PropertyListingItem({ listing }) {
 
   const statusClass = (listing) =>
     className({
-      [styles.green]: listing.verified,
-      [styles.red]: !listing.verified,
+      [styles.green]: listing.mode === "public",
+      [styles.red]: listing.mode != "public",
     });
 
   const imageSrc = `${process.env.NEXT_PUBLIC_SERVER_IMAGE_URL}/${listing.thumbnail}`;
@@ -45,7 +45,7 @@ function PropertyListingItem({ listing }) {
       <td>{formatDate(listing.createdAt)}</td>
       <td>
         <p className={statusClass(listing)}>
-          {listing.verified ? "Verified" : "Pending"}
+          {listing.mode === "public" ? "Approved" : "Pending"}
         </p>
       </td>
       <td>0</td>
@@ -56,7 +56,7 @@ function PropertyListingItem({ listing }) {
           >
             <Svg className={styles.iconImage} symbol="image" />
           </button>
-          <button>
+          <button onClick={() => router.push(`/listing/edit/${listing._lId}`)}>
             <Svg className={styles.iconEdit} symbol="edit-circle" />
           </button>
           <button disabled={listing.verified}>

@@ -15,6 +15,15 @@ class ListingApi extends Api {
     }
   }
 
+  async updateListing(id, data) {
+    try {
+      const res = await axios.patch(`${this.apiUrl}/${id}/update`, data, this.config);
+      return [res.data, null];
+    } catch (err) {
+      return [null, err];
+    }
+  }
+
   async getUserListings() {
     try {
       const res = await axios.get(`${this.apiUrl}/me`, this.config);

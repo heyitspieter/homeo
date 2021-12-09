@@ -1,6 +1,8 @@
 import Link from "next/link";
+import Script from "next/script";
 import className from "classnames";
 import Svg from "src/components/Svg/Svg";
+import NewsLetter from "src/containers/NewsLetter/NewsLetter";
 
 import styles from "src/components/Footer/Footer.module.scss";
 
@@ -9,9 +11,10 @@ function Footer({ tabBar }) {
     [styles.container]: true,
     [styles.padding__b_10]: tabBar,
   });
-  
+
   return (
-    <div className={containerClass}>
+    <>
+     <div className={containerClass}>
       <div className={styles.wrapper}>
         <div className={styles.contact}>
           <h3>Contact Us</h3>
@@ -44,27 +47,7 @@ function Footer({ tabBar }) {
             </Link>
           </div>
         </div>
-        <div className={styles.newsletter}>
-          <h3>
-            Subscribe <span>(we will not send spam emails)</span>
-          </h3>
-          <form className={styles.newsletter__form}>
-            <div className={styles.newsletter__form_group}>
-              <input
-                className={styles.newsletter__form_input}
-                type="text"
-                placeholder=""
-                required
-              />
-              <label className={styles.newsletter__form_label}>
-                Enter your email address
-              </label>
-              <button className={styles.btnSend}>
-                <Svg className={styles.iconSend} symbol="send" />
-              </button>
-            </div>
-          </form>
-        </div>
+        <NewsLetter />
         <div className={styles.copyright}>
           <p className={styles.copyright__text}>
             Copyright &copy; 2021 Secutitex. All Rights Reserved.
@@ -85,6 +68,12 @@ function Footer({ tabBar }) {
         </div>
       </div>
     </div>
+    <Script
+        strategy="lazyOnload"
+        src={`https://www.google.com/recaptcha/api.js?onload=initCallback&render=explicit`}
+      />
+    </>
+   
   );
 }
 

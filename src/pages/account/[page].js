@@ -4,7 +4,7 @@ import Account from "src/components/Account/Account";
 
 export default function account() {
   return (
-    <Layout title="Secutitex: My Account" tabBar>
+    <Layout title="My Account: Secutitex" tabBar>
       <Account />
     </Layout>
   );

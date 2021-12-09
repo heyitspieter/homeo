@@ -5,11 +5,10 @@ import Toolbar from "src/components/Toolbar/Toolbar";
 import Listing from "src/components/Listing/Listing";
 
 export default function listingPage({ listing }) {
-  let name = listing ? listing.name : "";
-  let address = listing ? listing.address : "";
+  let headingTitle = listing ? `${listing.name} ${listing.address}` : "Loading... ";
 
   return (
-    <Layout title={`Secutitex: ${capitalize(name)}, ${capitalize(address)}`}>
+    <Layout title={`${capitalize(headingTitle)}: Secutitex`}>
       <Toolbar />
       <Listing listing={listing} />
     </Layout>
@@ -21,7 +20,7 @@ export const getStaticPaths = async () => {
 
   const listingApi = new ListingApi();
 
-  const [listings, err] = await listingApi.getAllListings();
+  const [listings] = await listingApi.getAllListings();
 
   if (listings) {
     paths = listings.map((listing) => ({ params: { id: listing._lId } }));
@@ -57,6 +56,4 @@ export const getStaticProps = async ({ params, preview }) => {
   if (err && err.response && err.response.status === 404) {
     return { notFound: true };
   }
-
-  return { props: {} };
 };

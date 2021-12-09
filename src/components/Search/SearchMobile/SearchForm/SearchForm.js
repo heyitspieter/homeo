@@ -211,6 +211,8 @@ function SearchForm() {
   };
 
   const onApplyFilters = async (addr, filters) => {
+    const oldResults = searchResults;
+
     toggleSearchFilter();
     setSearchResults([]);
 
@@ -222,6 +224,7 @@ function SearchForm() {
 
     if (err) {
       toast.error(err);
+      setSearchResults(oldResults);
     }
   };
 

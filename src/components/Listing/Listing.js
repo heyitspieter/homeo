@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Map from "src/components/Map/Map";
 import Svg from "src/components/Svg/Svg";
 import { useEffect, useState } from "react";
+import DOMPurify from "isomorphic-dompurify";
 import { likeListing } from "src/store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { formatNumber, copyToClipboard } from "src/helpers";
@@ -22,14 +23,19 @@ const mapConfig = {
 import styles from "src/components/Listing/Listing.module.scss";
 
 function Listing({ listing }) {
+  const [isLiked, setIsLiked] = useState(false);
+
   const [currentImage, setCurrentImage] = useState(placeholderData);
 
   const router = useRouter();
 
   useEffect(() => {
-    setCurrentImage(
-      `${process.env.NEXT_PUBLIC_SERVER_IMAGE_URL}/${listing.images[0]}`
-    );
+    if (listing) {
+      setCurrentImage(
+        `${process.env.NEXT_PUBLIC_SERVER_IMAGE_URL}/${listing.images[0]}`
+      );
+      setIsLiked(likes.findIndex((like) => like.id === listing._lId) !== -1);
+    }
 
     return () => {
       setCurrentImage("");
@@ -48,8 +54,6 @@ function Listing({ listing }) {
   const likes = useSelector((state) => state.favorite.likes);
 
   const onLikeListing = (id) => dispatch(likeListing(id));
-
-  const isLiked = likes.findIndex((like) => like.id === listing._lId) !== -1;
 
   const likeIconClass = className({
     [styles.iconHeart]: !isLiked,
@@ -87,7 +91,7 @@ function Listing({ listing }) {
           </div>
           <div className={styles.features__item}>
             <Svg className={styles.iconRuler} symbol="ruler" />
-            <span>{listing.area} Sq ft</span>
+            <span>{listing.area}</span>
           </div>
         </div>
         <div className={styles.util}>
@@ -106,7 +110,7 @@ function Listing({ listing }) {
         <div className={styles.price}>
           <p>₦{formatNumber(listing.price)}</p>
           <span>
-            {listing.bargain === "yes" ? "Negotiable" : "Non-negotiable"}
+            {listing.bargain === "yes" ? "Negotiable" : "Non-Negotiable"}
           </span>
         </div>
       </div>
@@ -134,7 +138,12 @@ function Listing({ listing }) {
           <div className={styles.row__grid_item}>
             <div className={styles.description}>
               <h3>Description</h3>
-              <p>{listing.description}</p>
+              <div
+                className={styles.description__content}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(listing.description),
+                }}
+              ></div>
             </div>
             <div className={styles.description__grid}>
               <h3>Location</h3>
@@ -223,12 +232,16 @@ function Listing({ listing }) {
                     }
                   />
                 </figure>
-                <h3>
-                  {listing.createdBy
-                    ? `${listing.createdBy.firstname} ${listing.createdBy.lastname}`
-                    : "Secutitex"}
-                </h3>
-                <button>View Listings</button>
+                <div>
+                  <h3>
+                    {listing.createdBy
+                      ? `${listing.createdBy.firstname} ${listing.createdBy.lastname}`
+                      : "Secutitex"}
+                  </h3>
+                  {listing.createdBy ? (
+                    <button>{listing.createdBy.profession.name}</button>
+                  ) : null}
+                </div>
               </div>
               <div className={styles.contactBox__actions}>
                 <a
@@ -236,7 +249,7 @@ function Listing({ listing }) {
                   className={styles.action__mail}
                   href={`mailto:support@secutitexltd.com`}
                 >
-                  Contact Property
+                  Get in Touch
                 </a>
                 <a className={styles.action__tel} href={`tel:`}>
                   <Svg className={styles.iconWhatsapp} symbol="whatsapp" />

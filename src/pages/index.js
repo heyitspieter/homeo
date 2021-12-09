@@ -28,6 +28,8 @@ export default function home({ listings }) {
         <PropertyExplore />
       </Layout>
       <Finder show={finder.open} close={toggleFinder} />
+
+      
     </>
   );
 }

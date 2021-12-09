@@ -8,7 +8,6 @@ const withAuth =
     const authApi = new AuthApi(req);
 
     let rest = {};
-    let next = "/";
     let isAuthenticated = null;
 
     if (cb) rest = await cb(ctx);
@@ -19,11 +18,7 @@ const withAuth =
       isAuthenticated = session.isAuthenticated;
     }
 
-    if (query.page) {
-      next = `/account/${query.page}`;
-    }
-
-    if (!isAuthenticated && !query.type) {
+    if (!isAuthenticated) {
       return {
         redirect: {
           destination: `/`,
@@ -33,7 +28,7 @@ const withAuth =
     }
 
     return {
-      props: { isAuthenticated, ...rest },
+      props: { isAuthenticated, page: query.page || null, ...rest },
     };
   };
 

@@ -7,7 +7,7 @@ import { updateObject, checkFormValidity, getImageDataURL } from "src/helpers";
 
 import styles from "src/containers/ListingForm/ListingForm.module.scss";
 
-function ListingUploadForm({ toggleAuthModal, images }) {
+function ListingUploadForm({ images }) {
   const [formControls, setFormControls] = useState({});
 
   const [lastUpdatedKey, setLastUpdatedKey] = useState(null);

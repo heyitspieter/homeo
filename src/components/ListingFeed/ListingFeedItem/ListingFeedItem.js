@@ -68,7 +68,7 @@ function ListingFeedItem({ listing }) {
             </div>
           )}
         </h3>
-        <p>{listing.address}</p>
+        <p>{listing.name && listing.address}</p>
         <div className={styles.grid__item_features}>
           <div>
             <Svg className={styles.iconBed} symbol="bed" />

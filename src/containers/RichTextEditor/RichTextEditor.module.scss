@@ -1,0 +1,30 @@
+.container {
+    display: block;
+    grid-column: 1 / -1;
+}
+
+.wrapper {
+    border-radius: 0.3rem;
+    background-color: #f6f6f6;
+}
+
+.editor {
+    padding: 0 1rem;
+    font-size: 1.4rem;
+}
+
+.toolbar {
+    color: #222222;
+    border-top: none;
+    font-weight: 400;
+    border-left: none;
+    border-right: none;
+    border: 1px solid #f3f3f3;
+}
+
+.label {
+    display: block;
+    font-weight: 400;
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+}

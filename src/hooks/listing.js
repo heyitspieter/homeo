@@ -34,3 +34,6 @@ export const useGetFeaturedListings = () => {
 
 export const usePopulateLikes = () =>
   useApiHandler((data) => axios.post("/api/v1/listing/likes", data));
+
+export const useUpdateListing = () =>
+  useApiHandler((id, listing) => axios.patch(`/api/v1/listing/${id}`, listing));

@@ -4,7 +4,9 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          <script type="text/javascript">{`function initCallback() {}`}</script>
+        </Head>
         <body>
           <Main />
           <NextScript />

@@ -72,3 +72,8 @@ option {
   -moz-appearance: none;
   -webkit-appearance: none;
 }
+
+.rdw-list-dropdown,
+.rdw-text-align-dropdown {
+  z-index: 9 !important;
+}

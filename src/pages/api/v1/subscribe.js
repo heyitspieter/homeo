@@ -1,13 +1,10 @@
-import ListingApi from "src/apis/listing";
+import SubscribeApi from "src/apis/subscribe";
 
 export default async (req, res) => {
-  const listingApi = new ListingApi(req);
+  const subcribeApi = new SubscribeApi();
 
-  if (req.method === "PATCH") {
-    const [success, err] = await listingApi.updateListing(
-      req.query.id,
-      req.body
-    );
+  if (req.method === "POST") {
+    const [success, err] = await subcribeApi.subscribe(req.body);
 
     if (success) return res.send(success);
 

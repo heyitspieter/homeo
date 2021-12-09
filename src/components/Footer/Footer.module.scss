@@ -164,11 +164,11 @@
 
         &_group {
             display: flex;
-            cursor: pointer;
+            cursor: text;
+            padding: 0 1.4rem;
             position: relative;
             align-items: center;
             border-radius: 5rem;
-            padding: 0.3rem 1.4rem;
             background-color: #ffffff;
         }
 
@@ -194,6 +194,7 @@
             background: none;
             font-weight: 400;
             font-size: 1.5rem;
+            padding: 1.2rem 0;
             font-family: inherit;
         }
 
@@ -273,9 +274,9 @@
 .btnSend {
     border: 0;
     display: flex;
-    padding: 1rem 0;
     cursor: pointer;
     background: none;
+    padding: 1.2rem 0;
 }
 
 .iconSend {

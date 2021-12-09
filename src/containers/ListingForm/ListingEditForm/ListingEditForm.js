@@ -1,12 +1,13 @@
+import dynamic from "next/dynamic";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useAuth } from "src/context/AuthContext";
 import { MapContext } from "src/context/MapContext";
-import { useCreateListing } from "src/hooks/listing";
 import { useContext, useEffect, useState } from "react";
 import FormInput from "src/components/Form/FormInput/FormInput";
+import { useUpdateListing, useGetStates } from "src/hooks/listing";
 import FormButton from "src/components/Form/FormButton/FormButton";
-import { updateObject, checkFormValidity, getImageDataURL } from "src/helpers";
+import { capitalize, updateObject, checkFormValidity } from "src/helpers";
 import ListingFormDropdown from "src/containers/ListingForm/ListingFormDropdown/ListingFormDropdown";
 
 import usePlacesAutocomplete, {
@@ -14,9 +15,14 @@ import usePlacesAutocomplete, {
   getGeocode,
 } from "use-places-autocomplete";
 
+const RichTextEditor = dynamic(
+  () => import("src/containers/RichTextEditor/RichTextEditor"),
+  { ssr: false, loading: () => <p>Loading Editor...</p> }
+);
+
 import styles from "src/containers/ListingForm/ListingForm.module.scss";
 
-function ListingEditForm({ toggleAuthModal }) {
+function ListingEditForm({ listing, toggleAuthModal }) {
   const [formControls, setFormControls] = useState({
     name: {
       label: {
@@ -28,8 +34,8 @@ function ListingEditForm({ toggleAuthModal }) {
       elementConfig: {
         type: "text",
         id: "name",
-        required: true,
-        placeholder: "Property Name (optional)",
+        required: false,
+        placeholder: "Property Name (optional) e.g 5 Bedroom Penthouse",
       },
       elementClasses: [styles.form__input],
       parentClasses: [styles.form__group],
@@ -127,6 +133,34 @@ function ListingEditForm({ toggleAuthModal }) {
         message: "Property Price is required",
       },
     },
+    bargain: {
+      label: {
+        title: "",
+        htmlFor: "bargain",
+        classes: [styles.form__label],
+      },
+      elementType: "select",
+      elementConfig: {
+        id: "bargain",
+        required: true,
+        options: [
+          { value: "", display: "Is this price negotiable?" },
+          { value: "yes", display: "Yes" },
+          { value: "no", display: "No" },
+        ],
+      },
+      elementClasses: [styles.form__select],
+      parentClasses: [styles.form__group],
+      value: "",
+      validation: {
+        required: true,
+      },
+      valid: true,
+      touched: false,
+      error: {
+        message: "Price bargain is required",
+      },
+    },
     keywords: {
       label: {
         title: "",
@@ -162,6 +196,7 @@ function ListingEditForm({ toggleAuthModal }) {
       elementConfig: {
         id: "description",
         required: true,
+        hidden: true,
         placeholder: "Property Description",
         rows: 7,
       },
@@ -404,7 +439,7 @@ function ListingEditForm({ toggleAuthModal }) {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "City is required",
@@ -428,7 +463,7 @@ function ListingEditForm({ toggleAuthModal }) {
       validation: {
         required: true,
       },
-      valid: false,
+      valid: true,
       touched: false,
       error: {
         message: "State is required",
@@ -458,31 +493,6 @@ function ListingEditForm({ toggleAuthModal }) {
         message: "",
       },
     },
-    yearBuilt: {
-      label: {
-        title: "",
-        htmlFor: "yearbuilt",
-        classes: [styles.form__label],
-      },
-      elementType: "input",
-      elementConfig: {
-        type: "text",
-        id: "yearbuilt",
-        required: true,
-        placeholder: "Year Built",
-      },
-      elementClasses: [styles.form__input],
-      parentClasses: [styles.form__group],
-      value: "",
-      validation: {
-        required: true,
-      },
-      valid: true,
-      touched: false,
-      error: {
-        message: "",
-      },
-    },
     features: {
       label: {
         title: "",
@@ -493,7 +503,7 @@ function ListingEditForm({ toggleAuthModal }) {
       elementConfig: {
         type: "text",
         id: "features",
-        required: true,
+        required: false,
         placeholder: "Property Features e.g (Swimming pool, Gym)",
       },
       elementClasses: [styles.form__input],
@@ -510,13 +520,17 @@ function ListingEditForm({ toggleAuthModal }) {
     },
   });
 
-  const [formValidity, setFormValidity] = useState(false);
+  const [isChangesMade, setIsChangesMade] = useState(false);
+
+  const [formValidity, setFormValidity] = useState(true);
 
   const router = useRouter();
 
+  const { data: states } = useGetStates();
+
   const [geoLocation, setGeoLocation] = useState(null);
 
-  const [createListing, { data, error, loading }] = useCreateListing();
+  const [updateListing, { data, error, loading }] = useUpdateListing();
 
   const { isAuthenticated } = useAuth();
 
@@ -540,36 +554,13 @@ function ListingEditForm({ toggleAuthModal }) {
   }
 
   useEffect(() => {
-    let timer = null;
-
     if (data) {
-      let newFormControls = { ...formControls };
-
-      for (let key in newFormControls) {
-        newFormControls[key].value = "";
-        newFormControls[key].valid = false;
-        newFormControls[key].touched = false;
-      }
-
-      setFormControls((prevFormControls) => ({
-        ...prevFormControls,
-        ...newFormControls,
-      }));
-
       toast.success("Listing saved successfully");
-
-      setTimeout(() => {
-        router.push(`/listing/upload/${data.listingId}`);
-      }, 400);
     }
 
     if (error) {
       toast.error(error);
     }
-
-    return () => {
-      clearTimeout(timer);
-    };
   }, [data, error]);
 
   useEffect(() => {
@@ -591,6 +582,96 @@ function ListingEditForm({ toggleAuthModal }) {
     }
   }, [ready]);
 
+  useEffect(() => {
+    if (listing) {
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        name: { ...prevFormControls.name, value: listing.name || "" },
+        category: { ...prevFormControls.category, value: listing.category },
+        status: { ...prevFormControls.status, value: listing.status },
+        price: { ...prevFormControls.price, value: listing.price },
+        bargain: { ...prevFormControls.bargain, value: listing.bargain || "" },
+        keywords: {
+          ...prevFormControls.keywords,
+          value: listing.keywords.join(", "),
+        },
+        description: {
+          ...prevFormControls.description,
+          value: listing.description,
+        },
+        beds: {
+          ...prevFormControls.beds,
+          value: listing.beds || "",
+        },
+        parlors: {
+          ...prevFormControls.parlors,
+          value: listing.parlors || "",
+        },
+        baths: {
+          ...prevFormControls.baths,
+          value: listing.baths || "",
+        },
+        garages: {
+          ...prevFormControls.garages,
+          value: listing.garages || "",
+        },
+        area: {
+          ...prevFormControls.area,
+          value: listing.area,
+        },
+        address: {
+          ...prevFormControls.address,
+          value: listing.address,
+        },
+        location: {
+          ...prevFormControls.location,
+          value: listing.location.address,
+        },
+        zipcode: {
+          ...prevFormControls.zipcode,
+          value: listing.zipcode,
+        },
+        city: {
+          ...prevFormControls.city,
+          value: listing.city,
+        },
+        state: {
+          ...prevFormControls.state,
+          value: listing.state,
+        },
+        country: {
+          ...prevFormControls.country,
+          value: listing.country,
+        },
+        features: {
+          ...prevFormControls.features,
+          value: listing.features.join(", "),
+        },
+      }));
+    }
+  }, [listing]);
+
+  useEffect(() => {
+    if (states) {
+      setFormControls((prevFormControls) => ({
+        ...prevFormControls,
+        state: {
+          ...prevFormControls.state,
+          elementConfig: {
+            ...prevFormControls.state.elementConfig,
+            options: [
+              { value: "", display: "-- Choose a State --" },
+              ...states.map((state) => ({
+                value: state,
+                display: capitalize(state),
+              })),
+            ],
+          },
+        },
+      }));
+    }
+  }, [states]);
+
   const inputChangeHandler = (event, formControlKey) => {
     const updatededFormControls = updateObject(formControls, {
       [formControlKey]: updateObject(formControls[formControlKey], {
@@ -604,6 +685,36 @@ function ListingEditForm({ toggleAuthModal }) {
     });
 
     let formIsValid = true;
+    let isFormChanged = true;
+    let updatedFormControlsArray = [];
+
+    let {
+      __v,
+      _id,
+      _lId,
+      images,
+      verified,
+      location,
+      keywords,
+      features,
+      yearBuilt,
+      createdBy,
+      description,
+      verification,
+      ...rest
+    } = listing;
+
+    updatedFormControlsArray.push(event.target.value);
+
+    rest["location"] = listing.location.address;
+    rest["keywords"] = listing.keywords.join(",");
+    rest["features"] = listing.features.join(", ");
+    rest["bargain"] = listing.bargain ? listing.bargain : "";
+
+    isFormChanged =
+      updatedFormControlsArray.every((value) =>
+        [rest[formControlKey]].includes(value)
+      ) && isFormChanged;
 
     for (let key in updatededFormControls) {
       formIsValid = updatededFormControls[key].valid && formIsValid;
@@ -614,6 +725,7 @@ function ListingEditForm({ toggleAuthModal }) {
     }
 
     setFormValidity(formIsValid);
+    setIsChangesMade(!isFormChanged);
     setFormControls(updatededFormControls);
   };
 
@@ -642,6 +754,33 @@ function ListingEditForm({ toggleAuthModal }) {
     }
   };
 
+  const getEditorContent = (content) => {
+    let isFormChanged = true;
+
+    if (listing) {
+      let initialEditorContent = [listing.description];
+
+      isFormChanged =
+        [content].every((value) => initialEditorContent.includes(value)) &&
+        isFormChanged;
+
+      setIsChangesMade(!isFormChanged);
+    }
+
+    setFormControls(
+      updateObject(formControls, {
+        description: updateObject(formControls.description, {
+          valid: checkFormValidity(
+            content,
+            formControls.description.validation
+          ),
+          value: content,
+          touched: true,
+        }),
+      })
+    );
+  };
+
   /** Iterate over all the form elements and return it to the view */
   let formInputs = formElementsArray.map(({ id, config }) => (
     <FormInput
@@ -665,6 +804,12 @@ function ListingEditForm({ toggleAuthModal }) {
           onSelectPlace={onSelectPlace}
         />
       )}
+      {id === "description" && (
+        <RichTextEditor
+          getEditorContent={getEditorContent}
+          initialContent={listing ? listing.description : null}
+        />
+      )}
     </FormInput>
   ));
 
@@ -679,19 +824,21 @@ function ListingEditForm({ toggleAuthModal }) {
 
     if (formValidity) {
       for (let key in formControls) {
-        if (key !== "location") {
+        if (key !== "location" && formControls[key].touched) {
           formData[key] = formControls[key].value;
         }
       }
 
-      formData["location"] = geoLocation;
+      if (geoLocation) {
+        formData["location"] = geoLocation;
+      }
 
-      createListing(formData);
+      updateListing(listing._lId, formData);
     }
   };
 
   const btnConfig = {
-    disabled: !formValidity || loading,
+    disabled: !formValidity || loading || !isChangesMade,
   };
 
   return (
@@ -709,11 +856,11 @@ function ListingEditForm({ toggleAuthModal }) {
         <div className={styles.label}>
           <h3>Property Info</h3>
         </div>
-        {formInputs.slice(0, 17)}
+        {formInputs.slice(0, 18)}
         <div className={styles.label}>
           <h3>Amenities</h3>
         </div>
-        {formInputs.slice(17)}
+        {formInputs.slice(18)}
         <FormButton
           config={btnConfig}
           parentClasses={[styles.form__button]}

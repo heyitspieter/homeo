@@ -1,30 +1,24 @@
+import withAuth from "src/hoc/withAuth";
 import ListingApi from "src/apis/listing";
 import Layout from "src/components/Layout/Layout";
 import Toolbar from "src/components/Toolbar/Toolbar";
 import ListingEditForm from "src/containers/ListingForm/ListingEditForm/ListingEditForm";
 
-export default function editlistingPage() {
+export default function editlistingPage({ listing }) {
   return (
-    <Layout title={`Secutitex`}>
+    <Layout title="Edit Listing: Secutitex">
       <Toolbar />
-      <ListingEditForm />
+      <ListingEditForm listing={listing} />
     </Layout>
   );
 }
 
-export const getStaticPaths = async () => {
-  let paths = [];
+export const getServerSideProps = withAuth(async ({ req, query }) => {
+  const listingApi = new ListingApi(req);
 
-  return {
-    paths,
-    fallback: true,
-  };
-};
+  const [listing] = await listingApi.getListing(query.id);
 
-export const getStaticProps = async () => {
-  const listingApi = new ListingApi();
-
-  let listing = null;
-
-  return { props: {} };
-};
+  if (listing) {
+    return { listing };
+  }
+});
