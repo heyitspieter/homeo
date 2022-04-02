@@ -47,7 +47,7 @@ function ListingFeedItem({ listing }) {
         <figure>
           <Image
             src={
-              listing.userdata[0]
+              listing.userdata && listing.userdata[0]
                 ? listing.userdata[0].profileImage
                 : "/images/logo.png"
             }
