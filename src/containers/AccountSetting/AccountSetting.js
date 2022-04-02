@@ -120,7 +120,7 @@ function AccountSetting() {
     if (signedOut) {
       router.replace("/");
       mutate("/api/v1/user/session");
-      toast.success("Signed Out!! Come back soon :)");
+      toast.success("Signed out!! Come back soon :)");
     }
 
     if (signoutErr) toast.error(signoutErr);

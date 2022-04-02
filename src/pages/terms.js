@@ -3,7 +3,7 @@ import Toolbar from "src/components/Toolbar/Toolbar";
 
 export default function terms() {
   return (
-    <Layout title="Secutitex: Terms & Conditions">
+    <Layout robots="index, follow" title="Secutitex: Terms & Conditions">
       <Toolbar />
     </Layout>
   );

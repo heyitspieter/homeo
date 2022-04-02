@@ -18,7 +18,11 @@ export default function search({ view, results }) {
   };
 
   return (
-    <Layout tabBar title="Secutitex: Search properties for rent or sale in NG">
+    <Layout
+      tabBar
+      robots="noindex, nofollow"
+      title="Secutitex: Search properties for rent or sale in NG"
+    >
       <Search>{renderView()}</Search>
     </Layout>
   );

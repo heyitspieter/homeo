@@ -6,7 +6,7 @@ import ListingEditForm from "src/containers/ListingForm/ListingEditForm/ListingE
 
 export default function editlistingPage({ listing }) {
   return (
-    <Layout title="Edit Listing: Secutitex">
+    <Layout robots="noindex, nofollow" title="Edit Listing: Secutitex">
       <Toolbar />
       <ListingEditForm listing={listing} />
     </Layout>

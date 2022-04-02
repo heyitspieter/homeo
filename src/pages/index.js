@@ -17,8 +17,11 @@ export default function home({ listings }) {
   return (
     <>
       <Layout
-        title="Secutitex: Search properties for rent or sale in NG"
         tabBar
+        robots="index, follow"
+        title="Secutitex: Search properties for rent or sale in NG"
+        keywords="secutitex, secutitex.com, real estate properties near me"
+        description="Find Properties for rent or for sale around your location in nigeria"
       >
         <Hero />
         <ListingFeed listings={listings} />
@@ -28,8 +31,6 @@ export default function home({ listings }) {
         <PropertyExplore />
       </Layout>
       <Finder show={finder.open} close={toggleFinder} />
-
-      
     </>
   );
 }

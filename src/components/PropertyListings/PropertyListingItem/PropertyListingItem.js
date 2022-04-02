@@ -48,7 +48,6 @@ function PropertyListingItem({ listing }) {
           {listing.mode === "public" ? "Approved" : "Pending"}
         </p>
       </td>
-      <td>0</td>
       <td>
         <div className={styles.action}>
           <button

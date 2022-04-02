@@ -10,7 +10,12 @@ export default function listingPage({ listing }) {
     : "Loading... ";
 
   return (
-    <Layout title={`${capitalize(headingTitle)}: Secutitex`}>
+    <Layout
+      keywords=""
+      robots="index, follow"
+      description={`Property in {listing.address}`}
+      title={`${capitalize(headingTitle)}: Secutitex`}
+    >
       <Toolbar />
       <Listing listing={listing} />
     </Layout>

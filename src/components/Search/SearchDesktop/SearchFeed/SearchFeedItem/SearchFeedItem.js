@@ -67,7 +67,12 @@ function SearchFeedItem({ listing }) {
             : truncate(listing.address, 23)}
           {listing.verified && (
             <div className={styles.feed__grid_item_badge}>
-              <Svg className={styles.iconVerified} symbol="verified" />
+              <Image
+                src="/images/badge.png"
+                alt="badge"
+                height={20}
+                width={20}
+              />
             </div>
           )}
         </h3>

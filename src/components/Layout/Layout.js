@@ -14,7 +14,7 @@ import PreviewModeDialog from "src/components/PreviewModeDialog/PreviewModeDialo
 
 import styles from "src/components/Layout/Layout.module.scss";
 
-function Layout({ title, tabBar, children }) {
+function Layout({ title, robots, keywords, description, tabBar, children }) {
   const router = useRouter();
 
   const dispatch = useDispatch();
@@ -83,12 +83,41 @@ function Layout({ title, tabBar, children }) {
     <>
       <Head>
         <title>{title}</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <meta name="description" content={description} />
+        <meta name="keywords" content={keywords} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@secutitex" />
+        <meta name="twitter:creator" content="@secutitex" />
+        <meta property="og:title" content={title} />
+        <meta property="og:locale" content="en_NG" />
+        <meta property="og:url" content={router.asPath} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Secutitex.com" />
+        <meta property="og:description" content={description} />
+        <meta
+          property="og:image"
+          content={`${process.env.NEXT_PUBLIC_BASE_URL}/images/og.png`}
+        />
+        <meta property="og:image:alt" content="Secutitex Logo" />
+        <meta name="robots" content={robots} />
         <link
-          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap"
-          rel="stylesheet"
-        ></link>
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
       </Head>
       <div className={styles.container}>
         <PreviewModeDialog

@@ -97,12 +97,22 @@
     display: flex;
     align-items: center;
 
-    @media screen and (max-width: 72.1em) {
+    @media screen and (max-width: 37.5em) {
         display: none;
+    }
+
+    & > *:last-child {
+        @media screen and (max-width: 72.1em) {
+            display: none;
+        }
     }
 
     & > *:not(:last-child) {
         margin-right: 1.8rem;
+
+        @media screen and (max-width: 72.1em) {
+            margin-right: 5rem;
+        }
     }
 
     button {
@@ -113,7 +123,7 @@
 }
 
 .harmburger {
-    top: 1.2rem;
+    top: 1.4rem;
     z-index: 90;
     right: 1.5rem;
     position: absolute;
@@ -231,8 +241,8 @@
 }
 
 .iconUser {
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2.6rem;
+    height: 2.6rem;
     stroke: #ffffff;
     stroke-width: 1.1;
 }

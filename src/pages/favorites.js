@@ -4,7 +4,7 @@ import FavoritesList from "src/components/FavoritesList/FavoritesList";
 
 export default function favorite() {
   return (
-    <Layout title="Secutitex: My Favorites" tabBar>
+    <Layout robots="noindex, nofollow" title="Secutitex: My Favorites" tabBar>
       <Toolbar />
       <FavoritesList />
     </Layout>

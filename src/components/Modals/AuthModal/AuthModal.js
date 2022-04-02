@@ -91,23 +91,21 @@ const AuthModal = ({ close, show }) => {
               <div className={modalHeaderClass}></div>
               <div className={modalBodyClass}>
                 <div className={styles.tabs}>
-                  <a
+                  <button
                     onClick={() => setActiveTab(0)}
                     className={btnLoginClass}
-                    href="#Login"
                   >
                     Login
-                  </a>
-                  <a
+                  </button>
+                  <button
                     onClick={() => setActiveTab(1)}
                     className={btnRegisterClass}
-                    href="#Register"
                   >
                     Register
-                  </a>
+                  </button>
                 </div>
                 <div className={styles.formSlider}>
-                  <Login closeAuthModal={close} />
+                  <Login closeAuthModal={close} activeTab={activeTab} />
                   <Register closeAuthModal={close} activeTab={activeTab} />
                 </div>
               </div>

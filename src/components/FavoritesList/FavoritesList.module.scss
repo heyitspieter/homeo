@@ -89,6 +89,18 @@
                     @media screen and (max-width: 37.5em) {
                         width: 18rem;
                     }
+
+                    a {
+                        &:link,
+                        &:visited {
+                            color: inherit;
+                            text-decoration: none;
+                        }
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
                 }
 
                 p {

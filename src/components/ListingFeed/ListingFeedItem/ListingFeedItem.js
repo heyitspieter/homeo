@@ -47,9 +47,9 @@ function ListingFeedItem({ listing }) {
         <figure>
           <Image
             src={
-              listing.createdBy
-                ? listing.createdBy.profileImage
-                : "/images/avatar.jpg"
+              listing.userdata[0]
+                ? listing.userdata[0].profileImage
+                : "/images/logo.png"
             }
             alt="User 1"
             width={200}
@@ -64,11 +64,16 @@ function ListingFeedItem({ listing }) {
             : truncate(listing.address, 23)}
           {listing.verified && (
             <div className={styles.grid__item_badge}>
-              <Svg className={styles.iconVerified} symbol="verified" />
+              <Image
+                src="/images/badge.png"
+                alt="badge"
+                height={20}
+                width={20}
+              />
             </div>
           )}
         </h3>
-        <p>{listing.name && listing.address}</p>
+        {listing.name ? <p>{listing.address}</p> : <p>&nbsp;</p>}
         <div className={styles.grid__item_features}>
           <div>
             <Svg className={styles.iconBed} symbol="bed" />

@@ -1,26 +1,16 @@
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import Spinner from "src/components/Spinner/Spinner";
+import Profile from "src/containers/Profile/Profile";
 import ActiveButton from "src/components/ActiveButton/ActiveButton";
+import PropertyListingSkeleton from "src/components/LoadingSkeletons/PropertyListingSkeleton";
 
 import styles from "src/components/Account/Account.module.scss";
-
-const Profile = dynamic(() => import("src/containers/Profile/Profile"), {
-  loading: () => (
-    <div className={styles.spinner__wrapper}>
-      <Spinner mini loading />
-    </div>
-  ),
-});
 
 const PropertyListings = dynamic(
   () => import("src/components/PropertyListings/PropertyListings"),
   {
-    loading: () => (
-      <div className={styles.spinner__wrapper}>
-        <Spinner mini loading />
-      </div>
-    ),
+    loading: () => <PropertyListingSkeleton />,
   }
 );
 
@@ -79,7 +69,7 @@ function Account() {
             onClick={() => router.push("/account/setting")}
             id="/account/setting"
           >
-            Account Setting
+            Account Settings
           </button>
         </ActiveButton>
       </div>

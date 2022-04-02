@@ -4,44 +4,35 @@
     justify-content: center;
     padding: 3.5rem 1.4rem 3.5rem 1.4rem;
 
-    a {
-        &:link,
-        &:visited {
-            cursor: pointer;
-            color: #afafaf;
-            font-weight: 600;
-            font-size: 1.19rem;
-            font-family: inherit;
-            text-decoration: none;
-            text-transform: uppercase;
-            background-color: #f6f7f8;
-            transition: all 0.2s ease-in-out;
+    button {
+        border: 0;
+        outline: none;
+        cursor: pointer;
+        color: #afafaf;
+        font-weight: 600;
+        background: none;
+        font-size: 1.19rem;
+        font-family: inherit;
+        text-decoration: none;
+        text-transform: uppercase;
+        background-color: #f6f7f8;
+        transition: all 0.2s ease-in-out;
+
+        &.activeTab {
+            color: #0c75ec !important;
+            background-color: #e8f0fe !important;
         }
     }
 }
 
-.activeTab {
-    &:link,
-    &:visited {
-        color: #0c75ec !important;
-        background-color: #e8f0fe !important;
-    }
-}
-
 .tabLogin {
-    &:link,
-    &:visited {
-        padding: 1.2rem 2.09rem;
-        border-radius: 0.35rem 0 0 0.35rem;
-    }
+    padding: 1.2rem 2.09rem;
+    border-radius: 0.35rem 0 0 0.35rem;
 }
 
 .tabRegister {
-    &:link,
-    &:visited {
-        padding: 1.2rem 1.2rem;
-        border-radius: 0 0.35rem 0.35rem 0;
-    }
+    padding: 1.2rem 1.2rem;
+    border-radius: 0 0.35rem 0.35rem 0;
 }
 
 .dialog__width {
@@ -53,34 +44,30 @@
 .formSlider {
     display: flex;
     overflow: hidden;
-    overflow-x: auto;
     list-style-type: none;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-
-    &::-webkit-scrollbar {
-        width: 0.5rem;
-    }
-
-    &::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: transparent;
-    }
 
     &__item {
         flex: 0 0 100%;
-        align-self: flex-start;
-        scroll-snap-align: start;
         background-color: #ffffff;
-        transform-origin: center center;
         transition: transform 0.35s ease;
+
+        &:nth-of-type(1) {
+            transform: translateX(0);
+
+            &.translateX_out__left {
+                transform: translateX(-100%);
+            }
+        }
+
+        &:nth-of-type(2) {
+            max-height: 0;
+            transform: translateX(100%);
+
+            &.translateX_in__left {
+                max-height: 100%;
+                transform: translateX(-100%);
+            }
+        }
     }
 }
-
-.no_height {
-    max-height: 0;
-}
+    

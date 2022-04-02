@@ -4,7 +4,10 @@ export default async (req, res) => {
   const listingApi = new ListingApi(req);
 
   if (req.method === "GET") {
-    const [listings, err] = await listingApi.getUserListings();
+    const [listings, err] = await listingApi.getUserListings({
+      per_page: req.query.per_page,
+      page: req.query.page,
+    });
 
     if (listings) return res.send(listings);
 

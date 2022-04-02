@@ -23,8 +23,6 @@ const mapConfig = {
 import styles from "src/components/Listing/Listing.module.scss";
 
 function Listing({ listing }) {
-  const [isLiked, setIsLiked] = useState(false);
-
   const [currentImage, setCurrentImage] = useState(placeholderData);
 
   const router = useRouter();
@@ -34,7 +32,6 @@ function Listing({ listing }) {
       setCurrentImage(
         `${process.env.NEXT_PUBLIC_SERVER_IMAGE_URL}/${listing.images[0]}`
       );
-      setIsLiked(likes.findIndex((like) => like.id === listing._lId) !== -1);
     }
 
     return () => {
@@ -55,6 +52,8 @@ function Listing({ listing }) {
 
   const onLikeListing = (id) => dispatch(likeListing(id));
 
+  const isLiked = likes.findIndex((like) => like.id === listing._lId) !== -1;
+
   const likeIconClass = className({
     [styles.iconHeart]: !isLiked,
     [styles.iconHeartFill]: isLiked,
@@ -69,9 +68,14 @@ function Listing({ listing }) {
       <div className={styles.row}>
         <div className={styles.title}>
           <div>
-            <h2>{listing.name}</h2>
+            <h2>{listing.name ? listing.name : "Secutitex Property"}</h2>
             {listing.verified && (
-              <Svg className={styles.iconVerified} symbol="verified" />
+              <Image
+                src="/images/badge.png"
+                alt="badge"
+                height={25}
+                width={25}
+              />
             )}
           </div>
           <p>{listing.address}</p>
@@ -228,7 +232,7 @@ function Listing({ listing }) {
                     src={
                       listing.createdBy
                         ? listing.createdBy.profileImage
-                        : "/images/avatar.jpg"
+                        : "/images/logo.png"
                     }
                   />
                 </figure>

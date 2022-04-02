@@ -6,7 +6,11 @@ import ListingUploadForm from "src/containers/ListingForm/ListingUploadForm/List
 
 export default function listingImageUpload({ images = [] }) {
   return (
-    <Layout title="Upload Listing Images: Secutitex" tabBar>
+    <Layout
+      robots="noindex, nofollow"
+      title="Upload Listing Images: Secutitex"
+      tabBar
+    >
       <Toolbar />
       <ListingUploadForm images={images} />
     </Layout>

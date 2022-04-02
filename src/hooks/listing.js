@@ -1,15 +1,29 @@
 import axios from "axios";
 import useSWR from "swr";
 import { fetcher } from "src/helpers";
+import useSWRInfinite from "swr/infinite";
 import { useApiHandler } from "src/hooks";
 
 export const useCreateListing = () =>
   useApiHandler((listing) => axios.post("/api/v1/listing/new", listing));
 
-export const useGetListings = () => {
-  const { data, error, ...rest } = useSWR("/api/v1/listing/me", fetcher);
+export const useGetListings = (pageSize, initialData) => {
+  const { data, error, size, setSize, ...rest } = useSWRInfinite(
+    (index) => `/api/v1/listing/me?per_page=${pageSize}&page=${index + 1}`,
+    fetcher,
+    {
+      initialData,
+    }
+  );
 
-  return { data, error, loading: !data && !error, ...rest };
+  return {
+    ...rest,
+    data,
+    size,
+    error,
+    setSize,
+    loading: !data && !error,
+  };
 };
 
 export const useGetImage = () =>

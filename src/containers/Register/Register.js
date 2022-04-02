@@ -293,7 +293,7 @@ function Register({ activeTab, closeAuthModal }) {
   const containerClass = className({
     [formStyles.container]: true,
     [styles.formSlider__item]: true,
-    [styles.no_height]: activeTab <= 0,
+    [styles.translateX_in__left]: activeTab === 1,
   });
 
   return (

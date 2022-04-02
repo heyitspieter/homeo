@@ -10,7 +10,7 @@ import FormButton from "src/components/Form/FormButton/FormButton";
 import formStyles from "styles/modules/Form.module.scss";
 import styles from "src/components/Modals/AuthModal/AuthModal.module.scss";
 
-function Login({ closeAuthModal }) {
+function Login({ activeTab, closeAuthModal }) {
   const [formControls, setFormControls] = useState({
     email: {
       label: {
@@ -193,6 +193,7 @@ function Login({ closeAuthModal }) {
   const containerClass = className({
     [formStyles.container]: true,
     [styles.formSlider__item]: true,
+    [styles.translateX_out__left]: activeTab > 0,
   });
 
   return (

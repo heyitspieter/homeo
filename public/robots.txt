@@ -1,0 +1,10 @@
+User-agent: * 
+
+Disallow: /listing/edit/*
+Disallow: /listing/upload/*
+Disallow: /listing/new
+Disallow: /favorites
+Disallow: /search
+Disallow: /404
+
+Sitemap: 
