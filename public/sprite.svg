@@ -108,6 +108,12 @@
 <symbol id="filter">
 <path id="primary" d="M5,4V6.64a1,1,0,0,0,.23.64l4.54,5.44a1,1,0,0,1,.23.64V21l4-2V13.36a1,1,0,0,1,.23-.64l4.54-5.44A1,1,0,0,0,19,6.64V4a1,1,0,0,0-1-1H6A1,1,0,0,0,5,4Z" style="fill: none; stroke-linecap: round; stroke-linejoin: round;"></path>
 </symbol>
+<symbol id="double-check">
+<polyline id="primary" points="3 11.88 7 16.5 14.78 7.5" style="fill: none; stroke-linecap: round; stroke-linejoin: round;"></polyline><line id="primary-2" data-name="primary" x1="13.22" y1="16.5" x2="21" y2="7.5" style="fill: none; stroke-linecap: round; stroke-linejoin: round;"></line>
+</symbol>
+<symbol id="exclamate">
+<g id="Line"><path id="primary" d="M13,13H11a1,1,0,0,1-1-1V4a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1v8A1,1,0,0,1,13,13Zm1,6a2,2,0,1,0-2,2A2,2,0,0,0,14,19Z" style="fill:none;stroke-linecap:round;stroke-linejoin:round;"></path></g>
+</symbol>
 <defs>
 </svg>
 

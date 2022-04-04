@@ -6,7 +6,7 @@ import Listing from "src/components/Listing/Listing";
 
 export default function listingPage({ listing }) {
   let headingTitle = listing
-    ? `${listing.name && listing.name} ${listing.address}`
+    ? `${listing.name ? listing.name : "Secutitex Property"}, ${listing.address}`
     : "Loading... ";
 
   return (

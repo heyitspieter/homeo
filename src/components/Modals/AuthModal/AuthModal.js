@@ -24,7 +24,7 @@ const Register = dynamic(() => import("src/containers/Register/Register"));
 const AuthModal = ({ close, show }) => {
   const ref = useRef();
 
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
 
   const modalBodyClass = className({
     [modalStyles.content__body]: true,
@@ -74,7 +74,7 @@ const AuthModal = ({ close, show }) => {
 
   const closeModal = () => {
     close();
-    setActiveTab(0);
+    setActiveTab(1);
   };
 
   return (

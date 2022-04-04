@@ -1,4 +1,5 @@
 import className from "classnames";
+import * as gtag from "src/libs/gtag";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { useCreateJobRequest } from "src/hooks/job-request";
@@ -261,7 +262,14 @@ const JobInfo = ({
       }
     }
 
-    if (formValidity) createJobRequest(formData);
+    if (formValidity) {
+      createJobRequest(formData);
+      gtag.event({
+        label: "Finder",
+        category: "Finder",
+        action: "Submit Job Request",
+      });
+    }
   };
 
   const containerClass = className({

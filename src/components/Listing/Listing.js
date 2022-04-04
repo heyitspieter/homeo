@@ -255,9 +255,9 @@ function Listing({ listing }) {
                 >
                   Get in Touch
                 </a>
-                <a className={styles.action__tel} href={`tel:`}>
-                  <Svg className={styles.iconWhatsapp} symbol="whatsapp" />
-                  <span>WhatsApp</span>
+                <a className={styles.action__tel} href={`tel:2348125255604`}>
+                  <Svg className={styles.iconWhatsapp} symbol="phone" />
+                  <span>Call</span>
                 </a>
               </div>
             </div>

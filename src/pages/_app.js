@@ -1,5 +1,7 @@
 import { SWRConfig } from "swr";
+import Router from "next/router";
 import { wrapper } from "src/store";
+import * as gtag from "src/libs/gtag";
 import { ToastContainer } from "react-toastify";
 import MapProvider from "src/context/MapContext";
 import AuthProvider from "src/context/AuthContext";
@@ -22,6 +24,10 @@ const toastConfig = {
   icon: false,
   rtl: false,
 };
+
+Router.events.on("routeChangeComplete", (url) => {
+  gtag.pageview(url);
+});
 
 function MyApp({ Component, pageProps }) {
   return (

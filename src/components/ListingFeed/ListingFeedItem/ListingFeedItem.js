@@ -98,7 +98,7 @@ function ListingFeedItem({ listing }) {
           <p>₦{formatNumber(listing.price)}</p>
         </div>
         <div className={styles.grid__item_actions}>
-          <a href={`tel:`}>
+          <a href={`tel:+2348125255604`}>
             <Svg className={styles.iconPhone} symbol="phone" />
           </a>
           <button onClick={() => onLikeListing(listing._lId)}>
