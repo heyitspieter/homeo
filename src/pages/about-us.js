@@ -7,7 +7,7 @@ export default function about() {
     <Layout
       keywords=""
       robots="index, follow"
-      title="Secutitex: About Us"
+      title="Homeo: About Us"
       description="Our goal is to create a wealth of jobs for trades persons and labour in Nigeria."
     >
       <Toolbar />

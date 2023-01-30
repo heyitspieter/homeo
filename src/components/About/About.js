@@ -8,8 +8,8 @@ function About() {
       </div>
       <div className={styles.content}>
         <p>
-          Secutitex is an incorporated limited company registered with the
-          corporate affairs commission of Nigeria.
+          Homeo is an incorporated limited company registered with the corporate
+          affairs commission of Nigeria.
         </p>
         <p>
           Our goal is to create a wealth of jobs for trades persons and labour
@@ -18,9 +18,9 @@ function About() {
           for real estate transactions or development projects.
         </p>
         <p>
-          Secutitex offers a one stop shop through our website for the sole
-          purpose of allowing consumers to get competitive prices for skilled
-          labour and property purchase.
+          Homeo offers a one stop shop through our website for the sole purpose
+          of allowing consumers to get competitive prices for skilled labour and
+          property purchase.
         </p>
         <p>
           We seek to make real estate in Nigeria efficient and liquid within the
@@ -35,7 +35,7 @@ function About() {
         </p>
       </div>
       <div className={styles.affirmation}>
-        <h2>Secutitex Ltd.</h2>
+        <h2>Homeo Ltd.</h2>
       </div>
     </div>
   );
