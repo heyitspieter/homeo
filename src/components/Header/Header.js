@@ -40,39 +40,11 @@ function Header({ toggleAuthModal }) {
           <div className={styles.logo}>
             <Link href="/">
               <a className={styles.logo__link}>
-                <h2>Secutitex</h2>
+                <h2>Homeo</h2>
               </a>
             </Link>
           </div>
-          <nav className={styles.nav}>
-            <ul className={styles.nav__list}>
-              <li className={styles.nav__list_item}>
-                <a href="#" className={styles.nav__list_link}>
-                  Investment Consultancy
-                </a>
-              </li>
-              <li className={styles.nav__list_item}>
-                <a href="#" className={styles.nav__list_link}>
-                  Hotel Management
-                </a>
-              </li>
-              <li className={styles.nav__list_item}>
-                <a href="#" className={styles.nav__list_link}>
-                  Real Estate
-                </a>
-              </li>
-              <li className={styles.nav__list_item}>
-                <a href="#" className={styles.nav__list_link}>
-                  Procurement
-                </a>
-              </li>
-              <li className={styles.nav__list_item}>
-                <a href="#" className={styles.nav__list_link}>
-                  VIP Escort Services
-                </a>
-              </li>
-            </ul>
-          </nav>
+
           <div className={styles.menu}>
             <button
               onClick={() => {

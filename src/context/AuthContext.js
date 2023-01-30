@@ -54,8 +54,10 @@ function useProvideAuth() {
   return auth;
 }
 
-export default function AuthProvider({ children }) {
+const AuthProvider = ({ children }) => {
   const auth = useProvideAuth();
 
   return <authContext.Provider value={auth}>{children}</authContext.Provider>;
-}
+};
+
+export default AuthProvider;

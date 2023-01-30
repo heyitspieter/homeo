@@ -8,7 +8,6 @@ function JobQuotation({ launchFinder }) {
       <p className={styles.caption}>Find the right professional for the job.</p>
       <button
         onClick={() => {
-          launchFinder();
           gtag.event({
             label: "Finder",
             category: "Finder",

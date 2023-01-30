@@ -19,9 +19,9 @@ export default function home({ listings }) {
       <Layout
         tabBar
         robots="index, follow"
-        title="Secutitex: Search properties for rent or sale in NG"
-        keywords="secutitex, secutitex.com, real estate properties near me"
-        description="Find Properties for rent or for sale around your location in nigeria"
+        title="Homeo: Search properties for rent or sale in NG"
+        keywords="Homeo, homeo.com, real estate properties near me"
+        description="Find Properties for rent or for sale around your location in UAE"
       >
         <Hero />
         <ListingFeed listings={listings} />
